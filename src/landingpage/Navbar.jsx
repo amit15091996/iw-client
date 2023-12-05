@@ -17,6 +17,7 @@ import {
   ListItemText,
   useMediaQuery,
 } from "@mui/material";
+import Services from "./Services";
 
 const Navbar = () => {
   const sectionRefs = {
@@ -92,11 +93,14 @@ const Navbar = () => {
     alignItems: "center",
     justifyContent: "center",
     backgroundImage:
-      "url(https://images.unsplash.com/photo-1512950050685-b1d4ae63d2df?q=80&w=1469&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D)", // Updated image URL
+      "url(https://images.unsplash.com/photo-1512950050685-b1d4ae63d2df?q=80&w=1469&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D)",
+    paddingTop: "64px",
+    marginTop: "-64px", // Adjusted margin to remove the blank space
   };
+  
 
   const contentStyles = {
-    marginTop:'-7rem',
+    marginTop: "-7rem",
     width: "100%",
     textAlign: "center",
     padding: "20px",
@@ -108,6 +112,16 @@ const Navbar = () => {
     // borderRadius: '10px', // Add border radius for image if needed
   };
 
+  const navHeight = 64; // Replace this with your Navbar height (in pixels)
+
+  // Inside the Navbar component
+  const sectionStyles = {
+    minHeight: `calc(100vh - ${navHeight}px)`,
+    paddingTop: `${navHeight}px`,
+    marginBottom: "-64px",
+    marginTop: "-64px", // Adjusted margin to remove the blank space
+  };
+  
   return (
     <div>
       <AppBar position="fixed" style={{ backgroundColor: "white" }}>
@@ -312,31 +326,32 @@ const Navbar = () => {
           <div style={imageStyles} />
         </div>
       </section>
-      <section ref={sectionRefs.section2}>
-        <div style={{ height: "100vh", backgroundColor: "#dcdcdc" }}>
-          <Typography variant="h3">Section 2</Typography>
-          <p>SERVICES...</p>
+      <section ref={sectionRefs.section2} style={sectionStyles}>
+        <div style={{ height: "100vh", backgroundColor: "#dcdcdc", top:'10rem' }}>
+          <Typography variant="h3"></Typography>
+          {/* <h2>OUR SERVICES</h2> */}
+          <Services />
         </div>
       </section>
-      <section ref={sectionRefs.section3}>
+      <section ref={sectionRefs.section3} style={sectionStyles}>
         <div style={{ height: "100vh", backgroundColor: "#a0a0a0" }}>
           <Typography variant="h3">Section 3</Typography>
           <p>CLIENTS...</p>
         </div>
       </section>
-      <section ref={sectionRefs.section4}>
+      <section ref={sectionRefs.section4} style={sectionStyles}>
         <div style={{ height: "100vh", backgroundColor: "#dcdcdc" }}>
           <Typography variant="h3">Section 4</Typography>
           <p>TEAMS...</p>
         </div>
       </section>
-      <section ref={sectionRefs.section5}>
+      <section ref={sectionRefs.section5} style={sectionStyles}>
         <div style={{ height: "100vh", backgroundColor: "#a0a0a0" }}>
           <Typography variant="h3">Section 5</Typography>
           <p>ABOUT...</p>
         </div>
       </section>
-      <section ref={sectionRefs.section6}>
+      <section ref={sectionRefs.section6} style={sectionStyles}>
         <div style={{ height: "100vh", backgroundColor: "#a0a0a0" }}>
           <Typography variant="h3">Section 6</Typography>
           <p>CONTACT...</p>

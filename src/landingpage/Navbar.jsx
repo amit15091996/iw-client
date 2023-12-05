@@ -1,4 +1,4 @@
-import './navbar.css'
+import "./navbar.css";
 import { Link } from "react-router-dom";
 // eslint-disable-next-line no-unused-vars
 import React, { useRef, useState, useEffect } from "react";
@@ -26,11 +26,27 @@ const Navbar = () => {
     section4: useRef(null),
     section5: useRef(null),
     section6: useRef(null),
+    section7: useRef(null),
     // Add more refs for additional sections
   };
 
+  const content =
+    "Success is not the key to happiness. Happiness is the key to success. If you love what you are doing, you will be successful.";
+
   const scrollToRef = (ref) => {
     ref.current.scrollIntoView({ behavior: "smooth" });
+  };
+  const handleNavigationClickBtn = (ref, buttonName) => {
+    if (buttonName === "GET STARTED") {
+      const clientSectionRef = sectionRefs.section2?.current;
+      if (clientSectionRef) {
+        clientSectionRef.scrollIntoView({ behavior: "smooth" });
+      }
+    } else {
+      scrollToRef(ref); // For other sections, perform the usual navigation
+    }
+    setDrawerOpen(false); // Close the drawer after navigation click
+    setActiveButton(buttonName); // Set the active button
   };
 
   const scrollToTop = () => {
@@ -113,7 +129,11 @@ const Navbar = () => {
           {/* Navigation Items */}
           {isMobile ? (
             <>
-              <IconButton color="inherit" onClick={handleDrawerToggle}>
+              <IconButton
+                color="inherit"
+                style={{ backgroundColor: "#003e70" }}
+                onClick={handleDrawerToggle}
+              >
                 <MenuIcon />
               </IconButton>
               <Drawer
@@ -125,7 +145,15 @@ const Navbar = () => {
                   <ListItem
                     button
                     onClick={() =>
-                      handleNavigationClick(sectionRefs.section1, "SERVICES")
+                      handleNavigationClick(sectionRefs.section1, "HOME")
+                    }
+                  >
+                    <ListItemText primary="HOME" />
+                  </ListItem>
+                  <ListItem
+                    button
+                    onClick={() =>
+                      handleNavigationClick(sectionRefs.section2, "SERVICES")
                     }
                   >
                     <ListItemText primary="SERVICES" />
@@ -133,7 +161,7 @@ const Navbar = () => {
                   <ListItem
                     button
                     onClick={() =>
-                      handleNavigationClick(sectionRefs.section2, "CLIENTS")
+                      handleNavigationClick(sectionRefs.section3, "CLIENTS")
                     }
                   >
                     <ListItemText primary="CLIENTS" />
@@ -141,7 +169,7 @@ const Navbar = () => {
                   <ListItem
                     button
                     onClick={() =>
-                      handleNavigationClick(sectionRefs.section3, "TEAM")
+                      handleNavigationClick(sectionRefs.section4, "TEAM")
                     }
                   >
                     <ListItemText primary="TEAM" />
@@ -149,7 +177,7 @@ const Navbar = () => {
                   <ListItem
                     button
                     onClick={() =>
-                      handleNavigationClick(sectionRefs.section4, "ABOUT")
+                      handleNavigationClick(sectionRefs.section5, "ABOUT")
                     }
                   >
                     <ListItemText primary="ABOUT" />
@@ -157,7 +185,7 @@ const Navbar = () => {
                   <ListItem
                     button
                     onClick={() =>
-                      handleNavigationClick(sectionRefs.section5, "CONTACT")
+                      handleNavigationClick(sectionRefs.section6, "CONTACT")
                     }
                   >
                     <ListItemText primary="CONTACT" />
@@ -174,7 +202,19 @@ const Navbar = () => {
               <Button
                 color="inherit"
                 onClick={() =>
-                  handleNavigationClick(sectionRefs.section1, "SERVICES")
+                  handleNavigationClick(sectionRefs.section1, "HOME")
+                }
+                style={{
+                  textDecoration:
+                    activeButton === "HOME" ? "underline" : "none",
+                }}
+              >
+                HOME
+              </Button>
+              <Button
+                color="inherit"
+                onClick={() =>
+                  handleNavigationClick(sectionRefs.section2, "SERVICES")
                 }
                 style={{
                   textDecoration:
@@ -186,7 +226,7 @@ const Navbar = () => {
               <Button
                 color="inherit"
                 onClick={() =>
-                  handleNavigationClick(sectionRefs.section2, "CLIENTS")
+                  handleNavigationClick(sectionRefs.section3, "CLIENTS")
                 }
                 style={{
                   textDecoration:
@@ -198,7 +238,7 @@ const Navbar = () => {
               <Button
                 color="inherit"
                 onClick={() =>
-                  handleNavigationClick(sectionRefs.section3, "TEAM")
+                  handleNavigationClick(sectionRefs.section4, "TEAM")
                 }
                 style={{
                   textDecoration:
@@ -210,7 +250,7 @@ const Navbar = () => {
               <Button
                 color="inherit"
                 onClick={() =>
-                  handleNavigationClick(sectionRefs.section4, "ABOUT")
+                  handleNavigationClick(sectionRefs.section5, "ABOUT")
                 }
                 style={{
                   textDecoration:
@@ -222,7 +262,7 @@ const Navbar = () => {
               <Button
                 color="inherit"
                 onClick={() =>
-                  handleNavigationClick(sectionRefs.section5, "CONTACT")
+                  handleNavigationClick(sectionRefs.section6, "CONTACT")
                 }
                 style={{
                   textDecoration:
@@ -251,8 +291,7 @@ const Navbar = () => {
               variant="body1"
               style={{ fontStyle: "italic", color: "#333" }}
             >
-              "Success is not the key to happiness. Happiness is the key to
-              success. If you love what you are doing, you will be successful."
+              {content}
             </Typography>
             {/* <Typography variant="body1" style={{ marginTop: "20px" }}>
               Welcome to Intallysh Wisdom, where passion meets innovation in
@@ -261,8 +300,10 @@ const Navbar = () => {
               services and join us on the journey to excellence.
             </Typography> */}
             {/* Add more content about your services, products, or a call-to-action */}
-            <button className='btn-new'>
-              {" "}
+            <button
+              className="btn-new"
+              onClick={() => handleNavigationClickBtn(null, "GET STARTED")}
+            >
               Get Started
               <span></span>
             </button>
@@ -273,24 +314,30 @@ const Navbar = () => {
       <section ref={sectionRefs.section2}>
         <div style={{ height: "100vh", backgroundColor: "#dcdcdc" }}>
           <Typography variant="h3">Section 2</Typography>
-          <p>CLIENTS...</p>
+          <p>SERVICES...</p>
         </div>
       </section>
       <section ref={sectionRefs.section3}>
         <div style={{ height: "100vh", backgroundColor: "#a0a0a0" }}>
           <Typography variant="h3">Section 3</Typography>
-          <p>TEAM...</p>
+          <p>CLIENTS...</p>
         </div>
       </section>
       <section ref={sectionRefs.section4}>
         <div style={{ height: "100vh", backgroundColor: "#dcdcdc" }}>
           <Typography variant="h3">Section 4</Typography>
-          <p>ABOUT...</p>
+          <p>TEAMS...</p>
         </div>
       </section>
       <section ref={sectionRefs.section5}>
         <div style={{ height: "100vh", backgroundColor: "#a0a0a0" }}>
           <Typography variant="h3">Section 5</Typography>
+          <p>ABOUT...</p>
+        </div>
+      </section>
+      <section ref={sectionRefs.section6}>
+        <div style={{ height: "100vh", backgroundColor: "#a0a0a0" }}>
+          <Typography variant="h3">Section 6</Typography>
           <p>CONTACT...</p>
         </div>
       </section>

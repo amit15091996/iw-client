@@ -60,8 +60,8 @@
 @media (max-width: 767px) {
   .btn-new {
     top: 78%; /* Adjust button's position from the top */
-    font-size: 16px; /* Adjust font size for smaller screens */
-    padding: 0.6em 1.8em; /* Adjust padding */
+    font-size: 14px; /* Adjust font size for smaller screens */
+    padding: 0.5em 1.5em; /* Adjust padding */
     transform: translate(-50%, -50%);
     left: 50%;
   }

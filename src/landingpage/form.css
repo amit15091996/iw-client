@@ -1,0 +1,136 @@
+/* login.css */
+
+/* Reset styles */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+  }
+  
+  /* Body styles */
+  body {
+    font-family: Arial, sans-serif; /* Using Arial as a fallback font */
+    background: rgb(248, 238, 238);
+  }
+  
+  /* Form container */
+  .container {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    max-width: 400px; /* Adjust as needed */
+    width: 100%;
+    background-color: #fff;
+    padding: 25px 30px;
+    border-radius: 5px;
+    box-shadow: 0 5px 10px rgba(0, 0, 0, 0.15);
+  }
+  
+  /* Title styles */
+  .container .title {
+    font-size: 25px;
+    font-weight: 500;
+    position: relative;
+  }
+  
+  .container .title::before {
+    content: "";
+    position: absolute;
+    left: 0;
+    bottom: 0;
+    height: 3px;
+    width: 10px;
+    border-radius: 5px;
+    /* background: linear-gradient(135deg, #197bca, #003e70); */
+  }
+  
+  /* Input styles */
+  .content form .user-details {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    margin: 20px 0 12px 0;
+  }
+  
+  form .user-details .input-box {
+    margin-bottom: 15px;
+    width: calc(100% - 20px);
+  }
+  
+  form .input-box span.details {
+    display: block;
+    font-weight: 500;
+    margin-bottom: 5px;
+  }
+  
+  .user-details .input-box input {
+    height: 45px;
+    width: 100%;
+    outline: none;
+    font-size: 16px;
+    border-radius: 5px;
+    padding-left: 15px;
+    border: 1px solid #ccc;
+    border-bottom-width: 2px;
+    transition: all 0.3s ease;
+  }
+  
+  .user-details .input-box input:focus,
+  .user-details .input-box input:valid {
+    border-color: #003e70;
+  }
+  
+  /* Forgot Password styles */
+  .forgot-password {
+    text-align: right;
+    margin-top: 2px;
+    margin-bottom: 15px;
+  }
+  
+  .forgot-password a {
+    text-decoration: none;
+    color: #197bca;
+    font-size: 14px;
+  }
+  
+  /* Signup link styles */
+  .signup-link {
+    text-align: center;
+    margin-bottom: 15px;
+  }
+  
+  /* Button styles */
+  .form-button {
+    height: 45px;
+    margin-bottom: 20px;
+  }
+  
+  .form-button input {
+    height: 100%;
+    width: 80%; /* Adjust the width as desired */
+    border-radius: 5px;
+    border: none;
+    color: #fff;
+    font-size: 18px;
+    font-weight: 500;
+    letter-spacing: 1px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    background: linear-gradient(135deg, #003e70, #003e70);
+  }
+  
+  .form-button input:hover {
+    background: linear-gradient(-135deg, #10324e, #10324e);
+  }
+  
+  /* Media queries for responsiveness */
+  @media (max-width: 768px) {
+    .container {
+      max-width: 90%;
+      padding: 20px;
+    }
+  
+    /* Additional styles or adjustments for smaller screens if needed */
+  }
+  

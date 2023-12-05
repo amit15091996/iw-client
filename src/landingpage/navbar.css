@@ -1,0 +1,71 @@
+.btn-new {
+  /* Your existing styles */
+  border: none;
+  display: block;
+  position: absolute;
+  top: 70%; /* Adjust the percentage as needed */
+  left: 50%;
+  transform: translateX(-50%);
+  padding: 0.7em 2.4em;
+  font-size: 18px;
+  background: transparent;
+  cursor: pointer;
+  user-select: none;
+  overflow: hidden;
+  color: #003e70;
+  z-index: 1;
+  font-family: inherit;
+  font-weight: 500;
+  border-radius: 2px;
+}
+.btn-new span {
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  background: transparent;
+  z-index: -1;
+  border: 4px solid #003e70;
+}
+
+.btn-new span::before {
+  content: "";
+  display: block;
+  position: absolute;
+  width: 8%;
+  height: 500%;
+  background: var(--lightgray);
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%) rotate(-60deg);
+  transition: all 0.3s;
+}
+
+.btn-new:hover span::before {
+  transform: translate(-50%, -50%) rotate(-90deg);
+  width: 100%;
+  background: #003e70;
+}
+
+.btn-new:hover {
+  color: white;
+}
+
+.btn-new:active span::before {
+  background: #2751cd;
+}
+
+/* Media query for mobile devices */
+@media (max-width: 767px) {
+  .btn-new {
+    top: 78%; /* Adjust button's position from the top */
+    font-size: 16px; /* Adjust font size for smaller screens */
+    padding: 0.6em 1.8em; /* Adjust padding */
+    transform: translate(-50%, -50%);
+    left: 50%;
+  }
+  .section1 {
+    background-image: url("https://images.unsplash.com/photo-1512950050685-b1d4ae63d2df?q=80&w=1469&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D");
+  }
+}

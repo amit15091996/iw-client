@@ -1,101 +1,80 @@
-import { useState } from 'react';
-import Card from '@mui/material/Card';
-import CardHeader from '@mui/material/CardHeader';
-import CardContent from '@mui/material/CardContent';
-import CardActions from '@mui/material/CardActions';
-import Typography from '@mui/material/Typography';
-import CodeIcon from '@mui/icons-material/Code';
-import Button from '@mui/material/Button';
-import Modal from '@mui/material/Modal';
-import Box from '@mui/material/Box';
+import Card from "@mui/material/Card";
+import CardContent from "@mui/material/CardContent";
+import Typography from "@mui/material/Typography";
+import Button from "@mui/material/Button";
+import IconButton from "@mui/material/IconButton";
+import CodeIcon from "@mui/icons-material/Code";
 
-export default function Services() {
-  const [openModal, setOpenModal] = useState(false);
+const styles = {
+  container: {
+    display: "flex",
+    flexWrap: "wrap",
+    justifyContent: "space-around",
+    marginTop: "2rem",
+  },
+  card: {
+    width: "320px",
+    margin: "1rem",
+    backgroundColor: "#00509d",
+    color: "white",
+    borderRadius: "12px",
+    transition: "0.3s",
+    boxShadow: "0 4px 8px 0 rgba(0,0,0,0.2)",
+    "&:hover": {
+      boxShadow: "0 8px 16px 0 rgba(0,0,0,0.2)",
+    },
+  },
+  content: {
+    display: "flex",
+    flexDirection: "column",
+    alignItems: "center",
+    textAlign: "center",
+    padding: "1rem",
+  },
+  icon: {
+    fontSize: 48,
+    marginBottom: 8,
+  },
+  title: {
+    marginBottom: 8,
+  },
+  description: {
+    marginBottom: 16,
+  },
+  button: {
+    backgroundColor: "#3f51b5",
+    color: "white",
+    "&:hover": {
+      backgroundColor: "#2c387e",
+    },
+  },
+};
 
-  const handleOpenModal = () => {
-    setOpenModal(true);
-  };
-
-  const handleCloseModal = () => {
-    setOpenModal(false);
-  };
-
+const Services = () => {
   return (
-    <>
-      <Card sx={{ maxWidth: 345 }}>
-        <Box sx={{ position: 'relative' }}>
-          <Box
-            sx={{
-              display: 'flex',
-              alignItems: 'center',
-              justifyContent: 'center',
-              backgroundColor: '#003E70',
-              width: '100%',
-              height: 100,
-              position: 'absolute',
-              top: 0,
-              left: 0,
-            }}
-          >
-            <CodeIcon sx={{ color: 'white', fontSize: 40 }} />
-          </Box>
-          <CardHeader
-            title="Development" // Adding the title here
-            titleTypographyProps={{ variant: 'h6' }}
-            sx={{
-              backgroundColor: '#f5f5f5',
-              textAlign: 'center',
-              paddingTop: 6,
-            }}
-          />
-        </Box>
-        <CardContent>
-          <Typography variant="body2" color="text.secondary">
-            One of our core strengths lies in our investment in software
-            development. We develop and deliver high-quality products in
-            accordance with specifications.
-          </Typography>
-        </CardContent>
-        <CardActions
-          sx={{
-            display: 'flex',
-            justifyContent: 'center',
-            paddingBottom: 2,
-          }}
-        >
-          <Button variant="outlined" onClick={handleOpenModal}>
-            Learn More
-          </Button>
-        </CardActions>
-      </Card>
-
-      <Modal
-        open={openModal}
-        onClose={handleCloseModal}
-        aria-labelledby="modal-title"
-        aria-describedby="modal-description"
-      >
-        <Box
-          sx={{
-            position: 'absolute',
-            top: '50%',
-            left: '50%',
-            transform: 'translate(-50%, -50%)',
-            bgcolor: 'white',
-            border: '2px solid #000',
-            boxShadow: 24,
-            p: 4,
-          }}
-        >
-          <Typography id="modal-title" variant="h6" component="h2">
-            More Options
-          </Typography>
-          <Typography id="modal-description" sx={{ mt: 2 }}>
-            Add your additional options here...
-          </Typography>
-          <Button onClick={handleCloseModal}>Close</Button>
-        </Box>
-      </Modal>
-    </>
+    <div style={styles.container}>
+      {[1, 2, 3, 4, 5, 6].map((index) => (
+        <Card key={index} style={styles.card}>
+          <CardContent style={styles.content}>
+            <IconButton style={styles.icon}>
+              <CodeIcon /> {/* Replace with your icon component */}
+            </IconButton>
+            <Typography variant="h5" style={styles.title}>
+              Development
+            </Typography>
+            <Typography variant="body1" style={styles.description}>
+              One of our core strengths lies in our investment in software
+              development. We develop and deliver high quality products in
+              accordance with specifications.
+            </Typography>
+            <Button variant="contained" style={styles.button}>
+              Learn More
+            </Button>
+          </CardContent>
+        </Card>
+      ))}
+    </div>
   );
-}
+};
+
+export default Services;

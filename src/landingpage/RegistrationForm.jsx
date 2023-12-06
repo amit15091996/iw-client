@@ -15,29 +15,29 @@ const RegistrationForm = () => {
             </div>
             <div className="input-box">
               <span className="details">Password</span>
-              <input type="text" placeholder="Enter your username" required />
+              <input type="password" placeholder="Enter your password" required />
             </div>
             <div className="input-box">
               <span className="details">Email</span>
-              <input type="text" placeholder="Enter your email" required />
+              <input type="email" placeholder="Enter your email" required />
             </div>
             <div className="input-box">
               <span className="details">Phone Number</span>
-              <input type="text" placeholder="Enter your number" required />
+              <input type="number" placeholder="Enter your number" required />
             </div>
             <div className="input-box">
               <span className="details">GST Number</span>
               <input
-                type="password"
-                placeholder="Enter your password"
+                type="number"
+                placeholder="Enter your GST number"
                 required
               />
             </div>
             <div className="input-box">
               <span className="details">Address</span>
               <input
-                type="password"
-                placeholder="Confirm your password"
+                type="text"
+                placeholder="Enter your address"
                 required
               />
             </div>

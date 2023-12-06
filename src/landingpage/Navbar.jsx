@@ -332,19 +332,29 @@ const Navbar = () => {
           <div style={imageStyles} />
         </div>
       </section>
-      <section ref={sectionRefs.section2} style={sectionStyles}>
-        <div style={{ height: "100vh", backgroundColor: "#fff", top: "10rem" }}>
-          <div style={{textAlign:'center'}}>
+      <section
+        ref={sectionRefs.section2}
+        style={{ ...sectionStyles, height: "auto" }}
+      >
+        <div
+          className="mob"
+          style={{ backgroundColor: "#fff", paddingTop: "10rem" }}
+        >
+          <div style={{ textAlign: "center" }}>
             <Typography
               variant="h4"
               gutterBottom
-              style={{ textAlign: "center", color:'#003E70' }}
+              style={{ textAlign: "center", color: "#003E70" }}
             >
               SERVICES
             </Typography>
             <Typography
               variant="body1"
-              style={{ fontStyle: "italic", color: "#333" , marginBottom:'2rem'}}
+              style={{
+                fontStyle: "italic",
+                color: "#333",
+                marginBottom: "2rem",
+              }}
             >
               Our custom software development services are designed to match
               your exact requirements. Whether it is a web-based application or
@@ -358,12 +368,12 @@ const Navbar = () => {
       <section ref={sectionRefs.section3} style={sectionStyles}>
         <div style={{ height: "100vh", backgroundColor: "#d8f3dc" }}>
           <Typography
-              variant="h4"
-              gutterBottom
-              style={{  textAlign: "center", color:'#003E70' }}
-            >
-              OUR CLIENTS
-            </Typography>
+            variant="h4"
+            gutterBottom
+            style={{ textAlign: "center", color: "#003E70" }}
+          >
+            OUR CLIENTS
+          </Typography>
           <p>CLIENTS...</p>
         </div>
       </section>

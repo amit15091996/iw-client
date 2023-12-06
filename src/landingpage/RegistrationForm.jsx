@@ -48,6 +48,9 @@ const RegistrationForm = () => {
           <div className="button">
             <input type="submit" value="Register" />
           </div>
+          <div className="signup-link">
+             <Link to="/" style={{color:'blue'}}>HOME</Link>
+          </div>
         </form>
       </div>
     </div>

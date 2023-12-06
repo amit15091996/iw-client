@@ -338,7 +338,7 @@ const Navbar = () => {
             <Typography
               variant="h4"
               gutterBottom
-              style={{ margin: "20px", textAlign: "center", color:'#003E70' }}
+              style={{ textAlign: "center", color:'#003E70' }}
             >
               SERVICES
             </Typography>
@@ -356,8 +356,14 @@ const Navbar = () => {
         </div>
       </section>
       <section ref={sectionRefs.section3} style={sectionStyles}>
-        <div style={{ height: "100vh", backgroundColor: "#a0a0a0" }}>
-          <Typography variant="h3">Section 3</Typography>
+        <div style={{ height: "100vh", backgroundColor: "#d8f3dc" }}>
+          <Typography
+              variant="h4"
+              gutterBottom
+              style={{  textAlign: "center", color:'#003E70' }}
+            >
+              OUR CLIENTS
+            </Typography>
           <p>CLIENTS...</p>
         </div>
       </section>

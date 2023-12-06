@@ -31,6 +31,9 @@ const LoginForm = () => {
           <div className="signup-link">
             {acc} <Link to="/register" style={{color:'blue'}}>Register</Link>
           </div>
+          <div className="signup-link">
+             <Link to="/" style={{color:'blue'}}>HOME</Link>
+          </div>
         </form>
       </div>
     </div>

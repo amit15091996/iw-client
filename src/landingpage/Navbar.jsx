@@ -97,7 +97,6 @@ const Navbar = () => {
     paddingTop: "64px",
     marginTop: "-64px", // Adjusted margin to remove the blank space
   };
-  
 
   const contentStyles = {
     marginTop: "-7rem",
@@ -121,7 +120,7 @@ const Navbar = () => {
     marginBottom: "-64px",
     marginTop: "-64px", // Adjusted margin to remove the blank space
   };
-  
+
   return (
     <div>
       <AppBar position="fixed" style={{ backgroundColor: "white" }}>
@@ -164,8 +163,8 @@ const Navbar = () => {
                     flexDirection: "column", // Arrange items vertically
                     justifyContent: "center", // Center items vertically
                     alignItems: "center", // Center items horizontally
-                    backgroundColor:'#003E70',
-                    color:'#fff'
+                    backgroundColor: "#003E70",
+                    color: "#fff",
                   },
                 }}
               >
@@ -321,13 +320,7 @@ const Navbar = () => {
             >
               {content}
             </Typography>
-            {/* <Typography variant="body1" style={{ marginTop: "20px" }}>
-              Welcome to Intallysh Wisdom, where passion meets innovation in
-              software development. We are dedicated to crafting solutions that
-              drive success and create meaningful experiences. Explore our
-              services and join us on the journey to excellence.
-            </Typography> */}
-            {/* Add more content about your services, products, or a call-to-action */}
+
             <button
               className="btn-new"
               onClick={() => handleNavigationClickBtn(null, "GET STARTED")}
@@ -340,9 +333,26 @@ const Navbar = () => {
         </div>
       </section>
       <section ref={sectionRefs.section2} style={sectionStyles}>
-        <div style={{ height: "100vh", backgroundColor: "#dcdcdc", top:'10rem' }}>
-          {/* <h2>OUR SERVICES</h2> */}
-          <Services />
+        <div style={{ height: "100vh", backgroundColor: "#fff", top: "10rem" }}>
+          <div style={{textAlign:'center'}}>
+            <Typography
+              variant="h4"
+              gutterBottom
+              style={{ margin: "20px", textAlign: "center", color:'#003E70' }}
+            >
+              SERVICES
+            </Typography>
+            <Typography
+              variant="body1"
+              style={{ fontStyle: "italic", color: "#333" , marginBottom:'2rem'}}
+            >
+              Our custom software development services are designed to match
+              your exact requirements. Whether it is a web-based application or
+              enterprise software, we build solutions that align with your goals
+              and give your business a competitive edge.
+            </Typography>
+            <Services />
+          </div>
         </div>
       </section>
       <section ref={sectionRefs.section3} style={sectionStyles}>

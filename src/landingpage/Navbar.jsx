@@ -155,6 +155,17 @@ const Navbar = () => {
                 anchor="right"
                 open={drawerOpen}
                 onClose={handleDrawerToggle}
+                sx={{
+                  width: "250px", // Set the width as per your requirement
+                  "& .MuiDrawer-paper": {
+                    width: "250px", // Set the width for the drawer paper content
+                    boxSizing: "border-box",
+                    display: "flex", // Use flexbox
+                    flexDirection: "column", // Arrange items vertically
+                    justifyContent: "center", // Center items vertically
+                    alignItems: "center", // Center items horizontally
+                  },
+                }}
               >
                 <List>
                   <ListItem
@@ -328,7 +339,6 @@ const Navbar = () => {
       </section>
       <section ref={sectionRefs.section2} style={sectionStyles}>
         <div style={{ height: "100vh", backgroundColor: "#dcdcdc", top:'10rem' }}>
-          <Typography variant="h3"></Typography>
           {/* <h2>OUR SERVICES</h2> */}
           <Services />
         </div>

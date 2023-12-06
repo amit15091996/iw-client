@@ -164,6 +164,8 @@ const Navbar = () => {
                     flexDirection: "column", // Arrange items vertically
                     justifyContent: "center", // Center items vertically
                     alignItems: "center", // Center items horizontally
+                    backgroundColor:'#003E70',
+                    color:'#fff'
                   },
                 }}
               >

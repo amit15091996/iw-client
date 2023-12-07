@@ -19,6 +19,8 @@ import {
 } from "@mui/material";
 import Services from "./Services";
 import Clients from "./Clients";
+import Team from "./Team";
+import About from "./About";
 
 const Navbar = () => {
   const sectionRefs = {
@@ -233,8 +235,7 @@ const Navbar = () => {
                   handleNavigationClick(sectionRefs.section1, "HOME")
                 }
                 style={{
-                  textDecoration:
-                    activeButton === "HOME" ? "underline" : "none",
+                  textDecoration: activeButton === "HOME" ? "" : "none",
                 }}
               >
                 HOME
@@ -245,8 +246,7 @@ const Navbar = () => {
                   handleNavigationClick(sectionRefs.section2, "SERVICES")
                 }
                 style={{
-                  textDecoration:
-                    activeButton === "SERVICES" ? "underline" : "none",
+                  textDecoration: activeButton === "SERVICES" ? "" : "none",
                 }}
               >
                 SERVICES
@@ -257,8 +257,7 @@ const Navbar = () => {
                   handleNavigationClick(sectionRefs.section3, "CLIENTS")
                 }
                 style={{
-                  textDecoration:
-                    activeButton === "CLIENTS" ? "underline" : "none",
+                  textDecoration: activeButton === "CLIENTS" ? "" : "none",
                 }}
               >
                 CLIENTS
@@ -269,8 +268,7 @@ const Navbar = () => {
                   handleNavigationClick(sectionRefs.section4, "TEAM")
                 }
                 style={{
-                  textDecoration:
-                    activeButton === "TEAM" ? "underline" : "none",
+                  textDecoration: activeButton === "TEAM" ? "" : "none",
                 }}
               >
                 TEAM
@@ -281,8 +279,7 @@ const Navbar = () => {
                   handleNavigationClick(sectionRefs.section5, "ABOUT")
                 }
                 style={{
-                  textDecoration:
-                    activeButton === "ABOUT" ? "underline" : "none",
+                  textDecoration: activeButton === "ABOUT" ? "" : "none",
                 }}
               >
                 ABOUT
@@ -293,8 +290,7 @@ const Navbar = () => {
                   handleNavigationClick(sectionRefs.section6, "CONTACT")
                 }
                 style={{
-                  textDecoration:
-                    activeButton === "CONTACT" ? "underline" : "none",
+                  textDecoration: activeButton === "CONTACT" ? "" : "none",
                 }}
               >
                 CONTACT
@@ -322,13 +318,13 @@ const Navbar = () => {
               {content}
             </Typography>
 
-            <button5
+            <button
               className="btn-new"
               onClick={() => handleNavigationClickBtn(null, "GET STARTED")}
             >
               Get Started
               <span></span>
-            </button5>
+            </button>
           </div>
           <div style={imageStyles} />
         </div>
@@ -412,16 +408,88 @@ const Navbar = () => {
           </div>
         </div>
       </section>
-      <section ref={sectionRefs.section4} style={sectionStyles}>
-        <div style={{ height: "100vh", backgroundColor: "#dcdcdc" }}>
-          <Typography variant="h3">Section 4</Typography>
-          <p>TEAMS...</p>
+      <section
+        ref={sectionRefs.section4}
+        style={{ ...sectionStyles, minHeight: "auto" }}
+      >
+        <div
+          className="mob"
+          style={{
+            backgroundColor: "#003E70",
+            minHeight: "92vh", // Ensure the section height matches the minHeight
+            backgroundSize: "cover",
+            backgroundImage: `url('https://example.com/your-image.jpg')`, // Replace with your image URL
+            display: "flex",
+            flexDirection: "column",
+            alignItems: "center",
+            justifyContent: "center",
+            color: "#fff",
+            textAlign: "center",
+          }}
+        >
+          <div>
+            <Typography
+              variant="h4"
+              gutterBottom
+              style={{ fontWeight: "bold", textDecoration: "underline" }}
+            >
+              TEAM
+            </Typography>
+            <Typography
+              variant="body1"
+              style={{
+                maxWidth: "800px",
+                margin: "0 auto",
+                fontStyle: "italic",
+              }}
+            >
+              "Coming together is a beginning, staying together is progress, and
+              working together is success."
+            </Typography>
+            <Team />
+          </div>
         </div>
       </section>
-      <section ref={sectionRefs.section5} style={sectionStyles}>
-        <div style={{ height: "100vh", backgroundColor: "#a0a0a0" }}>
-          <Typography variant="h3">Section 5</Typography>
-          <p>ABOUT...</p>
+      <section
+        ref={sectionRefs.section5}
+        style={{ ...sectionStyles, height: "auto" }}
+      >
+        <div
+          className="mob"
+          style={{ backgroundColor: "#f5f1e3", paddingTop: "2rem" }}
+        >
+          <div style={{ textAlign: "center" }}>
+            <Typography
+              variant="h4"
+              gutterBottom
+              style={{
+                textAlign: "center",
+                color: "#003E70",
+                fontWeight: "bold", // Adding font weight
+                textDecoration: "underline", // Adding underline
+              }}
+            >
+              ABOUT US
+            </Typography>
+            <Typography
+              variant="body1"
+              style={{
+                maxWidth: "800px",
+                margin: "0 auto", // Center the text by applying left and right margin auto
+                fontStyle: "italic",
+                color: "#003E70",
+                textAlign: "center",
+              }}
+            >
+              Welcome to Intallysh Wisdom! We're like builders, but for
+              software. Our mission is to build website that help you do things
+              better and faster. We've teamed up with all sorts of folks, from
+              small projects to large projects. Our happiness comes from making
+              your work smoother and your life simpler. Let's make tech easy
+              together!
+            </Typography>
+            <About />
+          </div>
         </div>
       </section>
       <section ref={sectionRefs.section6} style={sectionStyles}>

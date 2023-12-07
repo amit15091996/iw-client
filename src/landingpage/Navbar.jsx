@@ -479,14 +479,28 @@ const Navbar = () => {
                 fontStyle: "italic",
                 color: "#003E70",
                 textAlign: "center",
+                marginTop:'3rem'
               }}
             >
-              Welcome to Intallysh Wisdom! We're like builders, but for
+             "Welcome to Intallysh Wisdom! We're like builders, but for
               software. Our mission is to build website that help you do things
               better and faster. We've teamed up with all sorts of folks, from
               small projects to large projects. Our happiness comes from making
               your work smoother and your life simpler. Let's make tech easy
-              together!
+              together!"
+            </Typography>
+            <Typography
+              variant="h5"
+              style={{
+                maxWidth: "800px",
+                margin: "0 auto", // Center the text by applying left and right margin auto
+                fontStyle: "italic",
+                color: "#003E70",
+                textAlign: "center",
+                marginTop:'3rem'
+              }}
+            >
+             Why Choose Us?
             </Typography>
             <About />
           </div>

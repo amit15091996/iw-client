@@ -33,43 +33,44 @@ const About = () => {
 
   return (
     <div
-      className="client-list-container"
-      style={{
-        padding: "20px",
-        boxSizing: "border-box",
-      }}
+    className="client-list-container"
+    style={{
+      padding: "30px",
+      boxSizing: "border-box",
+    }}
+  >
+    <Grid
+      container
+      spacing={1} // Set a smaller value for the spacing
+      justifyContent="center"
+      alignItems="center"
+      textAlign="center"
     >
-      <Grid
-        container
-        spacing={2}
-        justifyContent="center"
-        alignItems="center"
-      >
-        {clientList.map((client, index) => (
-          <Grid key={index} item xs={12} sm={6}>
-            <div
-              className="client-item"
-              style={{
-                textAlign: "center",
-                backgroundColor: "#f5f1e3",
-                padding: "20px",
-                borderRadius: "5px",
-                whiteSpace: "nowrap",
-                textOverflow: "ellipsis",
-                lineHeight: "1",
-                height: "60px",
-                display: "flex",
-                alignItems: "center",
-                justifyContent: "flex-start",
-                color: "#111d4a",
-                fontFamily: "sans-serif",
-              }}
-            >
-              ✓ {client}
-            </div>
-          </Grid>
-        ))}
-      </Grid>
+      {clientList.map((client, index) => (
+        <Grid key={index} item xs={12} sm={3} textAlign="center">
+          <div
+            className="client-item"
+            style={{
+              textAlign: "center",
+              backgroundColor: "#f5f1e3",
+              padding: "20px",
+              borderRadius: "5px",
+              whiteSpace: "nowrap",
+              textOverflow: "ellipsis",
+              lineHeight: "0",
+              height: "60px",
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "center",
+              color: "#111d4a",
+              fontFamily: "sans-serif",
+            }}
+          >
+            ✓ {client}
+          </div>
+        </Grid>
+      ))}
+    </Grid>
 
       {/* Modal Button */}
       <div style={{ marginTop: "20px", textAlign: "center" }}>

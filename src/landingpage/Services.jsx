@@ -23,8 +23,8 @@ const styles = {
   card: {
     width: "320px",
     margin: "1rem",
-    backgroundColor: "#00509d",
-    color: "white",
+    backgroundColor: "#f6fff8",
+    color: "#003E70",
     borderRadius: "12px",
     transition: "0.3s",
     boxShadow: "0 4px 8px 0 rgba(0,0,0,0.2)",
@@ -70,7 +70,7 @@ const cardData = [
     title: "Development",
     description:
       "One of our core strengths lies in our investment in software development. We develop and deliver high quality products in accordance with specifications.",
-    icon: <CodeIcon style={{ color: "white" }} />,
+    icon: <CodeIcon style={{ color: "#003E70" }} />,
     btn: "Know More",
     modalTitle: "Development Modal",
     modalDescription: "This is the development modal content.",
@@ -79,7 +79,7 @@ const cardData = [
     title: "Testing",
     description:
       "Our proficiency in software testing is a cornerstone of our success. We consistently deliver top-tier products that precisely align with specified requirements.",
-    icon: <CodeIcon style={{ color: "white" }} />,
+    icon: <CodeIcon style={{ color: "#003E70" }} />,
     btn: "Know More",
     modalTitle: "Testing Modal",
     modalDescription: "This is the Testing modal content.",
@@ -88,12 +88,38 @@ const cardData = [
     title: "Expert Guidence",
     description:
       "We are a team of certified experts with tremendous experience in web design and development who will walk you through the process with their expertise.",
-    icon: <CodeIcon style={{ color: "white" }} />,
+    icon: <CodeIcon style={{ color: "#003E70" }} />,
     btn: "Know More",
     modalTitle: "EG Modal",
     modalDescription: "This is the EG modal content.",
   },
-  // Add more objects for each card with their own modal content
+  {
+    title: "High End Design",
+    description:
+      "Our high-end design solutions for software development encompass innovation and customization. We're committed to creating software products that will function flawlessly.",
+    icon: <CodeIcon style={{ color: "#003E70" }} />,
+    btn: "Know More",
+    modalTitle: "Design Modal",
+    modalDescription: "This is the Design modal content.",
+  },
+  {
+    title: "Tally",
+    description:
+      "We provide Tally computing service which can help you to make a continuous record of data, it will automate and integrate all business operations, such as finance and sale.",
+    icon: <CodeIcon style={{ color: "#003E70" }} />,
+    btn: "Know More",
+    modalTitle: "Tally Modal",
+    modalDescription: "This is the Tally modal content.",
+  },
+  {
+    title: "Enterprise Management",
+    description:
+      "We provide effective enterprise management for software development which ensures projects align with business goals, risk is minimized, and quality is maintained.",
+    icon: <CodeIcon style={{ color: "#003E70" }} />,
+    btn: "Know More",
+    modalTitle: "Enterprise Modal",
+    modalDescription: "This is the Enterprise modal content.",
+  },
 ];
 
 const Services = () => {
@@ -126,7 +152,7 @@ const Services = () => {
               <Button
                 onClick={() => handleButtonClick(index)}
                 variant="contained"
-                style={styles.button}
+                style={{ backgroundColor: "#003E70" }}
               >
                 {data.btn}
               </Button>

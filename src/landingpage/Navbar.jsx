@@ -338,23 +338,30 @@ const Navbar = () => {
       >
         <div
           className="mob"
-          style={{ backgroundColor: "#fff", paddingTop: "10rem" }}
+          style={{ backgroundColor: "#003E70",paddingTop:'2rem' }}
         >
           <div style={{ textAlign: "center" }}>
             <Typography
-              variant="h4"
-              gutterBottom
-              style={{ textAlign: "center", color: "#003E70" }}
+                variant="h4"
+                gutterBottom
+                style={{
+                  textAlign: "center",
+                  color: "#fff",
+                  fontWeight: "bold", // Adding font weight
+                  textDecoration: "underline" // Adding underline
+                }}
             >
               SERVICES
             </Typography>
             <Typography
-              variant="body1"
-              style={{
-                fontStyle: "italic",
-                color: "#333",
-                marginBottom: "2rem",
-              }}
+            variant="body1"
+            style={{
+              maxWidth: "800px",
+              margin: "0 auto", // Center the text by applying left and right margin auto
+              fontStyle: "italic",
+              color: "#fff",
+              textAlign: "center",
+            }}
             >
               Our custom software development services are designed to match
               your exact requirements. Whether it is a web-based application or

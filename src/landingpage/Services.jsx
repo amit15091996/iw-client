@@ -4,6 +4,11 @@ import Typography from "@mui/material/Typography";
 import Button from "@mui/material/Button";
 import IconButton from "@mui/material/IconButton";
 import CodeIcon from "@mui/icons-material/Code";
+import RecyclingIcon from "@mui/icons-material/Recycling";
+import Diversity3Icon from "@mui/icons-material/Diversity3";
+import BarChartIcon from "@mui/icons-material/BarChart";
+import PersonalVideoIcon from '@mui/icons-material/PersonalVideo';
+import PieChartIcon from '@mui/icons-material/PieChart';
 import "./services.css";
 import {
   Dialog,
@@ -70,7 +75,7 @@ const cardData = [
     title: "Development",
     description:
       "One of our core strengths lies in our investment in software development. We develop and deliver high quality products in accordance with specifications.",
-    icon: <CodeIcon style={{ color: "#003E70" }} />,
+    icon: <CodeIcon />,
     btn: "Know More",
     modalTitle: "Development Modal",
     modalDescription: "This is the development modal content.",
@@ -79,7 +84,7 @@ const cardData = [
     title: "Testing",
     description:
       "Our proficiency in software testing is a cornerstone of our success. We consistently deliver top-tier products that precisely align with specified requirements.",
-    icon: <CodeIcon style={{ color: "#003E70" }} />,
+    icon: <RecyclingIcon />,
     btn: "Know More",
     modalTitle: "Testing Modal",
     modalDescription: "This is the Testing modal content.",
@@ -88,7 +93,7 @@ const cardData = [
     title: "Expert Guidence",
     description:
       "We are a team of certified experts with tremendous experience in web design and development who will walk you through the process with their expertise.",
-    icon: <CodeIcon style={{ color: "#003E70" }} />,
+    icon: <Diversity3Icon />,
     btn: "Know More",
     modalTitle: "EG Modal",
     modalDescription: "This is the EG modal content.",
@@ -97,7 +102,7 @@ const cardData = [
     title: "High End Design",
     description:
       "Our high-end design solutions for software development encompass innovation and customization. We're committed to creating software products that will function flawlessly.",
-    icon: <CodeIcon style={{ color: "#003E70" }} />,
+    icon: <BarChartIcon />,
     btn: "Know More",
     modalTitle: "Design Modal",
     modalDescription: "This is the Design modal content.",
@@ -106,7 +111,7 @@ const cardData = [
     title: "Tally",
     description:
       "We provide Tally computing service which can help you to make a continuous record of data, it will automate and integrate all business operations, such as finance and sale.",
-    icon: <CodeIcon style={{ color: "#003E70" }} />,
+    icon: <PersonalVideoIcon />,
     btn: "Know More",
     modalTitle: "Tally Modal",
     modalDescription: "This is the Tally modal content.",
@@ -115,7 +120,7 @@ const cardData = [
     title: "Enterprise Management",
     description:
       "We provide effective enterprise management for software development which ensures projects align with business goals, risk is minimized, and quality is maintained.",
-    icon: <CodeIcon style={{ color: "#003E70" }} />,
+    icon: <PieChartIcon />,
     btn: "Know More",
     modalTitle: "Enterprise Modal",
     modalDescription: "This is the Enterprise modal content.",
@@ -142,7 +147,24 @@ const Services = () => {
         <div key={index}>
           <Card className="card-box" style={styles.card}>
             <CardContent style={styles.content}>
-              <IconButton style={styles.icon}>{data.icon}</IconButton>
+              <IconButton style={styles.icon}>
+                <span
+                  style={{
+                    backgroundColor: "#003E70",
+                    color: "#fff",
+                    borderRadius: "50%", // Making it round
+                    padding: "8px", // Adjust padding as needed
+                    display: "inline-flex",
+                    alignItems: "center",
+                    justifyContent: "center",
+                    width: "40px", // Adjust width and height for the container
+                    height: "40px", // Adjust width and height for the container
+                    fontSize: "24px",
+                  }}
+                >
+                  {data.icon}
+                </span>
+              </IconButton>
               <Typography variant="h5" style={styles.title}>
                 {data.title}
               </Typography>

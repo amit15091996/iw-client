@@ -18,6 +18,7 @@ import {
   useMediaQuery,
 } from "@mui/material";
 import Services from "./Services";
+import Clients from "./Clients";
 
 const Navbar = () => {
   const sectionRefs = {
@@ -334,34 +335,34 @@ const Navbar = () => {
       </section>
       <section
         ref={sectionRefs.section2}
-        style={{ ...sectionStyles, height: "auto"}}
+        style={{ ...sectionStyles, height: "auto" }}
       >
         <div
           className="mob"
-          style={{ backgroundColor: "#003E70",paddingTop:'2rem' }}
+          style={{ backgroundColor: "#003E70", paddingTop: "2rem" }}
         >
           <div style={{ textAlign: "center" }}>
             <Typography
-                variant="h4"
-                gutterBottom
-                style={{
-                  textAlign: "center",
-                  color: "#fff",
-                  fontWeight: "bold", // Adding font weight
-                  textDecoration: "underline" // Adding underline
-                }}
+              variant="h4"
+              gutterBottom
+              style={{
+                textAlign: "center",
+                color: "#fff",
+                fontWeight: "bold", // Adding font weight
+                textDecoration: "underline", // Adding underline
+              }}
             >
               SERVICES
             </Typography>
             <Typography
-            variant="body1"
-            style={{
-              maxWidth: "800px",
-              margin: "0 auto", // Center the text by applying left and right margin auto
-              fontStyle: "italic",
-              color: "#fff",
-              textAlign: "center",
-            }}
+              variant="body1"
+              style={{
+                maxWidth: "800px",
+                margin: "0 auto", // Center the text by applying left and right margin auto
+                fontStyle: "italic",
+                color: "#fff",
+                textAlign: "center",
+              }}
             >
               Our custom software development services are designed to match
               your exact requirements. Whether it is a web-based application or
@@ -372,16 +373,43 @@ const Navbar = () => {
           </div>
         </div>
       </section>
-      <section ref={sectionRefs.section3} style={sectionStyles}>
-        <div style={{ height: "100vh", backgroundColor: "#d8f3dc" }}>
-          <Typography
-            variant="h4"
-            gutterBottom
-            style={{ textAlign: "center", color: "#003E70" }}
-          >
-            OUR CLIENTS
-          </Typography>
-          <p>CLIENTS...</p>
+      <section
+        ref={sectionRefs.section3}
+        style={{ ...sectionStyles, height: "auto" }}
+      >
+        <div
+          className="mob"
+          style={{ backgroundColor: "#f5f1e3", paddingTop: "2rem" }}
+        >
+          <div style={{ textAlign: "center" }}>
+            <Typography
+              variant="h4"
+              gutterBottom
+              style={{
+                textAlign: "center",
+                color: "#003E70",
+                fontWeight: "bold", // Adding font weight
+                textDecoration: "underline", // Adding underline
+              }}
+            >
+              CLIENTS
+            </Typography>
+            <Typography
+              variant="body1"
+              style={{
+                maxWidth: "800px",
+                margin: "0 auto", // Center the text by applying left and right margin auto
+                fontStyle: "italic",
+                color: "#003E70",
+                textAlign: "center",
+              }}
+            >
+              As your partners, we are committed to your progress. Our
+              client-centric approach ensures that we not only meet but exceed
+              your expectations, working hand-in-hand to elevate your business
+            </Typography>
+            <Clients />
+          </div>
         </div>
       </section>
       <section ref={sectionRefs.section4} style={sectionStyles}>

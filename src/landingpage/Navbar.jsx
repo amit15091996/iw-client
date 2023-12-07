@@ -321,20 +321,20 @@ const Navbar = () => {
               {content}
             </Typography>
 
-            <button
+            <button5
               className="btn-new"
               onClick={() => handleNavigationClickBtn(null, "GET STARTED")}
             >
               Get Started
               <span></span>
-            </button>
+            </button5>
           </div>
           <div style={imageStyles} />
         </div>
       </section>
       <section
         ref={sectionRefs.section2}
-        style={{ ...sectionStyles, height: "auto" }}
+        style={{ ...sectionStyles, height: "auto"}}
       >
         <div
           className="mob"

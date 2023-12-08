@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import "./form.css"; // Import your CSS file if you have one
+import Spinner from "./Spinner";
 
 const ForgotPassword = () => {
   const [inputValue, setInputValue] = useState("");
@@ -48,7 +49,7 @@ const ForgotPassword = () => {
           <div className="button">
             <input type="submit" value="Reset" />
           </div>
-          {isLoading && <p>Loading...</p>}
+          {isLoading && <p><Spinner /></p>}
           {error && <p className="error-message">Incorrect value entered!</p>}
           <div className="signup-link">
             <Link to="/" style={{ color: "blue" }}>

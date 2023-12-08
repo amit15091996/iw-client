@@ -33,44 +33,47 @@ const About = () => {
 
   return (
     <div
-      className="client-list-container"
-      style={{
-        padding: "30px",
-        boxSizing: "border-box",
-      }}
+    className="client-list-container"
+    style={{
+      padding: "30px",
+      boxSizing: "border-box",
+    }}
+  >
+    <Grid
+      container
+      spacing={1}
+      justifyContent="center"
+      alignItems="center"
+      textAlign="center"
+      style={{ margin: "-8px" }} // Add negative margin to Grid container
     >
-      <Grid
-        container
-        spacing={1} // Set a smaller value for the spacing
-        justifyContent="center"
-        alignItems="center"
-        textAlign="center"
-      >
-        {clientList.map((client, index) => (
-          <Grid key={index} item xs={12} sm={3} textAlign="center">
-            <div
-              className="client-item"
-              style={{
-                textAlign: "center",
-                backgroundColor: "#f5f1e3",
-                padding: "20px",
-                borderRadius: "5px",
-                whiteSpace: "nowrap",
-                textOverflow: "ellipsis",
-                lineHeight: "0",
-                height: "60px",
-                display: "flex",
-                alignItems: "center",
-                justifyContent: "center",
-                color: "#111d4a",
-                fontFamily: "sans-serif",
-              }}
-            >
-              ✓ {client}
-            </div>
-          </Grid>
-        ))}
-      </Grid>
+      {clientList.map((client, index) => (
+        <Grid key={index} item xs={6} sm={4} textAlign="center" style={{ margin: "8px" }}>
+          {/* Add margin to Grid item */}
+          <div
+            className="client-item"
+            style={{
+              marginTop:'-1rem',
+              textAlign: "center",
+              backgroundColor: "#f5f1e3",
+              padding: "10px",
+              borderRadius: "5px",
+              whiteSpace: "nowrap",
+              textOverflow: "ellipsis",
+              lineHeight: "0",
+              height: "60px",
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "center",
+              color: "#111d4a",
+              fontFamily: "sans-serif",
+            }}
+          >
+            ✓ {client}
+          </div>
+        </Grid>
+      ))}
+    </Grid>
 
       {/* Modal Button */}
       <div style={{ marginTop: "20px", textAlign: "center" }}>
@@ -79,7 +82,7 @@ const About = () => {
           style={{ backgroundColor: "#003E70" }}
           onClick={handleModalOpen}
         >
-          Click For More
+        More About Us
         </Button>
         <Dialog open={openModal} onClose={handleModalClose}>
           <DialogTitle>About Us</DialogTitle>

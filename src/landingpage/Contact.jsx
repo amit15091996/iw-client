@@ -10,7 +10,7 @@ import "./contact.css";
 
 const Contact = () => {
   return (
-    <div className="page-container">
+    <div className="page-container" style={{marginTop:'-5rem'}}>
       <div className="content">
         <Grid container spacing={4} justifyContent="center">
           <Grid item xs={12} sm={8}>

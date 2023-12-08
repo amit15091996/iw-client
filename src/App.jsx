@@ -17,6 +17,7 @@ function App() {
           <Route path="/register" element={<RegistrationForm />} />
           <Route path="/forgot" element={<ForgotPassword />} />
           <Route path="/util" element={<Utils />} />
+          
           {/* Add more routes here */}
         </Routes>
       </div>

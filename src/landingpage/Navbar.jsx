@@ -411,7 +411,7 @@ const Navbar = () => {
       </section>
       <section
         ref={sectionRefs.section4}
-        style={{ ...sectionStyles, minHeight: "auto" }}
+        style={{ ...sectionStyles, minHeight: "auto", marginTop: "-5rem" }}
       >
         <div
           className="mob"
@@ -568,6 +568,16 @@ const Navbar = () => {
           <KeyboardArrowUpIcon />
         </div>
       )}
+      <Typography
+        gutterBottom
+        style={{
+          textAlign: "center",
+          color: "#fff",
+          fontWeight: "bold", // Adding font weight
+        }}
+      >
+        <h4>© 2020 Intallysh Wisdom.</h4>
+      </Typography>
     </div>
   );
 };

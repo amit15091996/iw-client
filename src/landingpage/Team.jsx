@@ -63,7 +63,7 @@ const styles = {
 const cardData = [
   {
     description:
-      "I have a strong desire to push the envelope of what is feasible. Our organization was founded on the goal of using cutting-edge technology to disrupt industry. My area of expertise is in upending conventional wisdom to produce innovative solutions.",
+    "I aim to push boundaries and innovate. Our company thrives on pioneering technology to disrupt industries. My expertise involves challenging norms to craft inventive solutions and redefine conventional practices.",
     name: "Chandrahas Dewangan",
     position: "Founder",
   },

@@ -7,8 +7,16 @@ import CodeIcon from "@mui/icons-material/Code";
 import RecyclingIcon from "@mui/icons-material/Recycling";
 import Diversity3Icon from "@mui/icons-material/Diversity3";
 import BarChartIcon from "@mui/icons-material/BarChart";
-import PersonalVideoIcon from '@mui/icons-material/PersonalVideo';
-import PieChartIcon from '@mui/icons-material/PieChart';
+import PersonalVideoIcon from "@mui/icons-material/PersonalVideo";
+import PieChartIcon from "@mui/icons-material/PieChart";
+import {
+  DEVELOPER_INFO,
+  TESTING_INFO,
+  EXPERTGUIDENCE_INFO,
+  HIGHENDDESIGN_INFO,
+  TALLY_INFO,
+  ENTERPRISEMANAGEMENT_INFO,
+} from "./Constant";
 import "./services.css";
 import {
   Dialog,
@@ -77,8 +85,8 @@ const cardData = [
       "One of our core strengths lies in our investment in software development. We develop and deliver high quality products in accordance with specifications.",
     icon: <CodeIcon />,
     btn: "Know More",
-    modalTitle: "Development Modal",
-    modalDescription: "This is the development modal content.",
+    modalTitle: "Development",
+    modalDescription: DEVELOPER_INFO,
   },
   {
     title: "Testing",
@@ -86,8 +94,8 @@ const cardData = [
       "Our proficiency in software testing is a cornerstone of our success. We consistently deliver top-tier products that precisely align with specified requirements.",
     icon: <RecyclingIcon />,
     btn: "Know More",
-    modalTitle: "Testing Modal",
-    modalDescription: "This is the Testing modal content.",
+    modalTitle: "Testing",
+    modalDescription: TESTING_INFO,
   },
   {
     title: "Expert Guidence",
@@ -95,8 +103,8 @@ const cardData = [
       "We are a team of certified experts with tremendous experience in web design and development who will walk you through the process with their expertise.",
     icon: <Diversity3Icon />,
     btn: "Know More",
-    modalTitle: "EG Modal",
-    modalDescription: "This is the EG modal content.",
+    modalTitle: "Expert-Guidence",
+    modalDescription: EXPERTGUIDENCE_INFO,
   },
   {
     title: "High End Design",
@@ -104,8 +112,8 @@ const cardData = [
       "Our high-end design solutions for software development encompass innovation and customization. We're committed to creating software products that will function flawlessly.",
     icon: <BarChartIcon />,
     btn: "Know More",
-    modalTitle: "Design Modal",
-    modalDescription: "This is the Design modal content.",
+    modalTitle: "High-End-Design",
+    modalDescription: HIGHENDDESIGN_INFO,
   },
   {
     title: "Tally",
@@ -113,8 +121,8 @@ const cardData = [
       "We provide Tally computing service which can help you to make a continuous record of data, it will automate and integrate all business operations, such as finance and sale.",
     icon: <PersonalVideoIcon />,
     btn: "Know More",
-    modalTitle: "Tally Modal",
-    modalDescription: "This is the Tally modal content.",
+    modalTitle: "Tally",
+    modalDescription: TALLY_INFO,
   },
   {
     title: "Enterprise Management",
@@ -122,8 +130,8 @@ const cardData = [
       "We provide effective enterprise management for software development which ensures projects align with business goals, risk is minimized, and quality is maintained.",
     icon: <PieChartIcon />,
     btn: "Know More",
-    modalTitle: "Enterprise Modal",
-    modalDescription: "This is the Enterprise modal content.",
+    modalTitle: "Enterprise-Management",
+    modalDescription: ENTERPRISEMANAGEMENT_INFO,
   },
 ];
 
@@ -184,12 +192,23 @@ const Services = () => {
             open={openModal && selectedCard === index}
             onClose={handleCloseModal}
           >
-            <DialogTitle>{data.modalTitle}</DialogTitle>
+            <DialogTitle
+              align="center"
+              variant="h5"
+              style={{ backgroundColor: "#003E70", color: "#fff" }}
+            >
+              {data.modalTitle}
+            </DialogTitle>
             <DialogContent>
               <Typography variant="body1">{data.modalDescription}</Typography>
             </DialogContent>
-            <DialogActions>
-              <Button onClick={handleCloseModal}>Close</Button>
+            <DialogActions style={{ justifyContent: "center" }}>
+              <Button
+                onClick={handleCloseModal}
+                style={{ backgroundColor: "#003E70", color: "#fff" }}
+              >
+                Close
+              </Button>
             </DialogActions>
           </Dialog>
         </div>

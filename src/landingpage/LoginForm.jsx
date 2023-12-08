@@ -23,7 +23,7 @@ const LoginForm = () => {
             </div>
           </div>
           <div className="forgot-password">
-            <Link to="/login" style={{color:'blue'}}>Forgot password?</Link>
+            <Link to="/forgot" style={{color:'blue'}}>Forgot password?</Link>
           </div>
           <div className="button">
             <input type="submit" value="Login" />

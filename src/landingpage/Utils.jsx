@@ -28,7 +28,7 @@ const Utils = () => {
         </div>
         <div className="content">
           <span className="title">Success</span>
-          <p className="message">Please check your email to reset your password.</p>
+          <p className="message">Please find the new password in your email to log into your account.</p>
         </div>
         <div className="actions">
           <button type="button" className="history" onClick={redirectToLogin}>

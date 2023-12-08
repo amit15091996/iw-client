@@ -33,56 +33,60 @@ const About = () => {
 
   return (
     <div
-    className="client-list-container"
-    style={{
-      padding: "30px",
-      boxSizing: "border-box",
-    }}
-  >
-    <Grid
-      container
-      spacing={1} // Set a smaller value for the spacing
-      justifyContent="center"
-      alignItems="center"
-      textAlign="center"
+      className="client-list-container"
+      style={{
+        padding: "30px",
+        boxSizing: "border-box",
+      }}
     >
-      {clientList.map((client, index) => (
-        <Grid key={index} item xs={12} sm={3} textAlign="center">
-          <div
-            className="client-item"
-            style={{
-              textAlign: "center",
-              backgroundColor: "#f5f1e3",
-              padding: "20px",
-              borderRadius: "5px",
-              whiteSpace: "nowrap",
-              textOverflow: "ellipsis",
-              lineHeight: "0",
-              height: "60px",
-              display: "flex",
-              alignItems: "center",
-              justifyContent: "center",
-              color: "#111d4a",
-              fontFamily: "sans-serif",
-            }}
-          >
-            ✓ {client}
-          </div>
-        </Grid>
-      ))}
-    </Grid>
+      <Grid
+        container
+        spacing={1} // Set a smaller value for the spacing
+        justifyContent="center"
+        alignItems="center"
+        textAlign="center"
+      >
+        {clientList.map((client, index) => (
+          <Grid key={index} item xs={12} sm={3} textAlign="center">
+            <div
+              className="client-item"
+              style={{
+                textAlign: "center",
+                backgroundColor: "#f5f1e3",
+                padding: "20px",
+                borderRadius: "5px",
+                whiteSpace: "nowrap",
+                textOverflow: "ellipsis",
+                lineHeight: "0",
+                height: "60px",
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "center",
+                color: "#111d4a",
+                fontFamily: "sans-serif",
+              }}
+            >
+              ✓ {client}
+            </div>
+          </Grid>
+        ))}
+      </Grid>
 
       {/* Modal Button */}
       <div style={{ marginTop: "20px", textAlign: "center" }}>
-        <Button variant="contained" style={{ backgroundColor: '#003E70' }} onClick={handleModalOpen}>
+        <Button
+          variant="contained"
+          style={{ backgroundColor: "#003E70" }}
+          onClick={handleModalOpen}
+        >
           Click For More
         </Button>
         <Dialog open={openModal} onClose={handleModalClose}>
           <DialogTitle>About Us</DialogTitle>
           <DialogContent dividers>
             <Typography variant="body1" style={{ marginBottom: "10px" }}>
-              <b style={{ color: '#003E70' }}>Intallysh Wisdom</b> was founded by{" "}
-              <b>Mr. Chandrahas Dewangan</b> with the main goal of helping
+              <b style={{ color: "#003E70" }}>Intallysh Wisdom</b> was founded
+              by <b>Mr. Chandrahas Dewangan</b> with the main goal of helping
               clients prosper. Established a business with just two employees
               under the name Tally Accounting Solutions in 2016. After
               successfully finishing two years of work, he began his journey
@@ -102,7 +106,10 @@ const About = () => {
             </Typography>
           </DialogContent>
           <DialogActions>
-            <Button onClick={handleModalClose} style={{ color: 'white', backgroundColor: '#003E70' }}>
+            <Button
+              onClick={handleModalClose}
+              style={{ color: "white", backgroundColor: "#003E70" }}
+            >
               Close
             </Button>
           </DialogActions>

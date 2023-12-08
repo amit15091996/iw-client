@@ -21,6 +21,7 @@ import Services from "./Services";
 import Clients from "./Clients";
 import Team from "./Team";
 import About from "./About";
+import Contact from "./Contact";
 
 const Navbar = () => {
   const sectionRefs = {
@@ -479,10 +480,10 @@ const Navbar = () => {
                 fontStyle: "italic",
                 color: "#003E70",
                 textAlign: "center",
-                marginTop:'3rem'
+                marginTop: "3rem",
               }}
             >
-             "Welcome to Intallysh Wisdom! We're like builders, but for
+              "Welcome to Intallysh Wisdom! We're like builders, but for
               software. Our mission is to build website that help you do things
               better and faster. We've teamed up with all sorts of folks, from
               small projects to large projects. Our happiness comes from making
@@ -497,19 +498,52 @@ const Navbar = () => {
                 fontStyle: "italic",
                 color: "#003E70",
                 textAlign: "center",
-                marginTop:'3rem'
+                marginTop: "3rem",
               }}
             >
-             Why Choose Us?
+              Why Choose Us?
             </Typography>
             <About />
           </div>
         </div>
       </section>
-      <section ref={sectionRefs.section6} style={sectionStyles}>
-        <div style={{ height: "100vh", backgroundColor: "#a0a0a0" }}>
-          <Typography variant="h3">Section 6</Typography>
-          <p>CONTACT...</p>
+      <section
+        ref={sectionRefs.section6}
+        style={{ ...sectionStyles, height: "auto" }}
+      >
+        <div
+          className="mob"
+          style={{ backgroundColor: "#003E70", paddingTop: "2rem" }}
+        >
+          <div style={{ textAlign: "center" }}>
+            <Typography
+              variant="h4"
+              gutterBottom
+              style={{
+                textAlign: "center",
+                color: "#fff",
+                fontWeight: "bold", // Adding font weight
+                textDecoration: "underline", // Adding underline
+              }}
+            >
+              CONTACT
+            </Typography>
+            <Typography
+              variant="body1"
+              style={{
+                maxWidth: "700px",
+                margin: "0 auto", // Center the text by applying left and right margin auto
+                fontStyle: "italic",
+                color: "#fff",
+                textAlign: "center",
+              }}
+            >
+              We will respond to your message as soon as possible. Please find
+              the contact details, send us an email or click on the WhatsApp
+              icon.
+            </Typography>
+            <Contact />
+          </div>
         </div>
       </section>
       {/* Scroll to Top Button */}

@@ -8,6 +8,7 @@ import {
   Typography,
   Grid,
 } from "@mui/material";
+import "./about.css";
 
 const About = () => {
   const clientList = [
@@ -33,47 +34,74 @@ const About = () => {
 
   return (
     <div
-    className="client-list-container"
-    style={{
-      padding: "30px",
-      boxSizing: "border-box",
-    }}
-  >
-    <Grid
-      container
-      spacing={1}
-      justifyContent="center"
-      alignItems="center"
-      textAlign="center"
-      style={{ margin: "-8px" }} // Add negative margin to Grid container
+      className="client-list-container"
+      style={{
+        padding: "30px",
+        boxSizing: "border-box",
+      }}
     >
-      {clientList.map((client, index) => (
-        <Grid key={index} item xs={6} sm={4} textAlign="center" style={{ margin: "8px" }}>
-          {/* Add margin to Grid item */}
-          <div
-            className="client-item"
-            style={{
-              marginTop:'-1rem',
-              textAlign: "center",
-              backgroundColor: "#f5f1e3",
-              padding: "10px",
-              borderRadius: "5px",
-              whiteSpace: "nowrap",
-              textOverflow: "ellipsis",
-              lineHeight: "0",
-              height: "60px",
-              display: "flex",
-              alignItems: "center",
-              justifyContent: "center",
-              color: "#111d4a",
-              fontFamily: "sans-serif",
-            }}
+      <div className="centered-text">About Us</div>
+
+      <div className="about-section">
+        <text style={{color:'#3d5a80'}}>
+          Intallysh Wisdom welcomes you! We're like architects for software. Our
+          objective is to create websites that help you do things more
+          efficiently and quickly. From modest to huge initiatives, we've
+          collaborated with a wide range of people. Our fulfilment stems from
+          making your work and life easier. Let's simplify technology together!
+        </text>
+      </div>
+      <div className="centered-fea">Why Choose Us</div>
+
+      <Grid
+        container
+        spacing={1}
+        justifyContent="center"
+        alignItems="center"
+        textAlign="center"
+        style={{ margin: "10px" }} // Add negative margin to Grid container
+      >
+        {clientList.map((client, index) => (
+          <Grid
+            key={index}
+            item
+            xs={8}
+            sm={4}
+            textAlign="center"
+            style={{ margin: "8px", marginRight:'50px' }}
           >
-            ✓ {client}
-          </div>
-        </Grid>
-      ))}
-    </Grid>
+            {/* Add margin to Grid item */}
+            <div
+              className="client-item"
+              style={{
+                marginTop: "-1rem",
+                textAlign: "center",
+                backgroundColor: "#f4f1de",
+                padding: "10px",
+                borderRadius: "5px",
+                whiteSpace: "nowrap",
+                textOverflow: "ellipsis",
+                lineHeight: "0",
+                height: "60px",
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "center",
+                color: "#111d4a",
+                transition: "background-color 0.3s ease", // Adding transition for smooth effect
+                cursor: "default", // Change cursor on hover
+              }}
+              onMouseEnter={(e) => {
+                e.target.style.backgroundColor = "#f9dcc4"; // Change background color on hover f9dcc4
+              }}
+              onMouseLeave={(e) => {
+                e.target.style.backgroundColor = "#f4f1de"; // Revert back to original color on mouse leave
+              }}
+            >
+              ✓ {client}
+            </div>
+          </Grid>
+        ))}
+      </Grid>
 
       {/* Modal Button */}
       <div style={{ marginTop: "20px", textAlign: "center" }}>
@@ -82,8 +110,9 @@ const About = () => {
           style={{ backgroundColor: "#003E70" }}
           onClick={handleModalOpen}
         >
-        More About Us
+          More About Us
         </Button>
+        
         <Dialog open={openModal} onClose={handleModalClose}>
           <DialogTitle>About Us</DialogTitle>
           <DialogContent dividers>
@@ -117,6 +146,7 @@ const About = () => {
             </Button>
           </DialogActions>
         </Dialog>
+
       </div>
       {/* End of Modal Button */}
     </div>

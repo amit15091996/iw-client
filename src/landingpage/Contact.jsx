@@ -10,9 +10,19 @@ import "./contact.css";
 
 const Contact = () => {
   return (
-    <div className="page-container" style={{marginTop:'-5rem'}}>
+    <div className="page-container" style={{}}>
       <div className="content">
-        <Grid container spacing={4} justifyContent="center">
+        <text className="centered-text">Contact Us</text>
+        <p className="contact-detail">
+          We will respond to your message as soon as possible. Please find the
+          contact details, send us an email or click on the WhatsApp icon.
+        </p>
+        <Grid
+          container
+          spacing={4}
+          justifyContent="center"
+          style={{ marginTop: "1rem" }}
+        >
           <Grid item xs={12} sm={8}>
             {/* Google Map */}
             <div className="map-responsive">
@@ -35,35 +45,50 @@ const Contact = () => {
                 variant="h5"
                 gutterBottom
                 align="center"
-                style={{ color: "#003E70" }}
+                style={{ color: "#003E70", fontStyle: "serif" }}
               >
                 Contact Info
               </Typography>
               <div className="contact-info">
-                <Typography variant="h6" display="flex" alignItems="center" style={{color:"#003E70"}}>
-                  <LocationOnIcon
-                    style={{ marginRight: "8px"}}
-                  />
+                <Typography
+                  variant="h6"
+                  display="flex"
+                  alignItems="center"
+                  style={{ color: "#003E70" }}
+                >
+                  <LocationOnIcon style={{ marginRight: "8px" }} />
                   Address
                 </Typography>
-                <Typography variant="body2" style={{color:"#0077b6"}}> 
+                <Typography variant="body2" style={{ color: "#0077b6" }}>
                   Ganj Road, Near Shri Ram Janki Mandir, Ward No 16, Gobra
                   Nawapara, Raipur C.G. 493881
                 </Typography>
               </div>
               <div className="contact-info">
-                <Typography variant="h6" display="flex" alignItems="center" style={{color:"#003E70"}}>
+                <Typography
+                  variant="h6"
+                  display="flex"
+                  alignItems="center"
+                  style={{ color: "#003E70" }}
+                >
                   <CallIcon style={{ marginRight: "8px" }} />
                   Phone
                 </Typography>
-                <Typography variant="body2" style={{color:"#0077b6"}}>+91 7000186765</Typography>
+                <Typography variant="body2" style={{ color: "#0077b6" }}>
+                  +91 7000186765
+                </Typography>
               </div>
               <div className="contact-info">
-                <Typography variant="h6" display="flex" alignItems="center" style={{color:"#003E70"}}>
+                <Typography
+                  variant="h6"
+                  display="flex"
+                  alignItems="center"
+                  style={{ color: "#003E70" }}
+                >
                   <EmailIcon style={{ marginRight: "8px" }} />
                   Email
                 </Typography>
-                <Typography variant="body2" style={{color:"#0077b6"}}>
+                <Typography variant="body2" style={{ color: "#0077b6" }}>
                   intallyshwisdom@gmail.com
                 </Typography>
               </div>
@@ -85,7 +110,7 @@ const Contact = () => {
                     style={{
                       fontSize: 35,
                       color: "#1877F2",
-                      marginLeft: 50,
+                      marginLeft: 45,
                       marginRight: 20,
                     }}
                   />

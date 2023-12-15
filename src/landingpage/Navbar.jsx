@@ -1,583 +1,293 @@
-import "./navbar.css";
-import { Link } from "react-router-dom";
-// eslint-disable-next-line no-unused-vars
-import React, { useRef, useState, useEffect } from "react";
-
-import MenuIcon from "@mui/icons-material/Menu";
-import KeyboardArrowUpIcon from "@mui/icons-material/KeyboardArrowUp";
+import { useState, useRef, useEffect } from "react";
 import {
-  List,
   AppBar,
   Button,
-  Drawer,
   Toolbar,
-  ListItem,
   Typography,
   IconButton,
+  Drawer,
+  List,
+  ListItem,
   ListItemText,
-  useMediaQuery,
+  CssBaseline,
+  Box,
+  Hidden,
 } from "@mui/material";
+import { Menu, KeyboardArrowUp } from "@mui/icons-material";
+import Carousel from "./Carousel";
 import Services from "./Services";
-import Clients from "./Clients";
-import Team from "./Team";
+import NamesCarousel from "./NamesCarousel";
 import About from "./About";
 import Contact from "./Contact";
+import { Link } from "react-router-dom";
 
 const Navbar = () => {
-  const sectionRefs = {
-    section1: useRef(null),
-    section2: useRef(null),
-    section3: useRef(null),
-    section4: useRef(null),
-    section5: useRef(null),
-    section6: useRef(null),
-    section7: useRef(null),
-    // Add more refs for additional sections
-  };
+  const sectionRefs = useRef([]);
+  const [drawerOpen, setDrawerOpen] = useState(false);
+  const appBarHeight = 0; // Set the height of your AppBar here
+  const [showScroll, setShowScroll] = useState(false);
 
-  const content =
-    "Success is not the key to happiness. Happiness is the key to success. If you love what you are doing, you will be successful.";
-
-  const scrollToRef = (ref) => {
-    ref.current.scrollIntoView({ behavior: "smooth" });
-  };
-  const handleNavigationClickBtn = (ref, buttonName) => {
-    if (buttonName === "GET STARTED") {
-      const clientSectionRef = sectionRefs.section2?.current;
-      if (clientSectionRef) {
-        clientSectionRef.scrollIntoView({ behavior: "smooth" });
-      }
-    } else {
-      scrollToRef(ref); // For other sections, perform the usual navigation
+  const checkScrollTop = () => {
+    const offset =
+      window.scrollY ||
+      window.pageYOffset ||
+      document.documentElement.scrollTop;
+    if (!showScroll && offset > 300) {
+      setShowScroll(true);
+    } else if (showScroll && offset <= 300) {
+      setShowScroll(false);
     }
-    setDrawerOpen(false); // Close the drawer after navigation click
-    setActiveButton(buttonName); // Set the active button
   };
 
-  const scrollToTop = () => {
+  const scrollTop = () => {
     window.scrollTo({ top: 0, behavior: "smooth" });
   };
 
-  const [showScrollButton, setShowScrollButton] = useState(false);
-  const [drawerOpen, setDrawerOpen] = useState(false);
-  const [activeButton, setActiveButton] = useState(null); // State to track the active button
+  useEffect(() => {
+    window.addEventListener("scroll", checkScrollTop);
+    return () => {
+      window.removeEventListener("scroll", checkScrollTop);
+    };
+  }, [showScroll]);
+  // Custom names for navigation tabs
+  const navTabNames = [
+    "Home",
+    "Services",
+    "Clients",
+    "About",
+    "Contact",
+    "Login",
+  ]; // Replace these names with your desired tab names
 
-  const handleDrawerToggle = () => {
-    setDrawerOpen(!drawerOpen);
+  const scrollToSection = (index) => {
+    const offsetTop = sectionRefs.current[index].offsetTop - appBarHeight;
+    window.scrollTo({ top: offsetTop, behavior: "smooth" });
+    setDrawerOpen(false);
   };
-
-  const handleNavigationClick = (ref, buttonName) => {
-    scrollToRef(ref);
-    setDrawerOpen(false); // Close the drawer after navigation click
-    setActiveButton(buttonName); // Set the active button
+  const toggleDrawer = (open) => (event) => {
+    if (
+      event.type === "keydown" &&
+      (event.key === "Tab" || event.key === "Shift")
+    ) {
+      return;
+    }
+    setDrawerOpen(open);
   };
-
-  const isMobile = useMediaQuery("(max-width:600px)");
 
   useEffect(() => {
     const handleScroll = () => {
-      const offset = 100; // Adjust the offset as needed
-      if (window.scrollY > offset) {
-        setShowScrollButton(true);
+      const offset =
+        window.scrollY ||
+        window.pageYOffset ||
+        document.documentElement.scrollTop;
+      if (offset > appBarHeight) {
+        sectionRefs.current.forEach((ref) => {
+          ref.style.paddingTop = `${appBarHeight}px`;
+        });
       } else {
-        setShowScrollButton(false);
+        sectionRefs.current.forEach((ref) => {
+          ref.style.paddingTop = "0";
+        });
       }
     };
 
     window.addEventListener("scroll", handleScroll);
-    return () => window.removeEventListener("scroll", handleScroll);
+    return () => {
+      window.removeEventListener("scroll", handleScroll);
+    };
   }, []);
-
-  const section1Styles = {
-    height: "100vh",
-    backgroundColor: "#f0f0f0",
-    backgroundSize: "cover",
-    backgroundPosition: "center",
-    display: "flex",
-    alignItems: "center",
-    justifyContent: "center",
-    backgroundImage:
-      "url(https://images.unsplash.com/photo-1512950050685-b1d4ae63d2df?q=80&w=1469&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D)",
-    paddingTop: "64px",
-    marginTop: "-64px", // Adjusted margin to remove the blank space
-  };
-
-  const contentStyles = {
-    marginTop: "-7rem",
-    width: "100%",
-    textAlign: "center",
-    padding: "20px",
-    color: "#003E70", // Adding text color for better visibility against the background image
-  };
-
-  const imageStyles = {
-    // width: '100%', // Adjust image width according to your design
-    // borderRadius: '10px', // Add border radius for image if needed
-  };
-
-  const navHeight = 64; // Replace this with your Navbar height (in pixels)
-
-  // Inside the Navbar component
-  const sectionStyles = {
-    minHeight: `calc(100vh - ${navHeight}px)`,
-    paddingTop: `${navHeight}px`,
-    marginBottom: "-64px",
-    marginTop: "-64px", // Adjusted margin to remove the blank space
-  };
 
   return (
     <div>
-      <AppBar position="fixed" style={{ backgroundColor: "white" }}>
+      <CssBaseline />
+      <AppBar position="fixed" style={{ backgroundColor: "#003E70" }}>
         <Toolbar>
-          {/* Logo and Title */}
-          <Typography
-            component="div"
-            sx={{
-              flexGrow: 1,
-              marginLeft: "30px",
-              marginRight: "30px",
-              fontStyle: "oblique",
-              color: "#003E70",
-              fontSize: "30px",
-            }}
-          >
+          <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
             I W
           </Typography>
-
-          {/* Navigation Items */}
-          {isMobile ? (
-            <>
-              <IconButton
-                color="inherit"
-                style={{ backgroundColor: "#003e70" }}
-                onClick={handleDrawerToggle}
-              >
-                <MenuIcon />
-              </IconButton>
-              <Drawer
-                anchor="right"
-                open={drawerOpen}
-                onClose={handleDrawerToggle}
-                sx={{
-                  width: "250px", // Set the width as per your requirement
-                  "& .MuiDrawer-paper": {
-                    width: "250px", // Set the width for the drawer paper content
-                    boxSizing: "border-box",
-                    display: "flex", // Use flexbox
-                    flexDirection: "column", // Arrange items vertically
-                    justifyContent: "center", // Center items vertically
-                    alignItems: "center", // Center items horizontally
-                    backgroundColor: "#003E70",
-                    color: "#fff",
-                  },
-                }}
-              >
-                <List>
-                  <ListItem
-                    button
-                    onClick={() =>
-                      handleNavigationClick(sectionRefs.section1, "HOME")
-                    }
+          <Hidden smDown>
+            <Box sx={{ display: "flex" }}>
+              {navTabNames.map((name, index) =>
+                name === "Login" ? (
+                  <Button
+                    key={`nav-${index}`}
+                    color="inherit"
+                    component={Link}
+                    to="/login"
                   >
-                    <ListItemText primary="HOME" />
-                  </ListItem>
-                  <ListItem
-                    button
-                    onClick={() =>
-                      handleNavigationClick(sectionRefs.section2, "SERVICES")
-                    }
+                    {name}
+                  </Button>
+                ) : (
+                  <Button
+                    key={`nav-${index}`}
+                    color="inherit"
+                    onClick={() => scrollToSection(index)}
                   >
-                    <ListItemText primary="SERVICES" />
-                  </ListItem>
-                  <ListItem
-                    button
-                    onClick={() =>
-                      handleNavigationClick(sectionRefs.section3, "CLIENTS")
-                    }
-                  >
-                    <ListItemText primary="CLIENTS" />
-                  </ListItem>
-                  <ListItem
-                    button
-                    onClick={() =>
-                      handleNavigationClick(sectionRefs.section4, "TEAM")
-                    }
-                  >
-                    <ListItemText primary="TEAM" />
-                  </ListItem>
-                  <ListItem
-                    button
-                    onClick={() =>
-                      handleNavigationClick(sectionRefs.section5, "ABOUT")
-                    }
-                  >
-                    <ListItemText primary="ABOUT" />
-                  </ListItem>
-                  <ListItem
-                    button
-                    onClick={() =>
-                      handleNavigationClick(sectionRefs.section6, "CONTACT")
-                    }
-                  >
-                    <ListItemText primary="CONTACT" />
-                  </ListItem>
-                  <ListItem button component={Link} to="/login">
-                    <ListItemText primary="LOGIN" />
-                  </ListItem>
-                  {/* Add more ListItems for additional navigation items */}
-                </List>
-              </Drawer>
-            </>
-          ) : (
-            <div style={{ display: "flex", gap: "30px", color: "#003E70" }}>
-              <Button
-                color="inherit"
-                onClick={() =>
-                  handleNavigationClick(sectionRefs.section1, "HOME")
-                }
-                style={{
-                  textDecoration: activeButton === "HOME" ? "" : "none",
-                }}
-              >
-                HOME
-              </Button>
-              <Button
-                color="inherit"
-                onClick={() =>
-                  handleNavigationClick(sectionRefs.section2, "SERVICES")
-                }
-                style={{
-                  textDecoration: activeButton === "SERVICES" ? "" : "none",
-                }}
-              >
-                SERVICES
-              </Button>
-              <Button
-                color="inherit"
-                onClick={() =>
-                  handleNavigationClick(sectionRefs.section3, "CLIENTS")
-                }
-                style={{
-                  textDecoration: activeButton === "CLIENTS" ? "" : "none",
-                }}
-              >
-                CLIENTS
-              </Button>
-              <Button
-                color="inherit"
-                onClick={() =>
-                  handleNavigationClick(sectionRefs.section4, "TEAM")
-                }
-                style={{
-                  textDecoration: activeButton === "TEAM" ? "" : "none",
-                }}
-              >
-                TEAM
-              </Button>
-              <Button
-                color="inherit"
-                onClick={() =>
-                  handleNavigationClick(sectionRefs.section5, "ABOUT")
-                }
-                style={{
-                  textDecoration: activeButton === "ABOUT" ? "" : "none",
-                }}
-              >
-                ABOUT
-              </Button>
-              <Button
-                color="inherit"
-                onClick={() =>
-                  handleNavigationClick(sectionRefs.section6, "CONTACT")
-                }
-                style={{
-                  textDecoration: activeButton === "CONTACT" ? "" : "none",
-                }}
-              >
-                CONTACT
-              </Button>
-              <Button component={Link} to="/login" color="inherit">
-                LOGIN
-              </Button>
-              {/* Add more Buttons for additional navigation items */}
-            </div>
-          )}
+                    {name}
+                  </Button>
+                )
+              )}
+            </Box>
+          </Hidden>
+          <Hidden mdUp>
+            <IconButton
+              edge="end"
+              color="inherit"
+              aria-label="menu"
+              onClick={toggleDrawer(true)}
+            >
+              <Menu />
+            </IconButton>
+          </Hidden>
         </Toolbar>
       </AppBar>
-      <Toolbar /> {/* To compensate for the fixed AppBar height */}
-      {/* Sections */}
-      <section ref={sectionRefs.section1}>
-        <div style={section1Styles}>
-          <div style={contentStyles}>
-            <Typography variant="h3" gutterBottom>
-              HI, WELCOME TO OUR PLACE!
-            </Typography>
-            <Typography
-              variant="body1"
-              style={{ fontStyle: "italic", color: "#333" }}
-            >
-              {content}
-            </Typography>
 
-            <button
-              className="btn-new"
-              onClick={() => handleNavigationClickBtn(null, "GET STARTED")}
-            >
-              Get Started
-              <span></span>
-            </button>
-          </div>
-          <div style={imageStyles} />
-        </div>
-      </section>
-      <section
-        ref={sectionRefs.section2}
-        style={{ ...sectionStyles, height: "auto" }}
-      >
-        <div
-          className="mob"
-          style={{ backgroundColor: "#003E70", paddingTop: "2rem" }}
-        >
-          <div style={{ textAlign: "center" }}>
-            <Typography
-              variant="h4"
-              gutterBottom
-              style={{
-                textAlign: "center",
-                color: "#fff",
-                fontWeight: "bold", // Adding font weight
-                textDecoration: "underline", // Adding underline
-              }}
-            >
-              SERVICES
-            </Typography>
-            <Typography
-              variant="body1"
-              style={{
-                maxWidth: "800px",
-                margin: "0 auto", // Center the text by applying left and right margin auto
-                fontStyle: "italic",
-                color: "#fff",
-                textAlign: "center",
-              }}
-            >
-              Our custom software development services are designed to match
-              your exact requirements. Whether it is a web-based application or
-              enterprise software, we build solutions that align with your goals
-              and give your business a competitive edge.
-            </Typography>
-            <Services />
-          </div>
-        </div>
-      </section>
-      <section
-        ref={sectionRefs.section3}
-        style={{ ...sectionStyles, height: "auto" }}
-      >
-        <div
-          className="mob"
-          style={{ backgroundColor: "#f5f1e3", paddingTop: "2rem" }}
-        >
-          <div style={{ textAlign: "center" }}>
-            <Typography
-              variant="h4"
-              gutterBottom
-              style={{
-                textAlign: "center",
-                color: "#003E70",
-                fontWeight: "bold", // Adding font weight
-                textDecoration: "underline", // Adding underline
-              }}
-            >
-              CLIENTS
-            </Typography>
-            <Typography
-              variant="body1"
-              style={{
-                maxWidth: "800px",
-                margin: "0 auto", // Center the text by applying left and right margin auto
-                fontStyle: "italic",
-                color: "#003E70",
-                textAlign: "center",
-              }}
-            >
-              As your partners, we are committed to your progress. Our
-              client-centric approach ensures that we not only meet but exceed
-              your expectations, working hand-in-hand to elevate your business
-            </Typography>
-            <Clients />
-          </div>
-        </div>
-      </section>
-      <section
-        ref={sectionRefs.section4}
-        style={{ ...sectionStyles, minHeight: "auto", marginTop: "-5rem" }}
-      >
-        <div
-          className="mob"
-          style={{
-            backgroundColor: "#003E70",
-            minHeight: "92vh", // Ensure the section height matches the minHeight
-            backgroundSize: "cover",
-            backgroundImage: `url('https://example.com/your-image.jpg')`, // Replace with your image URL
+      <Drawer anchor="right" open={drawerOpen} onClose={toggleDrawer(false)}>
+        <Box
+          sx={{
+            width: 170,
             display: "flex",
+            justifyContent: "center",
+            alignItems: "center",
+            height: "100%",
             flexDirection: "column",
-            alignItems: "center",
-            justifyContent: "center",
-            color: "#fff",
-            textAlign: "center",
           }}
+          style={{ color: "#fff", backgroundColor: "#003E70" }}
         >
-          <div>
-            <Typography
-              variant="h4"
-              gutterBottom
-              style={{ fontWeight: "bold", textDecoration: "underline" }}
-            >
-              TEAM
-            </Typography>
-            <Typography
-              variant="body1"
-              style={{
-                maxWidth: "800px",
-                margin: "0 auto",
-                fontStyle: "italic",
-              }}
-            >
-              "Coming together is a beginning, staying together is progress, and
-              working together is success."
-            </Typography>
-            <Team />
-          </div>
-        </div>
-      </section>
-      <section
-        ref={sectionRefs.section5}
-        style={{ ...sectionStyles, height: "auto" }}
-      >
-        <div
-          className="mob"
-          style={{ backgroundColor: "#f5f1e3", paddingTop: "2rem" }}
-        >
-          <div style={{ textAlign: "center" }}>
-            <Typography
-              variant="h4"
-              gutterBottom
-              style={{
-                textAlign: "center",
-                color: "#003E70",
-                fontWeight: "bold", // Adding font weight
-                textDecoration: "underline", // Adding underline
-              }}
-            >
-              ABOUT US
-            </Typography>
-            <Typography
-              variant="body1"
-              style={{
-                maxWidth: "800px",
-                margin: "0 auto", // Center the text by applying left and right margin auto
-                fontStyle: "italic",
-                color: "#003E70",
-                textAlign: "center",
-                marginTop: "3rem",
-              }}
-            >
-              "Welcome to Intallysh Wisdom! We're like builders, but for
-              software. Our mission is to build website that help you do things
-              better and faster. We've teamed up with all sorts of folks, from
-              small projects to large projects. Our happiness comes from making
-              your work smoother and your life simpler. Let's make tech easy
-              together!"
-            </Typography>
-            <Typography
-              variant="h5"
-              style={{
-                maxWidth: "800px",
-                margin: "0 auto", // Center the text by applying left and right margin auto
-                fontStyle: "italic",
-                color: "#003E70",
-                textAlign: "center",
-                marginTop: "3rem",
-              }}
-            >
-              Why Choose Us?
-            </Typography>
-            <About />
-          </div>
-        </div>
-      </section>
-      <section
-        ref={sectionRefs.section6}
-        style={{ ...sectionStyles, height: "auto" }}
-      >
-        <div
-          className="mob"
-          style={{ backgroundColor: "#003E70", paddingTop: "2rem" }}
-        >
-          <div style={{ textAlign: "center" }}>
-            <Typography
-              variant="h4"
-              gutterBottom
-              style={{
-                textAlign: "center",
-                color: "#fff",
-                fontWeight: "bold", // Adding font weight
-                textDecoration: "underline", // Adding underline
-              }}
-            >
-              CONTACT
-            </Typography>
-            <Typography
-              variant="body1"
-              style={{
-                maxWidth: "700px",
-                margin: "0 auto", // Center the text by applying left and right margin auto
-                fontStyle: "italic",
-                color: "#fff",
-                textAlign: "center",
-              }}
-            >
-              We will respond to your message as soon as possible. Please find
-              the contact details, send us an email or click on the WhatsApp
-              icon.
-            </Typography>
-            <Contact />
-          </div>
-        </div>
-      </section>
-      {/* Scroll to Top Button */}
-      {showScrollButton && (
-        <div
-          style={{
-            position: "fixed",
-            bottom: "20px",
-            right: "20px",
-            backgroundColor: "#2B2A4C",
-            color: "white",
-            borderRadius: "50%",
-            width: "50px",
-            height: "50px",
-            display: "flex",
-            alignItems: "center",
-            justifyContent: "center",
-            cursor: "pointer",
-          }}
-          onClick={scrollToTop}
-        >
-          <KeyboardArrowUpIcon />
-        </div>
-      )}
-      <Typography
-        gutterBottom
+          <List>
+            {navTabNames.map((name, index) =>
+              name === "Login" ? (
+                <ListItem
+                  button
+                  key={`nav-${index}`}
+                  component={Link}
+                  to="/login"
+                >
+                  <ListItemText primary={name} />
+                </ListItem>
+              ) : (
+                <ListItem
+                  button
+                  key={`nav-${index}`}
+                  onClick={() => scrollToSection(index)}
+                >
+                  <ListItemText primary={name} />
+                </ListItem>
+              )
+            )}
+          </List>
+        </Box>
+      </Drawer>
+
+      <div
+        ref={(ref) => (sectionRefs.current[0] = ref)}
         style={{
-          textAlign: "center",
-          color: "#fff",
-          fontWeight: "bold", // Adding font weight
+          paddingTop: "0",
+          height: "auto",
+          backgroundColor: "#fff",
+          margin: "0",
+          overflow: "hidden",
         }}
       >
-        <h4>© 2020 Intallysh Wisdom.</h4>
-      </Typography>
+        <div>
+          <Carousel />
+        </div>
+      </div>
+
+      <div
+        ref={(ref) => (sectionRefs.current[1] = ref)}
+        style={{
+          paddingTop: "0",
+          height: "auto",
+          backgroundColor: "#fff",
+          margin: "0",
+          overflow: "hidden",
+        }}
+      >
+        <div>
+          {/* <h2>Content of Nav 2 section</h2> */}
+          <Services />
+        </div>
+      </div>
+
+      <div
+        ref={(ref) => (sectionRefs.current[2] = ref)}
+        style={{
+          paddingTop: "0",
+          height: "auto",
+          backgroundColor: "#f8f9fa",
+          margin: "0",
+          overflow: "hidden",
+        }}
+      >
+        <div style={{ marginTop: "50px" }}>
+          <NamesCarousel />
+        </div>
+      </div>
+      <div
+        ref={(ref) => (sectionRefs.current[3] = ref)}
+        style={{
+          paddingTop: "0",
+          height: "auto",
+          backgroundColor: "#fff",
+          margin: "0",
+          overflow: "hidden",
+        }}
+      >
+        <div style={{ marginTop: "50px" }}>
+          <About />
+        </div>
+      </div>
+      <div
+        ref={(ref) => (sectionRefs.current[4] = ref)}
+        style={{
+          paddingTop: "0",
+          height: "auto",
+          backgroundColor: "#fff",
+          margin: "0",
+          overflow: "hidden",
+        }}
+      >
+        <div style={{ marginTop: "-20px" }}>
+          <Contact />
+          <div
+            className="footer"
+            style={{
+              height: '50px',
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+              textAlign: 'center',
+              fontFamily: 'sans-serif',
+              fontSize: '15px',
+              color: '#fff',
+              fontWeight: 600,
+              backgroundColor: '#003e70',
+            }}
+          >
+            © 2020 Intallysh Wisdom
+          </div>
+        </div>
+      </div>
+      {showScroll && (
+        <IconButton
+          sx={{
+            position: "fixed",
+            bottom: 20,
+            right: 20,
+            backgroundColor: "#4e148c",
+            color: "#fff",
+            zIndex: 1000,
+            "&:hover": {
+              backgroundColor: "#003E70",
+            },
+          }}
+          onClick={scrollTop}
+          aria-label="scroll to top"
+        >
+          <KeyboardArrowUp />
+        </IconButton>
+      )}
     </div>
   );
 };

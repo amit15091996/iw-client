@@ -10,7 +10,7 @@ import "./contact.css";
 
 const Contact = () => {
   return (
-    <div className="page-container" style={{}}>
+    <div className="page-container">
       <div className="content">
         <text className="centered-text">Contact Us</text>
         <p className="contact-detail">

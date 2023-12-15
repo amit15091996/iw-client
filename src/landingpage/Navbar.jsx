@@ -248,7 +248,7 @@ const Navbar = () => {
           overflow: "hidden",
         }}
       >
-        <div style={{ marginTop: "-20px" }}>
+        <div style={{ marginTop: "50px" }}>
           <Contact />
           <div
             className="footer"

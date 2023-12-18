@@ -12,7 +12,7 @@ const Contact = () => {
   return (
     <div className="page-container">
       <div className="content">
-        <text className="centered-text">Contact Us</text>
+        <p className="centered-text">Contact Us</p>
         <p className="contact-detail">
           We will respond to your message as soon as possible. Please find the
           contact details, send us an email or click on the WhatsApp icon.

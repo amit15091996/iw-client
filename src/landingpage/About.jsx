@@ -43,13 +43,13 @@ const About = () => {
       <div className="centered-text">About Us</div>
 
       <div className="about-section">
-        <text style={{color:'#3d5a80'}}>
-          Intallysh Wisdom welcomes you! We're like architects for software. Our
+        <p style={{color:'#3d5a80'}}>
+          "Intallysh Wisdom welcomes you! We're like architects for software. Our
           objective is to create websites that help you do things more
           efficiently and quickly. From modest to huge initiatives, we've
           collaborated with a wide range of people. Our fulfilment stems from
-          making your work and life easier. Let's simplify technology together!
-        </text>
+          making your work and life easier. Let's simplify technology together!"
+        </p>
       </div>
       <div className="centered-fea">Why Choose Us</div>
 

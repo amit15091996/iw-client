@@ -1,6 +1,7 @@
 import Card from "@mui/material/Card";
 import CardContent from "@mui/material/CardContent";
 import Typography from "@mui/material/Typography";
+import './team.css';
 
 const styles = {
   container: {
@@ -17,7 +18,7 @@ const styles = {
     overflow: "hidden",
     boxShadow: "0 8px 16px 0 rgba(0,0,0,0.2)",
     transition: "transform 0.3s, box-shadow 0.3s",
-    position: "relative", // Added position for overlay
+    position: "relative",
   },
   content: {
     display: "flex",
@@ -26,7 +27,7 @@ const styles = {
     textAlign: "center",
     padding: "1.5rem",
     position: "relative",
-    zIndex: 1, // Adjusted z-index
+    zIndex: 1,
   },
   title: {
     marginBottom: "0.5rem",
@@ -35,7 +36,7 @@ const styles = {
   },
   description: {
     marginBottom: "1rem",
-    color: "#003E70",
+    color: "#0077b6",
   },
   gradientOverlay: {
     position: "absolute",
@@ -46,13 +47,13 @@ const styles = {
     background: "linear-gradient(45deg, #2196F3 30%, #21CBF3 90%)",
     opacity: 0,
     transition: "opacity 0.3s",
-    zIndex: 0, // Adjusted z-index to stay behind the content
-    transform: "rotate(45deg)", // Rotated gradient for a diagonal effect
+    zIndex: 0,
+    transform: "rotate(45deg)",
   },
   cardHover: {
     "&:hover": {
-      transform: "scale(1.03)", // Slight enlargement on hover
-      boxShadow: "0 12px 20px 0 rgba(0,0,0,0.3)", // Enhanced shadow on hover
+      transform: "scale(1.03)",
+      boxShadow: "0 12px 20px 0 rgba(0,0,0,0.3)",
       "& $gradientOverlay": {
         opacity: 0.7,
       },
@@ -63,7 +64,7 @@ const styles = {
 const cardData = [
   {
     description:
-    "I aim to push boundaries and innovate. Our company thrives on pioneering technology to disrupt industries. My expertise involves challenging norms to craft inventive solutions and redefine conventional practices.",
+      "I aim to push boundaries and innovate. Our company thrives on pioneering technology to disrupt industries. My expertise involves challenging norms to craft inventive solutions and redefine conventional practices.",
     name: "Chandrahas Dewangan",
     position: "Founder",
   },
@@ -75,7 +76,7 @@ const cardData = [
   },
   {
     description:
-    "Passionate about crafting seamless, user-centric experiences. Our mission: simplify processes for valued customers. Using innovative tech and a customer approach, we empower individuals and businesses to focus on what matters most.",
+      "Passionate about crafting seamless, user-centric experiences. Our mission: simplify processes for valued customers. Using innovative tech and a customer approach, we empower individuals and businesses to focus on what matters most.",
     name: "Sanjay Dewangan",
     position: "Technical Co-Founder",
   },
@@ -86,18 +87,11 @@ const Team = () => {
     <div style={styles.container}>
       {cardData.map((data, index) => (
         <div key={index}>
-          <Card
-            className="card-box"
-            style={{ ...styles.card, ...styles.cardHover }}
-          >
+          <Card className="card-box" style={{ ...styles.card, ...styles.cardHover }}>
             <div style={styles.gradientOverlay}></div>
             <CardContent style={styles.content}>
-              <Typography
-                variant="body1"
-                component="p"
-                style={styles.description}
-              >
-                "{data.description}"
+              <Typography variant="body1" component="p" style={styles.description}>
+                {data.description}
               </Typography>
               <Typography variant="h5" style={styles.title}>
                 {data.name}

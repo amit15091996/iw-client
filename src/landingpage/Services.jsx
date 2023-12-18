@@ -40,11 +40,17 @@ const CenteredButton = styled(Button)({
 
 const Services = () => {
   const handleButtonClick = () => {
-    // Get the current vertical scroll position
+    let scrollAmount = 3450; // Default scroll amount for larger screens
+
+    // Adjust scroll amount for smaller screens (e.g., mobile devices)
+    if (window.innerWidth < 768) {
+      scrollAmount = 6800; // Adjust this value as needed for mobile
+    }
+
     const currentPosition = window.scrollY || window.pageYOffset;
 
     window.scroll({
-      top: currentPosition + 2620,
+      top: currentPosition + scrollAmount,
       left: 0,
       behavior: "smooth",
     });

@@ -20,6 +20,7 @@ import NamesCarousel from "./NamesCarousel";
 import About from "./About";
 import Contact from "./Contact";
 import { Link } from "react-router-dom";
+import Team from "./Team";
 
 const Navbar = () => {
   const sectionRefs = useRef([]);
@@ -27,14 +28,15 @@ const Navbar = () => {
   const appBarHeight = 0; // Set the height of your AppBar here
   const [showScroll, setShowScroll] = useState(false);
 
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   const checkScrollTop = () => {
     const offset =
       window.scrollY ||
       window.pageYOffset ||
       document.documentElement.scrollTop;
-    if (!showScroll && offset > 300) {
+    if (!showScroll && offset > 200) {
       setShowScroll(true);
-    } else if (showScroll && offset <= 300) {
+    } else if (showScroll && offset <= 200) {
       setShowScroll(false);
     }
   };
@@ -48,13 +50,14 @@ const Navbar = () => {
     return () => {
       window.removeEventListener("scroll", checkScrollTop);
     };
-  }, [showScroll]);
+  }, [checkScrollTop, showScroll]);
   // Custom names for navigation tabs
   const navTabNames = [
     "Home",
     "Services",
     "Clients",
     "About",
+    "Team",
     "Contact",
     "Login",
   ]; // Replace these names with your desired tab names
@@ -243,6 +246,57 @@ const Navbar = () => {
         style={{
           paddingTop: "0",
           height: "auto",
+          backgroundColor:"#f9f9f9",
+          margin: "0",
+          overflow: "hidden",
+        }}
+      >
+        <div style={{ marginTop: "70px"}}>
+          <div
+            className="heading"
+            style={{
+              display: "flex",
+              justifyContent: "center",
+              alignItems: "center",
+            }}
+          >
+            <p
+              className="centered-text"
+              style={{
+                fontSize: "30px",
+                color: "#003e70",
+                
+                textAlign: "center",
+              }}
+            >
+              Our Team
+            </p>
+          </div>
+          <div
+            style={{
+              color:"#3d5a80",
+              fontStyle: "italic",
+              fontSize: "20px",
+              textAlign: "center",
+              marginLeft: "auto",
+              marginRight: "auto",
+              maxWidth: "800px", // Adjust the maximum width as needed
+              padding: "20px", // Optional padding
+            }}
+          >
+            "Our team embodies collaborative excellence, merging diverse skills,
+            shaping innovation, achieving goals, and setting industry standards
+            through collective expertise and unified vision."
+          </div>
+
+          <Team />
+        </div>
+      </div>
+      <div
+        ref={(ref) => (sectionRefs.current[5] = ref)}
+        style={{
+          paddingTop: "0",
+          height: "auto",
           backgroundColor: "#fff",
           margin: "0",
           overflow: "hidden",
@@ -253,22 +307,23 @@ const Navbar = () => {
           <div
             className="footer"
             style={{
-              height: '50px',
-              display: 'flex',
-              alignItems: 'center',
-              justifyContent: 'center',
-              textAlign: 'center',
-              fontFamily: 'sans-serif',
-              fontSize: '15px',
-              color: '#fff',
+              height: "50px",
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "center",
+              textAlign: "center",
+              fontFamily: "sans-serif",
+              fontSize: "15px",
+              color: "#fff",
               fontWeight: 600,
-              backgroundColor: '#003e70',
+              backgroundColor: "#003e70",
             }}
           >
             © 2020 Intallysh Wisdom
           </div>
         </div>
       </div>
+
       {showScroll && (
         <IconButton
           sx={{

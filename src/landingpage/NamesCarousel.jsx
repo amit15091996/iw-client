@@ -83,11 +83,11 @@ const NameSlider = () => {
 
   return (
     <div className="slider-container">
-      <text
+      <p
         style={{ fontFamily: "sans-serif", fontSize: "30px", color: "#003E70", fontWeight:600 }}
       >
         Our Representative Clients
-      </text>
+      </p>
       {createSlider(name1)}
       {createSlider(name2)}
       {createSlider(name3)}

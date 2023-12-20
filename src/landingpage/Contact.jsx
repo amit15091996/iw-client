@@ -26,6 +26,7 @@ const Contact = () => {
           <Grid item xs={12} sm={8}>
             {/* Google Map */}
             <div className="map-responsive">
+            
               <iframe
                 title="google map"
                 src="https://www.google.com/maps/embed?pb=!1m17!1m12!1m3!1d3725.6667265364435!2d81.86094117525488!3d20.965894880667783!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m2!1m1!2zMjDCsDU3JzU3LjIiTiA4McKwNTEnNDguNyJF!5e0!3m2!1sen!2sus!4v1693738168598!5m2!1sen!2sus"

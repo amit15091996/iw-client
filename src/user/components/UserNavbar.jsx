@@ -16,10 +16,25 @@ import ListItemText from "@mui/material/ListItemText";
 import InboxIcon from "@mui/icons-material/MoveToInbox";
 import { Outlet, useNavigate } from "react-router-dom";
 import { theme } from "../../Theme";
-import { Avatar, Tooltip, Typography } from "@mui/material";
+import {
+  Avatar,
+  Button,
+  CircularProgress,
+  Dialog,
+  DialogActions,
+  DialogContent,
+  DialogContentText,
+  DialogTitle,
+  Menu,
+  MenuItem,
+  Tooltip,
+  Typography,
+  useMediaQuery,
+} from "@mui/material";
 import PersonIcon from "@mui/icons-material/Person";
 import DashboardIcon from "@mui/icons-material/Dashboard";
 import FolderCopyIcon from "@mui/icons-material/FolderCopy";
+import { useTheme } from "@emotion/react";
 
 const drawerWidth = 240;
 
@@ -89,14 +104,62 @@ const Drawer = styled(MuiDrawer, {
 }));
 
 export default function UserNavbar() {
-  const [open, setOpen] = React.useState(true);
-  const [activeItem, setActiveItem] = React.useState("/user/dashboard");
+  const theme = useTheme();
+  const isMobile = useMediaQuery(theme.breakpoints.down("sm"));
+  const [open, setOpen] = React.useState(!isMobile);
+  const [logoutDialogOpen, setLogoutDialogOpen] = React.useState(false);
+  const [activeItem, setActiveItem] = React.useState(
+    localStorage.getItem("activeItem") || "/user/dashboard"
+  );
   const [hoveredItem, setHoveredItem] = React.useState(null);
+  const [loading, setLoading] = React.useState(false);
   const navigate = useNavigate();
+
+  React.useEffect(() => {
+    localStorage.setItem("activeItem", activeItem);
+  }, [activeItem]);
+
   const handleNavClick = (url) => {
     console.log(url);
     navigate(url);
     setActiveItem(url);
+    if (isMobile) {
+      setOpen(isMobile ? false : true);
+    }
+  };
+
+  const [anchorEl, setAnchorEl] = React.useState(null);
+
+  const handleClick = (event) => {
+    setAnchorEl(event.currentTarget);
+  };
+
+  const handleClose = () => {
+    setAnchorEl(null);
+  };
+
+  const handleProfileClick = () => {
+    // Logic for handling profile click
+    console.log("Profile clicked");
+    handleClose();
+  };
+
+  const handleLogoutClick = () => {
+    setLogoutDialogOpen(true);
+  };
+
+  const handleLogoutConfirm = () => {
+    setLogoutDialogOpen(false);
+    setLoading(true); // Start loading when logout is confirmed
+    setTimeout(() => {
+      localStorage.clear();
+      navigate("/login");
+      setLoading(false); // Set loading to false after redirecting
+    }, 2000); // Mimicking a delay for demonstration purposes
+  };
+
+  const handleLogoutCancel = () => {
+    setLogoutDialogOpen(false);
   };
 
   return (
@@ -140,11 +203,66 @@ export default function UserNavbar() {
               /> */}
             </Box>
             <Box>
-              <Tooltip title="Open settings">
-                <IconButton sx={{ pr: "10%" }}>
+              <Tooltip title="click to open">
+                <IconButton onClick={handleClick} sx={{ pr: "10%" }}>
                   <Avatar alt="A" src="/static/images/avatar/2.jpg" />
                 </IconButton>
               </Tooltip>
+
+              <Menu
+                anchorEl={anchorEl}
+                open={Boolean(anchorEl)}
+                onClose={handleClose}
+              >
+                <MenuItem onClick={handleProfileClick}>Profile</MenuItem>
+                <MenuItem onClick={handleLogoutClick}>Logout</MenuItem>
+              </Menu>
+              <Dialog
+                open={logoutDialogOpen}
+                onClose={handleLogoutCancel}
+                aria-labelledby="logout-dialog-title"
+                aria-describedby="logout-dialog-description"
+              >
+                <DialogTitle id="logout-dialog-title">
+                  Confirm Logout
+                </DialogTitle>
+                <DialogContent>
+                  <DialogContentText id="logout-dialog-description">
+                    Are you sure you want to logout?
+                  </DialogContentText>
+                </DialogContent>
+                <DialogActions>
+                  <Button onClick={handleLogoutCancel} color="primary">
+                    No
+                  </Button>
+                  <Button
+                    onClick={handleLogoutConfirm}
+                    variant="contained"
+                    sx={{ color: "white", bgcolor: "#e53935" }}
+                    autoFocus
+                  >
+                    Yes
+                  </Button>
+                </DialogActions>
+              </Dialog>
+              {loading && ( // Show loading indicator if loading is true
+                <Box
+                  sx={{
+                    position: "fixed",
+                    top: 0,
+                    left: 0,
+                    width: "100%",
+                    height: "100%",
+                    display: "flex",
+                    justifyContent: "center",
+                    alignItems: "center",
+                    backgroundColor: "rgba(0, 0, 0, 0.5)",
+                    zIndex: 9999,
+                  }}
+                >
+                  <CircularProgress color="secondary" />
+                </Box>
+              )}
             </Box>
           </Box>
         </Toolbar>
@@ -184,7 +302,7 @@ export default function UserNavbar() {
                 id: "3",
                 name: "Documents",
                 icon: <FolderCopyIcon />,
-                link: "/user/profile",
+                link: "/user/documents",
               },
               {
                 id: "4",
@@ -245,7 +363,12 @@ export default function UserNavbar() {
       </Box>
       <Box
         component="main"
-        sx={{ flexGrow: 1, p: 3, pl: { xs: 8, md: 10, xl: 32, lg: 32 } }}
+        sx={{
+          flexGrow: 1,
+          p: 3,
+          pl: { xs: 8, md: 10, xl: 32, lg: 32 },
+          marginLeft: !open ? -20 : 0,
+        }}
       >
         <DrawerHeader />
         <Outlet />

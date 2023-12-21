@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { getAllUsers } from "../services/AdminService";
 import {
   Box,
@@ -68,9 +68,6 @@ const AllUsers = () => {
 
   const handleSearch = (event) => {
     setSearchTerm(event.target.value);
-  };
-  const handleDelete = () => {
-    
   };
   const filteredUsers = usersList.filter((user) => {
     const userIdString = String(user.userId); // Convert userId to string

@@ -1,160 +1,90 @@
-import React, { useEffect, useState } from "react";
-import { getAllUsers } from "../services/AdminService";
+import { useState } from "react";
 import {
-  Box,
-  Typography,
   Table,
+  TableBody,
+  TableCell,
   TableContainer,
   TableHead,
-  TableBody,
   TableRow,
-  TableCell,
   Paper,
-  Button,
   TextField,
   IconButton,
-  Dialog,
-  DialogTitle,
-  DialogContent,
-  DialogActions,
-  useMediaQuery,
+  TablePagination,
 } from "@mui/material";
-import DeleteIcon from "@mui/icons-material/Delete";
-import { useTheme } from "@emotion/react";
+import { Search } from "@mui/icons-material";
 
-const AllUsers = () => {
-  const theme = useTheme();
-  const isMobile = useMediaQuery(theme.breakpoints.down("sm"));
-
-  const [usersList, setUsersList] = useState([]);
+const CustomTable = ({ data, columns }) => {
+  const [page, setPage] = useState(0);
+  const [rowsPerPage, setRowsPerPage] = useState(5);
   const [searchTerm, setSearchTerm] = useState("");
-  const [confirmationDialogOpen, setConfirmationDialogOpen] = useState(false);
-  const [userToDelete, setUserToDelete] = useState(null);
 
-  const getUserListData = async () => {
-    try {
-      const res = await getAllUsers("NOT_DELETED");
-      if (res.status === "Success") {
-        setUsersList(res.usersList || []);
-      } else {
-        setUsersList([]);
-      }
-    } catch (error) {
-      alert("Error while loading profiles");
-    }
+  const handleChangePage = (event, newPage) => {
+    setPage(newPage);
   };
 
-  useEffect(() => {
-    getUserListData();
-  }, []);
-
-  const handleDeleteUser = (userId) => {
-    setUserToDelete(userId);
-    setConfirmationDialogOpen(true);
+  const handleChangeRowsPerPage = (event) => {
+    setRowsPerPage(parseInt(event.target.value, 10));
+    setPage(0);
   };
 
-  const confirmDeleteUser = () => {
-    const updatedUsers = usersList.filter(
-      (user) => user.userId !== userToDelete
-    );
-    setUsersList(updatedUsers);
-    setConfirmationDialogOpen(false);
-  };
-
-  const closeConfirmationDialog = () => {
-    setConfirmationDialogOpen(false);
-    setUserToDelete(null);
-  };
-
-  const handleSearch = (event) => {
-    setSearchTerm(event.target.value);
-  };
-  const handleDelete = () => {
-    
-  };
-  const filteredUsers = usersList.filter((user) => {
-    const userIdString = String(user.userId); // Convert userId to string
-    return (
-      userIdString.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      user.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      user.email.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      user.phone.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      user.address.toLowerCase().includes(searchTerm.toLowerCase())
-    );
-  });
+  const filteredData = data.filter((row) =>
+    Object.values(row).some(
+      (value) =>
+        value &&
+        value.toString().toLowerCase().includes(searchTerm.toLowerCase())
+    )
+  );
 
   return (
-    <Box>
-      <Typography variant="h6" className="component-header" color="primary">
-        All Users
-      </Typography>
+    <div>
       <TextField
-        label="Search"
+        placeholder="Search..."
         variant="outlined"
-        onChange={handleSearch}
+        size="small"
         value={searchTerm}
-        margin="normal"
+        onChange={(e) => setSearchTerm(e.target.value)}
+        InputProps={{
+          endAdornment: (
+            <IconButton>
+              <Search />
+            </IconButton>
+          ),
+        }}
+        style={{ float: "right", marginBottom: "10px" }}
       />
       <TableContainer component={Paper}>
-        <Table aria-label="simple table">
-          <TableHead color="success">
+        <Table>
+          <TableHead>
             <TableRow>
-              <TableCell>Sr.No</TableCell>
-              <TableCell align="right">Name</TableCell>
-              <TableCell align="right">Email</TableCell>
-              <TableCell align="right">Phone</TableCell>
-              <TableCell align="right">Address</TableCell>
-              <TableCell align="right">GST Number</TableCell>
-              <TableCell align="right">Actions</TableCell>
+              {columns.map((column, index) => (
+                <TableCell key={index}>{column}</TableCell>
+              ))}
             </TableRow>
           </TableHead>
           <TableBody>
-            {filteredUsers.map((user) => (
-              <TableRow key={user.userId}>
-                <TableCell component="th" scope="row">
-                  {user.userId}
-                </TableCell>
-                <TableCell align="right">{user.name}</TableCell>
-                <TableCell align="right">{user.email}</TableCell>
-                <TableCell align="right">{user.phone}</TableCell>
-                <TableCell align="right">{user.address}</TableCell>
-                <TableCell align="right">{user.gstNo}</TableCell>
-                <TableCell align="right">
-                  <IconButton
-                    aria-label="delete"
-                    onClick={() => handleDeleteUser(user.userId)}
-                  >
-                    <DeleteIcon />
-                  </IconButton>
-                </TableCell>
-              </TableRow>
-            ))}
+            {filteredData
+              .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
+              .map((row, rowIndex) => (
+                <TableRow key={rowIndex} hover>
+                  {Object.values(row).map((value, valueIndex) => (
+                    <TableCell key={valueIndex}>{value}</TableCell>
+                  ))}
+                </TableRow>
+              ))}
           </TableBody>
         </Table>
       </TableContainer>
-      <Dialog
-        open={confirmationDialogOpen}
-        onClose={closeConfirmationDialog}
-        aria-labelledby="alert-dialog-title"
-        aria-describedby="alert-dialog-description"
-      >
-        <DialogTitle id="alert-dialog-title">Confirm Deletion</DialogTitle>
-        <DialogContent>
-          <Typography variant="body1">
-            Are you sure you want to delete this user?
-          </Typography>
-        </DialogContent>
-        <DialogActions>
-          <Button onClick={closeConfirmationDialog} color="primary">
-            Cancel
-          </Button>
-          <Button onClick={confirmDeleteUser} color="primary" autoFocus>
-            Confirm
-          </Button>
-        </DialogActions>
-      </Dialog>
-    </Box>
+      <TablePagination
+        rowsPerPageOptions={[5, 10, 25]}
+        component="div"
+        count={filteredData.length}
+        rowsPerPage={rowsPerPage}
+        page={page}
+        onPageChange={handleChangePage}
+        onRowsPerPageChange={handleChangeRowsPerPage}
+      />
+    </div>
   );
 };
 
-export default AllUsers;
+export default CustomTable;

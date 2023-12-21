@@ -10,6 +10,7 @@ import UserDashboard from "./user/pages/UserDashboard";
 import UserRoute from "./user/UserRoute";
 import AllUsers from "./user/pages/AllUsers";
 import { theme } from "./Theme";
+import UserDocument from "./user/pages/UserDocument";
 
 
 function App() {
@@ -29,7 +30,7 @@ function App() {
               <Route index path="login" element={<Login />} />
               <Route index path="all-users" element={<AllUsers />} />
               <Route index path="dashboard" element={<UserDashboard />} />
-              
+              <Route index path="documents" element={<UserDocument />} />
             </Route>
           </Routes>
   

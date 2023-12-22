@@ -13,9 +13,8 @@ import ListItem from "@mui/material/ListItem";
 import ListItemButton from "@mui/material/ListItemButton";
 import ListItemIcon from "@mui/material/ListItemIcon";
 import ListItemText from "@mui/material/ListItemText";
-import InboxIcon from "@mui/icons-material/MoveToInbox";
 import { Outlet, useNavigate } from "react-router-dom";
-import { theme } from "../../Theme";
+// import { theme } from "../../Theme";
 import {
   Avatar,
   Button,
@@ -34,8 +33,11 @@ import {
 import PersonIcon from "@mui/icons-material/Person";
 import DashboardIcon from "@mui/icons-material/Dashboard";
 import FolderCopyIcon from "@mui/icons-material/FolderCopy";
+import DriveFolderUploadIcon from '@mui/icons-material/DriveFolderUpload';
+import PeopleIcon from '@mui/icons-material/People';
+import FeedIcon from '@mui/icons-material/Feed';
 import { useTheme } from "@emotion/react";
-
+import FolderIcon from '@mui/icons-material/Folder';
 const drawerWidth = 240;
 
 const openedMixin = (theme) => ({
@@ -139,10 +141,11 @@ export default function UserNavbar() {
   };
 
   const handleProfileClick = () => {
-    // Logic for handling profile click
-    console.log("Profile clicked");
-    handleClose();
+    navigate('/user/profile'); // Navigate to the /user/profile route
+    setActiveItem('/user/profile'); // Set activeItem to '/user/profile'
+    handleClose(); // Close the menu after navigation
   };
+  
 
   const handleLogoutClick = () => {
     setLogoutDialogOpen(true);
@@ -294,21 +297,41 @@ export default function UserNavbar() {
               },
               {
                 id: "2",
-                name: "Users",
+                name: "Profile",
                 icon: <PersonIcon />,
-                link: "/user/all-users",
+                link: "/user/profile",
               },
               {
                 id: "3",
-                name: "Documents",
-                icon: <FolderCopyIcon />,
-                link: "/user/documents",
+                name: "Users",
+                icon: <PeopleIcon />,
+                link: "/user/all-users",
               },
               {
                 id: "4",
-                name: "Blog",
-                icon: <InboxIcon />,
-                link: "/user/profile",
+                name: "My Documents",
+                icon: <FolderIcon />,
+                link: "/user/my-documents",
+              },
+             
+              {
+                id: "5",
+                name: "Send Documents",
+                icon: <DriveFolderUploadIcon />,
+                link: "/user/documents",
+              },
+              {
+                id: "6",
+                name: "All Documents",
+                icon: <FolderCopyIcon />,
+                link: "/user/all-users-documents",
+              },
+              
+              {
+                id: "7",
+                name: "News",
+                icon: <FeedIcon />,
+                link: "/user/blog",
               },
             ].map((text, index) => (
               <ListItem

@@ -11,18 +11,16 @@ import {
   Typography,
   CircularProgress,
   TextField,
+  MenuItem,
   styled,
-  IconButton,
-  Modal,
 } from '@mui/material';
-import VisibilityIcon from '@mui/icons-material/Visibility';
 
 const DocumentUploader = () => {
   const [uploadedDocuments, setUploadedDocuments] = useState([]);
   const [selectedFile, setSelectedFile] = useState(null);
   const [uploading, setUploading] = useState(false);
   const [textData, setTextData] = useState('');
-  const [viewDocument, setViewDocument] = useState(null);
+  const [fileType, setFileType] = useState('');
 
   const CustomInput = styled('input')({
     display: 'none',
@@ -43,6 +41,10 @@ const DocumentUploader = () => {
     },
   });
 
+  const handleFileTypeSelect = (event) => {
+    setFileType(event.target.value);
+  };
+
   const handleFileSelect = (event) => {
     setSelectedFile(event.target.files[0]);
   };
@@ -52,23 +54,24 @@ const DocumentUploader = () => {
       setUploading(true);
       // Simulating upload delay for 2 seconds (Remove this in actual implementation)
       setTimeout(() => {
-        setUploadedDocuments([...uploadedDocuments, { file: selectedFile, text: textData }]);
+        const currentDate = new Date().toLocaleString(); // Get current date and time
+        setUploadedDocuments([
+          ...uploadedDocuments,
+          {
+            file: selectedFile,
+            text: textData,
+            fileType,
+            uploadDateTime: currentDate,
+          },
+        ]);
         setSelectedFile(null);
         setTextData('');
+        setFileType('');
         setUploading(false);
       }, 2000);
     }
   };
 
-  const handleViewDocument = (file) => {
-    console.log('View Document:', file); // Replace this with your logic to view the document
-    setViewDocument(file);
-    // Perform action to view the document (e.g., open a modal or display the document content)
-  };
-
-  const handleCloseModal = () => {
-    setViewDocument(null);
-  };
 
   return (
     <Paper elevation={3} style={{ padding: '20px', maxWidth: '1000px', margin: 'auto' }}>
@@ -79,6 +82,27 @@ const DocumentUploader = () => {
         {selectedFile ? selectedFile.name : 'Select File'}
         <CustomInput id="upload-file" type="file" onChange={handleFileSelect} />
       </FileInputLabel>
+      <TextField
+        select
+        label="File Type"
+        variant="outlined"
+        value={fileType}
+        onChange={handleFileTypeSelect}
+        style={{ marginTop: '10px', width: '50%' }}
+      >
+        <MenuItem value="Audit Report">Audit Report</MenuItem>
+        <MenuItem value="Bank Statement">Bank Statement</MenuItem>
+        <MenuItem value="GST R1">GST R1</MenuItem>
+        <MenuItem value="GST R3B">GST R3B</MenuItem>
+        <MenuItem value="GST Certificate">GST Certificate</MenuItem>
+        <MenuItem value="ITR Return">ITR Return</MenuItem>
+        <MenuItem value="ITR Report">ITR Report</MenuItem>
+        <MenuItem value="KYC Details">KYC Details</MenuItem>
+        <MenuItem value="Sale Register">Sale Register</MenuItem>
+        <MenuItem value="Purchase Register">Purchase Register</MenuItem>
+        <MenuItem value="Others">Others</MenuItem>
+        {/* Add more file type options here as needed */}
+      </TextField>
       <TextField
         label="Text Data"
         variant="outlined"
@@ -107,48 +131,29 @@ const DocumentUploader = () => {
             <TableHead>
               <TableRow>
                 <TableCell>File Name</TableCell>
+                <TableCell>File Type</TableCell>
                 <TableCell>File Size</TableCell>
                 <TableCell>Text Data</TableCell>
-                <TableCell>Actions</TableCell>
+                <TableCell>Date</TableCell>
+                <TableCell>Time</TableCell>
               </TableRow>
             </TableHead>
             <TableBody>
               {uploadedDocuments.map((item, index) => (
                 <TableRow key={index}>
                   <TableCell>{item.file.name}</TableCell>
+                  <TableCell>{item.fileType}</TableCell>
                   <TableCell>{(item.file.size / 1024).toFixed(2)} KB</TableCell>
                   <TableCell>{item.text}</TableCell>
-                  <TableCell>
-                    <IconButton
-                      aria-label="view-document"
-                      onClick={() => handleViewDocument(item.file)}
-                    >
-                      <VisibilityIcon />
-                    </IconButton>
-                  </TableCell>
+                  <TableCell>{item.uploadDateTime.split(',')[0]}</TableCell>
+                  <TableCell>{item.uploadDateTime.split(',')[1]}</TableCell>
                 </TableRow>
               ))}
             </TableBody>
           </Table>
         </TableContainer>
       )}
-      <Modal open={!!viewDocument} onClose={handleCloseModal}>
-        <div style={{ position: 'absolute', top: '50%', left: '50%', transform: 'translate(-50%, -50%)', backgroundColor: '#fff', padding: '20px' }}>
-          <Typography variant="h6" gutterBottom>
-            View Document
-          </Typography>
-          {viewDocument && (
-            <div>
-              <Typography variant="body1">File Name: {viewDocument.name}</Typography>
-              <Typography variant="body2">File Size: {(viewDocument.size / 1024).toFixed(2)} KB</Typography>
-              {/* Add logic to display the document here */}
-            </div>
-          )}
-          <Button variant="contained" color="primary" onClick={handleCloseModal} style={{ marginTop: '10px' }}>
-            Close
-          </Button>
-        </div>
-      </Modal>
+      
     </Paper>
   );
 };

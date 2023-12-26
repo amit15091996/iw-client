@@ -1,5 +1,10 @@
 import { useEffect, useState } from "react";
-import { getAllUsers } from "../services/AdminService";
+import {
+  getAllUsers,
+  isNotActiveUser,
+  isActiveUser,
+  deleteUser,
+} from "../services/AdminService";
 import {
   Box,
   Typography,
@@ -18,24 +23,83 @@ import {
   DialogContent,
   DialogActions,
   useMediaQuery,
+  Switch,
 } from "@mui/material";
 import DeleteIcon from "@mui/icons-material/Delete";
 import { useTheme } from "@emotion/react";
+import CustomPagination from "./user-components/CustomPagination";
 
 const AllUsers = () => {
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down("sm"));
 
   const [usersList, setUsersList] = useState([]);
+  const [userStatus, setUserStatus] = useState({});
+
   const [searchTerm, setSearchTerm] = useState("");
   const [confirmationDialogOpen, setConfirmationDialogOpen] = useState(false);
   const [userToDelete, setUserToDelete] = useState(null);
 
-  const getUserListData = async () => {
+  const [isPrevPage, setIsPrevPage] = useState(true);
+  const [isNextPage, setIsNextPage] = useState(true);
+  const [totalPages, setTotalPages] = useState(0);
+  const [totalResults, setTotalResults] = useState(0);
+
+  // Function to toggle the active/inactive status of a user
+  const toggleUserStatus = async (userId) => {
     try {
-      const res = await getAllUsers("NOT_DELETED");
+      if (userId == null) {
+        console.error("User ID is not available");
+        return;
+      }
+      const isActive = userStatus[userId] || false;
+
+      if (isActive) {
+        await isNotActiveUser(userId);
+      } else {
+        await isActiveUser(userId);
+      }
+
+      setUserStatus({
+        ...userStatus,
+        [userId]: !isActive,
+      });
+    } catch (error) {
+      console.error("Error toggling user status: ", error);
+    }
+  };
+
+  // pagination-------------------------------
+
+  const [currentPage, setCurrentPage] = useState(0); // State to manage current page
+  const pageSize = 5; // Number of users to display per page
+
+  const handlePageChange = (newPage) => {
+    setCurrentPage(newPage);
+  };
+
+  const fetchUsersByPage = async (page) => {
+    try {
+      const res = await getAllUsers("NOT_DELETED", page, pageSize);
+      console.log(res);
       if (res.status === "Success") {
         setUsersList(res.usersList || []);
+
+        // Update userStatus based on fetched data to show initial switch state
+        const statusObj = {};
+        res.usersList.forEach((user) => {
+          statusObj[user.userId] = user.enabled; // Assuming 'enabled' is a boolean
+        });
+
+        setUserStatus(statusObj);
+
+        // Update pagination state
+        setTotalPages(res.totalPages || 0);
+        setTotalResults(res.totalResults || 0);
+
+        // Enable/Disable pagination buttons based on available data
+        setIsPrevPage(!res.isFirstPage);
+        setIsNextPage(!res.isLastPage);
       } else {
         setUsersList([]);
       }
@@ -45,20 +109,29 @@ const AllUsers = () => {
   };
 
   useEffect(() => {
-    getUserListData();
-  }, []);
+    fetchUsersByPage(currentPage);
+  }, [currentPage]); // Re-fetch users when the currentPage changes
 
   const handleDeleteUser = (userId) => {
     setUserToDelete(userId);
     setConfirmationDialogOpen(true);
   };
 
-  const confirmDeleteUser = () => {
-    const updatedUsers = usersList.filter(
-      (user) => user.userId !== userToDelete
-    );
-    setUsersList(updatedUsers);
-    setConfirmationDialogOpen(false);
+  const confirmDeleteUser = async () => {
+    try {
+      if (userToDelete) {
+        await deleteUser(userToDelete); // Call the deleteUser function here
+        const updatedUsers = usersList.filter(
+          (user) => user.userId !== userToDelete
+        );
+        setUsersList(updatedUsers);
+        setConfirmationDialogOpen(false);
+        setUserToDelete(null);
+      }
+    } catch (error) {
+      console.error("Error deleting user: ", error);
+      // Handle error state or display an error message
+    }
   };
 
   const closeConfirmationDialog = () => {
@@ -94,15 +167,30 @@ const AllUsers = () => {
       />
       <TableContainer component={Paper}>
         <Table aria-label="simple table">
-          <TableHead color="success">
+          <TableHead style={{ backgroundColor: "#003E70" }}>
             <TableRow>
-              <TableCell>Sr.No</TableCell>
-              <TableCell align="right">Name</TableCell>
-              <TableCell align="right">Email</TableCell>
-              <TableCell align="right">Phone</TableCell>
-              <TableCell align="right">Address</TableCell>
-              <TableCell align="right">GST Number</TableCell>
-              <TableCell align="right">Actions</TableCell>
+              <TableCell style={{ color: "white" }}>Sr.No</TableCell>
+              <TableCell align="center" style={{ color: "white" }}>
+                Name
+              </TableCell>
+              <TableCell align="center" style={{ color: "white" }}>
+                Email
+              </TableCell>
+              <TableCell align="center" style={{ color: "white" }}>
+                Phone
+              </TableCell>
+              <TableCell align="center" style={{ color: "white" }}>
+                Address
+              </TableCell>
+              <TableCell align="center" style={{ color: "white" }}>
+                GST Number
+              </TableCell>
+              <TableCell align="center" style={{ color: "white" }}>
+                Status
+              </TableCell>
+              <TableCell align="center" style={{ color: "white" }}>
+                Actions
+              </TableCell>
             </TableRow>
           </TableHead>
           <TableBody>
@@ -111,12 +199,21 @@ const AllUsers = () => {
                 <TableCell component="th" scope="row">
                   {user.userId}
                 </TableCell>
-                <TableCell align="right">{user.name}</TableCell>
-                <TableCell align="right">{user.email}</TableCell>
-                <TableCell align="right">{user.phone}</TableCell>
-                <TableCell align="right">{user.address}</TableCell>
-                <TableCell align="right">{user.gstNo}</TableCell>
-                <TableCell align="right">
+                <TableCell align="center">{user.name}</TableCell>
+                <TableCell align="center">{user.email}</TableCell>
+                <TableCell align="center">{user.phone}</TableCell>
+                <TableCell align="center">{user.address}</TableCell>
+                <TableCell align="center">{user.gstNo}</TableCell>
+                {/* <TableCell align="center">{user.enabled?'ACTIVE':"NOT_ACTIVE"}</TableCell> */}
+                <TableCell align="center">
+                  {/* Switch button to toggle user status */}
+                  <Switch
+                    checked={userStatus[user.userId] || false}
+                    onChange={() => toggleUserStatus(user.userId)}
+                    color="primary"
+                  />
+                </TableCell>
+                <TableCell align="center">
                   <IconButton
                     aria-label="delete"
                     onClick={() => handleDeleteUser(user.userId)}
@@ -150,6 +247,13 @@ const AllUsers = () => {
           </Button>
         </DialogActions>
       </Dialog>
+      <Box display="flex" justifyContent="center" marginTop={2}>
+      <CustomPagination
+        currentPage={currentPage}
+        totalPages={totalPages}
+        handlePageChange={handlePageChange}
+      />
+      </Box>
     </Box>
   );
 };

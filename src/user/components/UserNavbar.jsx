@@ -33,11 +33,11 @@ import {
 import PersonIcon from "@mui/icons-material/Person";
 import DashboardIcon from "@mui/icons-material/Dashboard";
 import FolderCopyIcon from "@mui/icons-material/FolderCopy";
-import DriveFolderUploadIcon from '@mui/icons-material/DriveFolderUpload';
-import PeopleIcon from '@mui/icons-material/People';
-import FeedIcon from '@mui/icons-material/Feed';
+import DriveFolderUploadIcon from "@mui/icons-material/DriveFolderUpload";
+import PeopleIcon from "@mui/icons-material/People";
+import FeedIcon from "@mui/icons-material/Feed";
 import { useTheme } from "@emotion/react";
-import FolderIcon from '@mui/icons-material/Folder';
+import FolderIcon from "@mui/icons-material/Folder";
 const drawerWidth = 240;
 
 const openedMixin = (theme) => ({
@@ -141,11 +141,10 @@ export default function UserNavbar() {
   };
 
   const handleProfileClick = () => {
-    navigate('/user/profile'); // Navigate to the /user/profile route
-    setActiveItem('/user/profile'); // Set activeItem to '/user/profile'
+    navigate("/user/profile"); // Navigate to the /user/profile route
+    setActiveItem("/user/profile"); // Set activeItem to '/user/profile'
     handleClose(); // Close the menu after navigation
   };
-  
 
   const handleLogoutClick = () => {
     setLogoutDialogOpen(true);
@@ -313,7 +312,7 @@ export default function UserNavbar() {
                 icon: <FolderIcon />,
                 link: "/user/my-documents",
               },
-             
+
               {
                 id: "5",
                 name: "Send Documents",
@@ -326,7 +325,7 @@ export default function UserNavbar() {
                 icon: <FolderCopyIcon />,
                 link: "/user/all-users-documents",
               },
-              
+
               {
                 id: "7",
                 name: "News",
@@ -382,8 +381,25 @@ export default function UserNavbar() {
               </ListItem>
             ))}
           </List>
+          <Box
+            sx={{
+              position: "absolute",
+              bottom: "50px", // Adjust the bottom spacing as needed
+              left: "50%",
+              transform: "translateX(-50%)",
+            }}
+          >
+            <Button
+              variant="contained"
+              style={{ backgroundColor: "#ef233c" }}
+              onClick={handleLogoutConfirm}
+            >
+              Logout
+            </Button>
+          </Box>
         </Drawer>
       </Box>
+
       <Box
         component="main"
         sx={{

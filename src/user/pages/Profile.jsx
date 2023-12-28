@@ -17,7 +17,7 @@ const dummyData = {
   email: "johndoe@example.com",
   phoneNumber: "1234567890",
   gstNumber: "GST123456",
-  address: "123, Sample Street, City",
+  address: "123, Sample Street",
 };
 
 const Profile = () => {
@@ -27,7 +27,7 @@ const Profile = () => {
 
   const buttonStyle = {
     width: "auto",
-    marginTop: "12px",
+    marginTop: "22px",
   };
 
   const handleInputChange = (e) => {
@@ -41,9 +41,9 @@ const Profile = () => {
   const handleSubmit = (e) => {
     e.preventDefault();
     Swal.fire({
-      icon: 'success',
-      title: 'Profile Updated!',
-      text: 'Your profile has been updated successfully.',
+      icon: "success",
+      title: "Profile Updated!",
+      text: "Your profile has been updated successfully.",
     });
     setFormData({ ...formData, ...updatedData });
     setIsEditable(false);
@@ -63,33 +63,99 @@ const Profile = () => {
   return (
     <Grid container spacing={2} sx={cardContainerStyle}>
       <Grid item xs={12} sm={6} md={4}>
-        <Card sx={{ boxShadow: "0 4px 8px 0 rgba(0,0,0,0.2)", borderRadius: "8px", padding: "20px", margin: "10px", textAlign: "center", minHeight: "150px", display: "flex", flexDirection: "column", justifyContent: "center", marginRight: 2 }}>
-          <Avatar sx={{ width: "64px", height: "64px", margin: "auto", backgroundColor: "none" }}>H</Avatar>
-          <List sx={{ width: "100%" }} component="nav" aria-label="mailbox folders">
-            <ListItem sx={{ fontWeight: "bold", margin: "10px 0" }}>
-              <h4>Name: {formData.name}</h4>
+        <Card
+          sx={{
+            boxShadow: "0 4px 8px 0 rgba(0,0,0,0.2)",
+            borderRadius: "8px",
+            padding: "20px",
+            margin: "10px",
+            textAlign: "center",
+            minHeight: "150px",
+            display: "flex",
+            flexDirection: "column",
+            justifyContent: "center",
+            marginRight: 2,
+          }}
+        >
+          <Avatar
+            sx={{
+              width: "64px",
+              height: "64px",
+              margin: "auto",
+              backgroundColor: "none",
+            }}
+          >
+            H
+          </Avatar>
+          <List
+            sx={{ width: "100%" }}
+            component="nav"
+            aria-label="mailbox folders"
+          >
+            <ListItem sx={{ margin: "10px 0" }}>
+              <h4 style={{ fontWeight: "bold", margin: 0, color: "#2c3e50" }}>
+                Name :
+              </h4>
+              <span style={{ marginLeft: "5px", color: "#34495e" }}>
+                {formData.name}
+              </span>
+            </ListItem>
+<Divider />
+            <ListItem sx={{ margin: "10px 0" }}>
+              <h4 style={{ fontWeight: "bold", margin: 0, color: "#2c3e50" }}>
+                Email :
+              </h4>
+              <span style={{ marginLeft: "5px", color: "#34495e" }}>
+                {formData.email}
+              </span>
             </ListItem>
             <Divider />
-            <ListItem divider sx={{ fontWeight: "bold", margin: "10px 0" }}>
-              <h4>Email: {formData.email}</h4>
-            </ListItem>
-            <ListItem sx={{ fontWeight: "bold", margin: "10px 0" }}>
-              <h4>Phone Number: {formData.phoneNumber}</h4>
-            </ListItem>
-            <Divider />
-            <ListItem sx={{ fontWeight: "bold", margin: "10px 0" }}>
-              <h4>GST Number: {formData.gstNumber}</h4>
+            <ListItem sx={{ margin: "10px 0" }}>
+              <h4 style={{ fontWeight: "bold", margin: 0, color: "#2c3e50" }}>
+                Phone :
+              </h4>
+              <span style={{ marginLeft: "5px", color: "#34495e" }}>
+                {formData.phoneNumber}
+              </span>
             </ListItem>
             <Divider />
-            <ListItem sx={{ fontWeight: "bold", margin: "10px 0" }}>
-              <h4>Address: {formData.address}</h4>
+            <ListItem sx={{ margin: "10px 0" }}>
+              <h4 style={{ fontWeight: "bold", margin: 0, color: "#2c3e50" }}>
+                GST Number :
+              </h4>
+              <span style={{ marginLeft: "5px", color: "#34495e" }}>
+                {formData.gstNumber}
+              </span>
+            </ListItem>
+            <Divider />
+            <ListItem sx={{ margin: "10px 0" }}>
+              <h4 style={{ fontWeight: "bold", margin: 0, color: "#2c3e50" }}>
+                Address:
+              </h4>
+              <span style={{ marginLeft: "5px", color: "#34495e" }}>
+                {formData.address}
+              </span>
             </ListItem>
           </List>
         </Card>
       </Grid>
       <Grid item xs={12} sm={6} md={8}>
-        <Card sx={{ boxShadow: "0 4px 8px 0 rgba(0,0,0,0.2)", borderRadius: "8px", padding: "20px", margin: "10px", textAlign: "center", minHeight: "150px", display: "flex", flexDirection: "column", justifyContent: "center" }}>
-          <h3 style={{ color: "#003E70", fontFamily: "revert" }}>Update Your Profile</h3>
+        <Card
+          sx={{
+            boxShadow: "0 4px 8px 0 rgba(0,0,0,0.2)",
+            borderRadius: "8px",
+            padding: "20px",
+            margin: "10px",
+            textAlign: "center",
+            minHeight: "150px",
+            display: "flex",
+            flexDirection: "column",
+            justifyContent: "center",
+          }}
+        >
+          <h3 style={{ color: "#003E70", fontFamily: "revert" }}>
+            Update Your Profile
+          </h3>
           <br />
           <form onSubmit={handleSubmit}>
             <Grid container spacing={2}>

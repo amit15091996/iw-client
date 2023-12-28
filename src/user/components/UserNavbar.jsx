@@ -156,17 +156,16 @@ export default function UserNavbar() {
     setLoading(true); // Start loading when logout is confirmed
     setTimeout(() => {
       localStorage.clear();
-      navigate('/login');
+      navigate("/login");
       setLoading(false); // Set loading to false after redirecting
-  
+
       // Show SweetAlert upon successful logout
       Swal.fire({
-        icon: 'success',
-        title: 'Logout successfully',
+        icon: "success",
+        title: "Logout successfully",
       });
     }, 2000); // Mimicking a delay for demonstration purposes
   };
-  
 
   const handleLogoutCancel = () => {
     setLogoutDialogOpen(false);
@@ -242,14 +241,12 @@ export default function UserNavbar() {
                   </DialogContentText>
                 </DialogContent>
                 <DialogActions>
-                  <Button onClick={handleLogoutCancel} color="primary">
+                  <Button onClick={handleLogoutCancel} variant="contained">
                     No
                   </Button>
                   <Button
                     onClick={handleLogoutConfirm}
-                    variant="contained"
-                    sx={{ color: "white", bgcolor: "#e53935" }}
-                    autoFocus
+                    style={{ backgroundColor: "#e53935", color: "white" }}
                   >
                     Yes
                   </Button>

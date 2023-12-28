@@ -28,6 +28,7 @@ import {
 import DeleteIcon from "@mui/icons-material/Delete";
 import { useTheme } from "@emotion/react";
 import CustomPagination from "./user-components/CustomPagination";
+import Swal from "sweetalert2";
 
 const AllUsers = () => {
   const theme = useTheme();
@@ -56,8 +57,18 @@ const AllUsers = () => {
 
       if (isActive) {
         await isNotActiveUser(userId);
+        Swal.fire({
+          icon: "info",
+          title: "User Deactivated",
+          text: "The user is now inactive.",
+        });
       } else {
         await isActiveUser(userId);
+        Swal.fire({
+          icon: "success",
+          title: "User Activated",
+          text: "The user is now active.",
+        });
       }
 
       setUserStatus({
@@ -66,6 +77,11 @@ const AllUsers = () => {
       });
     } catch (error) {
       console.error("Error toggling user status: ", error);
+      Swal.fire({
+        icon: "error",
+        title: "Error",
+        text: "There was an error toggling the user status.",
+      });
     }
   };
 
@@ -239,20 +255,28 @@ const AllUsers = () => {
           </Typography>
         </DialogContent>
         <DialogActions>
-          <Button onClick={closeConfirmationDialog} color="primary">
+          <Button
+            onClick={closeConfirmationDialog}
+            variant="contained"
+            style={{ backgroundColor: "" }}
+          >
             Cancel
           </Button>
-          <Button onClick={confirmDeleteUser} color="primary" autoFocus>
+          <Button
+            onClick={confirmDeleteUser}
+            autoFocus
+            style={{ backgroundColor: "#ef233c", color: "white" }}
+          >
             Confirm
           </Button>
         </DialogActions>
       </Dialog>
       <Box display="flex" justifyContent="center" marginTop={2}>
-      <CustomPagination
-        currentPage={currentPage}
-        totalPages={totalPages}
-        handlePageChange={handlePageChange}
-      />
+        <CustomPagination
+          currentPage={currentPage}
+          totalPages={totalPages}
+          handlePageChange={handlePageChange}
+        />
       </Box>
     </Box>
   );

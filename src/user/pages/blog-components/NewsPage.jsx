@@ -37,16 +37,16 @@ const NewsPage = () => {
     {
       title: "Cricket, Sports",
       content:
-        "Kohli, king of cricket, icon of the age, scion of his society, needed protection from those who adored him. So did India's other players. But no-one in cricket is Kohli. As he disappeared into the smothering tunnel of love, looking neither left nor right nor betraying any semblance of acknowledgement of what was happening all around, it was difficult not to feel sorry for him.",
-      image:
-        "https://www.cricbuzz.com/a/img/v1/980x654/i1/c367570/the-battle-of-the-best.jpg",
-    },
-    {
-      title: "Cricket, Sports",
-      content:
         "India have had two-Test series in South Africa before: in November 2001 and December 2013. But their attack in those rubbers did not shimmer with the bowlers Jasprit Bumrah and Mohammed Siraj have become. Mohammed Shami took six wickets at 43.83 in the 2013 series. Considering Shami's development since then, it's a shame an ankle injury has precluded him from measuring that progress in this rubber.",
       image:
         "https://www.cricbuzz.com/a/img/v1/595x396/i1/c367219/of-the-23-tests-india-have-pla.jpg",
+    },
+    {
+      title: "Intallysh Wisdom, IT News",
+      content:
+        "Expanding beyond borders, Intallysh Wisdom is poised to scale your network internationally, amplifying your global footprint. Our adept team specializes in crafting scalable software solutions that transcend geographical boundaries, ensuring seamless connectivity and performance across diverse locations.",
+      image:
+        "https://images.unsplash.com/photo-1446776653964-20c1d3a81b06?q=80&w=1471&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
     },
     {
       title: "Cricket, Sports",
@@ -119,7 +119,15 @@ const NewsPage = () => {
                   {item.title}
                 </Typography>
                 <div style={scrollableContentStyle}>
-                  <Typography variant="body2">{item.content}</Typography>
+                  <Typography
+                    variant="body2"
+                    style={{
+                      textTransform: "capitalize",
+                      backgroundColor: "#fff0f3",
+                    }}
+                  >
+                    {item.content}
+                  </Typography>
                 </div>
               </CardContent>
             </Card>

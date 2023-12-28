@@ -3,6 +3,8 @@ import "./form.css"; // Import your CSS file if you have one
 import { useState } from "react";
 import { doLoginUser } from "../user/services/UserService";
 import Spinner from "./Spinner";
+import Swal from "sweetalert2"; // Import SweetAlert
+
 const LoginForm = () => {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
@@ -18,15 +20,39 @@ const LoginForm = () => {
         "  Password : " +
         password
     );
-    const loginDet = await doLoginUser(username, password);
-    console.log(loginDet);
-    if (loginDet) {
-      navigate("/user/dashboard");
-      setLoading(false);
-    } else {
-      alert("loginFailed");
+    try {
+      const loginDet = await doLoginUser(username, password);
+      console.log(loginDet);
+      if (loginDet) {
+        // Show success toast
+        showSuccessToast();
+        navigate("/user/dashboard");
+      } else {
+        // Show error toast
+        showErrorToast();
+      }
+    } catch (error) {
+      console.error("Login error:", error);
+      // Show error toast if login fails due to an error
+      showErrorToast();
+    } finally {
       setLoading(false);
     }
+  };
+
+  const showSuccessToast = () => {
+    Swal.fire({
+      icon: "success",
+      title: "Signed in successfully",
+    });
+  };
+
+  const showErrorToast = () => {
+    Swal.fire({
+      icon: "error",
+      title: "Login failed",
+      text: "Please check your credentials and try again",
+    });
   };
 
   const acc = "Don't have an account?";
@@ -61,7 +87,6 @@ const LoginForm = () => {
             </Link>
           </div>
           <div className="button">
-            {console.log(loading)}
             <Spinner show={loading} />
             <input
               type="submit"

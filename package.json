@@ -37,6 +37,7 @@
     "react-timeline-scribble": "1.0.12",
     "react-vertical-timeline-component": "^3.6.0",
     "slick-carousel": "^1.8.1",
+    "sweetalert2": "^11.10.1",
     "swiper": "^11.0.5"
   },
   "devDependencies": {

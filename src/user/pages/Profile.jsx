@@ -1,136 +1,165 @@
-import { useState } from 'react';
-import { Grid, TextField, Button, Typography, Paper, Box } from '@mui/material';
-import styled from 'styled-components';
+import { useState, useEffect } from "react";
+import {
+  Avatar,
+  Button,
+  Card,
+  Divider,
+  Grid,
+  List,
+  ListItem,
+  TextField,
+} from "@mui/material";
+import ChangePassword from "./ChangePassword";
+import Swal from "sweetalert2";
+
+const dummyData = {
+  name: "John Doe",
+  email: "johndoe@example.com",
+  phoneNumber: "1234567890",
+  gstNumber: "GST123456",
+  address: "123, Sample Street, City",
+};
 
 const Profile = () => {
-  const initialData = {
-    name: 'John Doe',
-    email: 'johndoe@example.com',
-    phone: '1234567890',
-    address: '123 Main St, City, Country',
-    gstNumber: 'ABCD1234XYZ',
+  const [formData, setFormData] = useState(dummyData);
+  const [updatedData, setUpdatedData] = useState({});
+  const [isEditable, setIsEditable] = useState(false);
+
+  const buttonStyle = {
+    width: "auto",
+    marginTop: "12px",
   };
 
-  const [formData, setFormData] = useState(initialData);
-  const [editMode, setEditMode] = useState(false);
-
-  const handleEdit = () => {
-    setEditMode(true);
-  };
-
-  const handleSave = () => {
-    setEditMode(false);
-    // You can add logic here to save the updated data (formData) to your backend or perform other actions.
-  };
-
-  const handleChange = (e) => {
+  const handleInputChange = (e) => {
     const { name, value } = e.target;
-    setFormData({ ...formData, [name]: value });
+    setUpdatedData({
+      ...updatedData,
+      [name]: value,
+    });
   };
-  const StyledBox = styled(Box)`
-  border: 1px solid #ccc;
-  border-radius: 4px;
-  padding: 16px;
-  /* Add any other desired styles */
-`;
 
-// Styled component for the strong tags within Typography
-const Strong = styled.strong`
-  font-weight: bold;
-`;
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    Swal.fire({
+      icon: 'success',
+      title: 'Profile Updated!',
+      text: 'Your profile has been updated successfully.',
+    });
+    setFormData({ ...formData, ...updatedData });
+    setIsEditable(false);
+    setUpdatedData({});
+  };
+
+  useEffect(() => {
+    if (!isEditable) {
+      setUpdatedData({});
+    }
+  }, [isEditable]);
+
+  const cardContainerStyle = {
+    display: "flex",
+  };
+
   return (
-    <Paper elevation={3} style={{ padding: '20px', marginBottom: '20px' }}>
-      <Typography variant="h4" gutterBottom>
-        User Profile
-      </Typography>
-      <Grid container spacing={2}>
-        <Grid item xs={12}>
-        <StyledBox p={2}>
-      <Typography variant="body1">
-        <Strong>Name:</Strong> {formData.name}
-      </Typography>
-      <Typography variant="body1">
-        <Strong>Email:</Strong> {formData.email}
-      </Typography>
-      <Typography variant="body1">
-        <Strong>Phone:</Strong> {formData.phone}
-      </Typography>
-      <Typography variant="body1">
-        <Strong>Address:</Strong> {formData.address}
-      </Typography>
-      <Typography variant="body1">
-        <Strong>GST Number:</Strong> {formData.gstNumber}
-      </Typography>
-    </StyledBox>
-        </Grid>
-        <Grid item xs={12}>
-          <TextField
-            fullWidth
-            size="small"
-            label="Name"
-            name="name"
-            value={formData.name}
-            disabled={!editMode}
-            onChange={handleChange}
-          />
-        </Grid>
-        <Grid item xs={12}>
-          <TextField
-            fullWidth
-            size="small"
-            label="Email"
-            name="email"
-            value={formData.email}
-            disabled={!editMode}
-            onChange={handleChange}
-          />
-        </Grid>
-        <Grid item xs={12}>
-          <TextField
-            fullWidth
-            size="small"
-            label="Phone"
-            name="phone"
-            value={formData.phone}
-            disabled={!editMode}
-            onChange={handleChange}
-          />
-        </Grid>
-        <Grid item xs={12}>
-          <TextField
-            fullWidth
-            size="small"
-            label="Address"
-            name="address"
-            value={formData.address}
-            disabled={!editMode}
-            onChange={handleChange}
-          />
-        </Grid>
-        <Grid item xs={12}>
-          <TextField
-            fullWidth
-            size="small"
-            label="GST Number"
-            name="gstNumber"
-            value={formData.gstNumber}
-            disabled={!editMode}
-            onChange={handleChange}
-          />
-        </Grid>
-        <Grid item xs={12}>
-          {!editMode ? (
-            <Button variant="contained" color="primary" onClick={handleEdit}>
-              Edit
-            </Button>
-          ) : (
-            <Button variant="contained" color="primary" onClick={handleSave}>
-              Save
-            </Button>
-          )}
-        </Grid>
+    <Grid container spacing={2} sx={cardContainerStyle}>
+      <Grid item xs={12} sm={6} md={4}>
+        <Card sx={{ boxShadow: "0 4px 8px 0 rgba(0,0,0,0.2)", borderRadius: "8px", padding: "20px", margin: "10px", textAlign: "center", minHeight: "150px", display: "flex", flexDirection: "column", justifyContent: "center", marginRight: 2 }}>
+          <Avatar sx={{ width: "64px", height: "64px", margin: "auto", backgroundColor: "none" }}>H</Avatar>
+          <List sx={{ width: "100%" }} component="nav" aria-label="mailbox folders">
+            <ListItem sx={{ fontWeight: "bold", margin: "10px 0" }}>
+              <h4>Name: {formData.name}</h4>
+            </ListItem>
+            <Divider />
+            <ListItem divider sx={{ fontWeight: "bold", margin: "10px 0" }}>
+              <h4>Email: {formData.email}</h4>
+            </ListItem>
+            <ListItem sx={{ fontWeight: "bold", margin: "10px 0" }}>
+              <h4>Phone Number: {formData.phoneNumber}</h4>
+            </ListItem>
+            <Divider />
+            <ListItem sx={{ fontWeight: "bold", margin: "10px 0" }}>
+              <h4>GST Number: {formData.gstNumber}</h4>
+            </ListItem>
+            <Divider />
+            <ListItem sx={{ fontWeight: "bold", margin: "10px 0" }}>
+              <h4>Address: {formData.address}</h4>
+            </ListItem>
+          </List>
+        </Card>
       </Grid>
-    </Paper>
+      <Grid item xs={12} sm={6} md={8}>
+        <Card sx={{ boxShadow: "0 4px 8px 0 rgba(0,0,0,0.2)", borderRadius: "8px", padding: "20px", margin: "10px", textAlign: "center", minHeight: "150px", display: "flex", flexDirection: "column", justifyContent: "center" }}>
+          <h3 style={{ color: "#003E70", fontFamily: "revert" }}>Update Your Profile</h3>
+          <br />
+          <form onSubmit={handleSubmit}>
+            <Grid container spacing={2}>
+              <Grid item xs={6}>
+                <TextField
+                  label="Name"
+                  name="name"
+                  value={updatedData.name || formData.name}
+                  onChange={handleInputChange}
+                  fullWidth
+                  margin="normal"
+                />
+              </Grid>
+              <Grid item xs={6}>
+                <TextField
+                  label="Email"
+                  name="email"
+                  value={updatedData.email || formData.email}
+                  onChange={handleInputChange}
+                  fullWidth
+                  margin="normal"
+                />
+              </Grid>
+              <Grid item xs={6}>
+                <TextField
+                  label="Phone Number"
+                  name="phoneNumber"
+                  value={updatedData.phoneNumber || formData.phoneNumber}
+                  onChange={handleInputChange}
+                  fullWidth
+                  margin="normal"
+                />
+              </Grid>
+              <Grid item xs={6}>
+                <TextField
+                  label="GST Number"
+                  name="gstNumber"
+                  value={updatedData.gstNumber || formData.gstNumber}
+                  onChange={handleInputChange}
+                  fullWidth
+                  margin="normal"
+                />
+              </Grid>
+              <Grid item xs={6}>
+                <TextField
+                  label="Address"
+                  name="address"
+                  value={updatedData.address || formData.address}
+                  onChange={handleInputChange}
+                  fullWidth
+                  margin="normal"
+                />
+              </Grid>
+            </Grid>
+            <Button
+              variant="contained"
+              color="primary"
+              type="submit"
+              sx={buttonStyle}
+              onClick={() => setIsEditable(true)}
+            >
+              Update
+            </Button>
+          </form>
+        </Card>
+      </Grid>
+      <Grid item xs={12}>
+        <ChangePassword />
+      </Grid>
+    </Grid>
   );
 };
 

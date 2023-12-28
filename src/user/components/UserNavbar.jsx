@@ -38,6 +38,7 @@ import PeopleIcon from "@mui/icons-material/People";
 import FeedIcon from "@mui/icons-material/Feed";
 import { useTheme } from "@emotion/react";
 import FolderIcon from "@mui/icons-material/Folder";
+import Swal from "sweetalert2";
 const drawerWidth = 240;
 
 const openedMixin = (theme) => ({
@@ -155,10 +156,17 @@ export default function UserNavbar() {
     setLoading(true); // Start loading when logout is confirmed
     setTimeout(() => {
       localStorage.clear();
-      navigate("/login");
+      navigate('/login');
       setLoading(false); // Set loading to false after redirecting
+  
+      // Show SweetAlert upon successful logout
+      Swal.fire({
+        icon: 'success',
+        title: 'Logout successfully',
+      });
     }, 2000); // Mimicking a delay for demonstration purposes
   };
+  
 
   const handleLogoutCancel = () => {
     setLogoutDialogOpen(false);

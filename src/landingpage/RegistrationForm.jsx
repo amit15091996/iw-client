@@ -1,8 +1,8 @@
-// RegistrationForm.js
 import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import "./register.css";
 import { registerUser } from "../user/services/UserService";
+import Swal from "sweetalert2"; // Import SweetAlert
 
 const RegistrationForm = () => {
   const navigate = useNavigate();
@@ -34,28 +34,43 @@ const RegistrationForm = () => {
       console.log("User registered:", registeredUser);
 
       if (registeredUser) {
+        showSuccessToast();
         navigate("/login");
+        setFormData({
+          name: "",
+          password: "",
+          email: "",
+          phone: "",
+          gstNo: "",
+          address: "",
+        });
       } else {
-        alert("Registration failed");
+        showErrorToast("Registration failed");
       }
-
-      // Reset the form fields after successful registration
-      setFormData({
-        name: "",
-        password: "",
-        email: "",
-        phone: "",
-        gstNo: "",
-        address: "",
-      });
 
       // Redirect or perform other actions upon successful registration if needed
     } catch (error) {
       console.error("Registration error:", error.message);
+      showErrorToast("Registration failed");
       // Handle the error (e.g., display an error message to the user)
     }
   };
 
+  const showSuccessToast = () => {
+    Swal.fire({
+      icon: "success",
+      title: "Registered successfully",
+      text: "Please login to continue",
+    });
+  };
+
+  const showErrorToast = (errorMessage) => {
+    Swal.fire({
+      icon: "error",
+      title: "Registration failed",
+      text: errorMessage,
+    });
+  };
   const acc = "Already have an account?";
 
   return (

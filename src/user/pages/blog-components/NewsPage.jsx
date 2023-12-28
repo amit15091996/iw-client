@@ -123,7 +123,7 @@ const NewsPage = () => {
                     variant="body2"
                     style={{
                       textTransform: "capitalize",
-                      backgroundColor: "#fff0f3",
+                      backgroundColor: "#faf9f9",
                     }}
                   >
                     {item.content}

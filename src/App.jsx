@@ -37,13 +37,10 @@ function App() {
             <Route index path="dashboard" element={<UserDashboard />} />
             <Route index path="my-documents" element={<MyDocuments />} />
             <Route index path="documents" element={<UserDocument />} />
-            <Route
-              index
-              path="all-users-documents"
-              element={<AllDocuments />}
-            />
+            <Route index path="all-users-documents" element={<AllDocuments />}/>
             <Route index path="profile" element={<Profile />} />
           </Route>
+          {/* Error Page Route */}
           <Route path="*" element={<ErrorPage />} />
         </Routes>
       </Router>

@@ -74,3 +74,17 @@ export const getItemReceived = async (count) => {
     console.log(resposne.data);
     return resposne.data;
 }
+
+export const updateProfile = async (updateData) => {
+    try {
+        const response = await postReqAxios.put(`/user/update-profile`, updateData);
+
+        console.log('Response:', response.data);
+
+        return response.data;
+    } catch (error) {
+        console.error('Error updating profile:', error);
+
+        throw error;
+    }
+};

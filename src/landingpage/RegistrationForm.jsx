@@ -3,6 +3,7 @@ import { Link, useNavigate } from "react-router-dom";
 import "./register.css";
 import { registerUser } from "../user/services/UserService";
 import Swal from "sweetalert2"; // Import SweetAlert
+import Spinner from "./Spinner";
 
 const RegistrationForm = () => {
   const navigate = useNavigate();
@@ -14,6 +15,7 @@ const RegistrationForm = () => {
     gstNo: "",
     address: "",
   });
+  const [loading, setLoading] = useState(false); // State to manage loading state
 
   const { name, password, email, phone, gstNo, address } = formData;
 
@@ -27,6 +29,7 @@ const RegistrationForm = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    setLoading(true); // Set loading to true when form is submitted
 
     try {
       const registeredUser = await registerUser(formData);
@@ -53,6 +56,8 @@ const RegistrationForm = () => {
       console.error("Registration error:", error.message);
       showErrorToast("Registration failed");
       // Handle the error (e.g., display an error message to the user)
+    } finally {
+      setLoading(false); // Set loading to false after registration attempt (success or failure)
     }
   };
 
@@ -150,6 +155,7 @@ const RegistrationForm = () => {
             <input type="submit" value="Register" />
           </div>
         </form>
+        {loading && <Spinner show={loading} />}
         <div className="signup-link">
           {acc}{" "}
           <Link to="/login" style={{ color: "blue" }}>

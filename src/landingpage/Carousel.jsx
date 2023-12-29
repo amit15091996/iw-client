@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import "./carousel.css"; // External CSS file for styling
-
+import ArrowForwardIosIcon from "@mui/icons-material/ArrowForwardIos";
+import ArrowBackIosIcon from "@mui/icons-material/ArrowBackIos";
 const Carousel = () => {
   const [currentImage, setCurrentImage] = useState(0);
 
@@ -32,6 +33,15 @@ const Carousel = () => {
     return () => clearInterval(interval);
   }, [images.length]);
 
+  const nextSlide = () => {
+    setCurrentImage((prevImage) => (prevImage + 1) % images.length);
+  };
+
+  const prevSlide = () => {
+    setCurrentImage((prevImage) =>
+      prevImage === 0 ? images.length - 1 : prevImage - 1
+    );
+  };
   return (
     <div className="carousel-container">
       {images.map((image, index) => (

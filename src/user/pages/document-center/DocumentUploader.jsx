@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState } from "react";
 import {
   Button,
   Paper,
@@ -13,31 +13,31 @@ import {
   TextField,
   MenuItem,
   styled,
-} from '@mui/material';
+} from "@mui/material";
 
 const DocumentUploader = () => {
   const [uploadedDocuments, setUploadedDocuments] = useState([]);
   const [selectedFile, setSelectedFile] = useState(null);
   const [uploading, setUploading] = useState(false);
-  const [textData, setTextData] = useState('');
-  const [fileType, setFileType] = useState('');
+  const [textData, setTextData] = useState("");
+  const [fileType, setFileType] = useState("");
 
-  const CustomInput = styled('input')({
-    display: 'none',
+  const CustomInput = styled("input")({
+    display: "none",
   });
 
-  const FileInputLabel = styled('label')({
-    display: 'flex',
-    alignItems: 'center',
-    justifyContent: 'center',
-    width: '200px',
-    height: '50px',
-    backgroundColor: '#1976d2',
-    color: '#fff',
-    borderRadius: '5px',
-    cursor: 'pointer',
-    '&:hover': {
-      backgroundColor: '#1565c0',
+  const FileInputLabel = styled("label")({
+    display: "flex",
+    alignItems: "center",
+    justifyContent: "center",
+    width: "200px",
+    height: "50px",
+    backgroundColor: "#1976d2",
+    color: "#fff",
+    borderRadius: "5px",
+    cursor: "pointer",
+    "&:hover": {
+      backgroundColor: "#1565c0",
     },
   });
 
@@ -65,21 +65,23 @@ const DocumentUploader = () => {
           },
         ]);
         setSelectedFile(null);
-        setTextData('');
-        setFileType('');
+        setTextData("");
+        setFileType("");
         setUploading(false);
       }, 2000);
     }
   };
 
-
   return (
-    <Paper elevation={3} style={{ padding: '20px', maxWidth: '1000px', margin: 'auto' }}>
+    <Paper
+      elevation={3}
+      style={{ padding: "20px", maxWidth: "1000px", margin: "auto" }}
+    >
       <Typography variant="h5" gutterBottom>
         Document Uploader
       </Typography>
       <FileInputLabel htmlFor="upload-file">
-        {selectedFile ? selectedFile.name : 'Select File'}
+        {selectedFile ? selectedFile.name : "Select File"}
         <CustomInput id="upload-file" type="file" onChange={handleFileSelect} />
       </FileInputLabel>
       <TextField
@@ -88,7 +90,7 @@ const DocumentUploader = () => {
         variant="outlined"
         value={fileType}
         onChange={handleFileTypeSelect}
-        style={{ marginTop: '10px', width: '50%' }}
+        style={{ marginTop: "10px", width: "50%" }}
       >
         <MenuItem value="Audit Report">Audit Report</MenuItem>
         <MenuItem value="Bank Statement">Bank Statement</MenuItem>
@@ -108,25 +110,34 @@ const DocumentUploader = () => {
         variant="outlined"
         value={textData}
         onChange={(e) => setTextData(e.target.value)}
-        style={{ marginTop: '10px', width: '50%' }}
+        style={{ marginTop: "10px", width: "50%" }}
       />
+
+      {/* Initial report date and time - need to be implemented */}
+      {/* <TextField
+      label="Report Date"
+      variant='outlined'
+      type='datetime-local'
+      >
+
+      </TextField> */}
       <br />
       <Button
         variant="contained"
         color="primary"
         onClick={handleFileUpload}
         disabled={!selectedFile || uploading}
-        style={{ marginTop: '10px' }}
+        style={{ marginTop: "10px" }}
       >
-        {uploading ? <CircularProgress size={24} /> : 'Send'}
+        {uploading ? <CircularProgress size={24} /> : "Send"}
       </Button>
       {uploading && (
-        <Typography variant="body2" style={{ marginTop: '10px' }}>
+        <Typography variant="body2" style={{ marginTop: "10px" }}>
           Uploading...
         </Typography>
       )}
       {uploadedDocuments.length > 0 && (
-        <TableContainer component={Paper} style={{ marginTop: '20px' }}>
+        <TableContainer component={Paper} style={{ marginTop: "20px" }}>
           <Table>
             <TableHead>
               <TableRow>
@@ -145,15 +156,14 @@ const DocumentUploader = () => {
                   <TableCell>{item.fileType}</TableCell>
                   <TableCell>{(item.file.size / 1024).toFixed(2)} KB</TableCell>
                   <TableCell>{item.text}</TableCell>
-                  <TableCell>{item.uploadDateTime.split(',')[0]}</TableCell>
-                  <TableCell>{item.uploadDateTime.split(',')[1]}</TableCell>
+                  <TableCell>{item.uploadDateTime.split(",")[0]}</TableCell>
+                  <TableCell>{item.uploadDateTime.split(",")[1]}</TableCell>
                 </TableRow>
               ))}
             </TableBody>
           </Table>
         </TableContainer>
       )}
-      
     </Paper>
   );
 };

@@ -21,3 +21,17 @@ export const deleteUser = async (userId) => {
     return await postReqAxios.delete(`/admin/user/delete/${userId}`).then(res => res.data);
 }
 
+export const updateUserProfile = async (updateUserReqDto) => {
+    try {
+      const response = await postReqAxios.put('admin/user/update-profile', updateUserReqDto);
+      return response.data;
+    } catch (error) {
+      if (error.response && error.response.status === 403) {
+        throw new Error('Session Expired! Please login and try again.');
+      } else {
+        throw new Error('An error occurred while updating the profile.');
+      }
+    }
+  };
+
+  

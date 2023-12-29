@@ -4,6 +4,7 @@ import {
   isNotActiveUser,
   isActiveUser,
   deleteUser,
+  updateUserProfile,
 } from "../services/AdminService";
 import {
   Box,
@@ -26,9 +27,15 @@ import {
   Switch,
 } from "@mui/material";
 import DeleteIcon from "@mui/icons-material/Delete";
+import EditNoteIcon from "@mui/icons-material/EditNote";
 import { useTheme } from "@emotion/react";
 import CustomPagination from "./user-components/CustomPagination";
 import Swal from "sweetalert2";
+import {
+  getLoggedInUserName,
+  getUserByUsername,
+  updateProfile,
+} from "../services/UserService";
 
 const AllUsers = () => {
   const theme = useTheme();
@@ -46,6 +53,66 @@ const AllUsers = () => {
   const [totalPages, setTotalPages] = useState(0);
   const [totalResults, setTotalResults] = useState(0);
 
+  const [editUserId, setEditUserId] = useState(null);
+  const [formData, setFormData] = useState({});
+  const [showEditModal, setShowEditModal] = useState(false);
+
+  const fetchUserData = async () => {
+    const loggedInUserName = getLoggedInUserName();
+    if (loggedInUserName) {
+      try {
+        const userData = await getUserByUsername(loggedInUserName);
+        setFormData(userData.user);
+      } catch (error) {
+        console.error("Error fetching user data:", error);
+      }
+    }
+  };
+
+  useEffect(() => {
+    fetchUserData();
+  }, []);
+
+  const handleEditUser = (userData) => {
+    setFormData(userData); // Set the user data into formData state
+    setShowEditModal(true); // Open the edit modal
+  };
+
+  const handleCloseEditModal = () => {
+    setShowEditModal(false);
+    setEditUserId(null);
+  };
+  const handleProfileUpdate = async (updatedData) => {
+    try {
+      // Call the updateProfile function from the imported API module
+      const response = await updateUserProfile(updatedData);
+
+      console.log("Profile updated:", response);
+
+      // Update the user's address in the usersList state
+      const updatedUsersList = usersList.map((user) =>
+        user.userId === updatedData.userId ? { ...user, ...updatedData } : user
+      );
+
+      setUsersList(updatedUsersList);
+
+      setFormData(updatedData);
+      setShowEditModal(false); // Close the edit modal after successful update
+      Swal.fire({
+        icon: "success",
+        title: "Profile Updated",
+        text: "Your profile has been updated successfully!",
+      });
+    } catch (error) {
+      // Handle errors (e.g., display error message)
+      console.error("Error updating profile:", error);
+      Swal.fire({
+        icon: "error",
+        title: "Update Failed",
+        text: "There was an error while updating your profile. Please try again.",
+      });
+    }
+  };
   // Function to toggle the active/inactive status of a user
   const toggleUserStatus = async (userId) => {
     try {
@@ -231,10 +298,17 @@ const AllUsers = () => {
                 </TableCell>
                 <TableCell align="center">
                   <IconButton
+                    aria-label="edit"
+                    onClick={() => handleEditUser(user)}
+                  >
+                    <EditNoteIcon style={{ color: "#003E70" }} />
+                  </IconButton>
+                  <IconButton
                     aria-label="delete"
                     onClick={() => handleDeleteUser(user.userId)}
                   >
-                    <DeleteIcon />
+                    {/* Use an icon for delete button */}
+                    <DeleteIcon style={{ color: "#ef233c" }} />
                   </IconButton>
                 </TableCell>
               </TableRow>
@@ -278,6 +352,61 @@ const AllUsers = () => {
           handlePageChange={handlePageChange}
         />
       </Box>
+
+      <Dialog
+        open={showEditModal}
+        onClose={() => setShowEditModal(false)}
+        aria-labelledby="edit-user-modal"
+        aria-describedby="edit-user-modal-description"
+      >
+        <DialogTitle>Edit User Profile</DialogTitle>
+        <DialogContent>
+          <TextField
+            label="Name"
+            value={formData.name}
+            onChange={(e) => setFormData({ ...formData, name: e.target.value })}
+            margin="normal"
+            fullWidth
+          />
+          <TextField
+            label="Phone Number"
+            name="phone"
+            onChange={(e) =>
+              setFormData({ ...formData, phone: e.target.value })
+            }
+            value={formData.phone}
+            fullWidth
+            margin="normal"
+          />
+          <TextField
+            label="GST Number"
+            name="gstNo"
+            onChange={(e) =>
+              setFormData({ ...formData, gstNo: e.target.value })
+            }
+            value={formData.gstNo}
+            fullWidth
+            margin="normal"
+          />
+          <TextField
+            label="Address"
+            name="address"
+            onChange={(e) =>
+              setFormData({ ...formData, address: e.target.value })
+            }
+            value={formData.address}
+            fullWidth
+            margin="normal"
+          />
+          {/* Other form fields for editing user details */}
+        </DialogContent>
+        <DialogActions>
+          <Button onClick={() => setShowEditModal(false)} style={{color:'white', backgroundColor:'#ef233c'}}>Cancel</Button>
+          <Button onClick={() => handleProfileUpdate(formData)} style={{color:'white', backgroundColor:'#003E70'}}>
+            Save
+          </Button>
+        </DialogActions>
+      </Dialog>
     </Box>
   );
 };

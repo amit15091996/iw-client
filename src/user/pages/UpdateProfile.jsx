@@ -128,7 +128,7 @@ const UpdateProfile = ({ userData, onUpdate }) => {
           {!editMode && (
             <Button
               variant="contained"
-              color="secondary"
+              
               style={{ marginRight: "10px", height: "35px" }}
               onClick={handleEditClick}
             >

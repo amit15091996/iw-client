@@ -38,24 +38,7 @@ const CenteredButton = styled(Button)({
   margin: "10px auto", // Added margin for button spacing
 });
 
-const Services = () => {
-  const handleButtonClick = () => {
-    let scrollAmount = 3450; // Default scroll amount for larger screens
-
-    // Adjust scroll amount for smaller screens (e.g., mobile devices)
-    if (window.innerWidth < 768) {
-      scrollAmount = 6800; // Adjust this value as needed for mobile
-    }
-
-    const currentPosition = window.scrollY || window.pageYOffset;
-
-    window.scroll({
-      top: currentPosition + scrollAmount,
-      left: 0,
-      behavior: "smooth",
-    });
-  };
-
+const Services = ({ onContactButtonClick }) => {
   return (
     <Container
       container
@@ -118,7 +101,7 @@ const Services = () => {
           <CenteredButton
             variant="contained"
             color="primary"
-            onClick={handleButtonClick}
+            onClick={onContactButtonClick}
           >
             Contact Us
           </CenteredButton>

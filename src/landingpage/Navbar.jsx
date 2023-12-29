@@ -100,6 +100,12 @@ const Navbar = () => {
     };
   }, []);
 
+  const scrollToContact = () => {
+    const contactSectionOffset =
+      sectionRefs.current[5].offsetTop - appBarHeight; // Update with appropriate index
+    window.scrollTo({ top: contactSectionOffset, behavior: "smooth" });
+  };
+
   return (
     <div>
       <CssBaseline />
@@ -209,7 +215,7 @@ const Navbar = () => {
       >
         <div>
           {/* <h2>Content of Nav 2 section</h2> */}
-          <Services />
+          <Services onContactButtonClick={scrollToContact} />
         </div>
       </div>
 
@@ -246,12 +252,12 @@ const Navbar = () => {
         style={{
           paddingTop: "0",
           height: "auto",
-          backgroundColor:"#f9f9f9",
+          backgroundColor: "#f9f9f9",
           margin: "0",
           overflow: "hidden",
         }}
       >
-        <div style={{ marginTop: "70px"}}>
+        <div style={{ marginTop: "70px" }}>
           <div
             className="heading"
             style={{
@@ -265,7 +271,7 @@ const Navbar = () => {
               style={{
                 fontSize: "30px",
                 color: "#003e70",
-                
+
                 textAlign: "center",
               }}
             >
@@ -274,7 +280,7 @@ const Navbar = () => {
           </div>
           <div
             style={{
-              color:"#3d5a80",
+              color: "#3d5a80",
               fontStyle: "italic",
               fontSize: "20px",
               textAlign: "center",

@@ -24,7 +24,9 @@
 }
 .text-overlay {
   position: absolute;
-  top: 50%;
+  width: 85rem;
+  height: 100%;
+  top: 59%;
   left: 50%;
   transform: translate(-50%, -50%);
   background-color: rgba(0, 0, 0, 0.5);
@@ -35,13 +37,15 @@
 
 .text-overlay p {
   font-family: "Arial, sans-serif";
-  font-size: 26px;
+  margin-top:5rem;
+  font-size: 60px;
   color: #fff;
   padding: 10px;
   border-radius: 5px;
   font-weight: 400;
   /* Additional text styling */
-  text-transform: uppercase;
+  text-transform: capitalize;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
 }
 
 /* Media queries for mobile responsiveness */
@@ -53,12 +57,12 @@
 
   .text-overlay {
     position: absolute;
-    top: 50%;
+    top: 55%;
     left: 50%;
     transform: translate(-50%, -50%);
-    width: 90%;
-    max-width: 90%;
-    height:330px;
+    width: 27rem;
+    /* max-width: 90%; */
+    height:790px;
     padding: 20px;
     background-color: rgba(0, 0, 0, 0.7);
     text-align: center;
@@ -66,8 +70,10 @@
   }
 
   .text-overlay p {
-    font-size: 16px;
+    margin-top: 7px;
+    font-size: 37px;
     max-width: 100%;
-    overflow-wrap: break-word;
+    overflow-wrap: normal;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
   }
 }

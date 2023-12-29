@@ -7,6 +7,7 @@ import {
   updateProfile,
 } from "../services/UserService";
 import UpdateProfile from "./UpdateProfile";
+import Swal from "sweetalert2";
 
 const Profile = () => {
   const [formData, setFormData] = useState({});
@@ -18,7 +19,7 @@ const Profile = () => {
         const userData = await getUserByUsername(loggedInUserName);
         setFormData(userData.user);
       } catch (error) {
-        console.error('Error fetching user data:', error);
+        console.error("Error fetching user data:", error);
       }
     }
   };
@@ -35,9 +36,20 @@ const Profile = () => {
       const response = await updateProfile(updatedData);
 
       console.log("Profile updated:", response);
+      setFormData(updatedData);
+      Swal.fire({
+        icon: "success",
+        title: "Profile Updated",
+        text: "Your profile has been updated successfully!",
+      });
     } catch (error) {
       // Handle errors (e.g., display error message)
       console.error("Error updating profile:", error);
+      Swal.fire({
+        icon: "error",
+        title: "Update Failed",
+        text: "There was an error while updating your profile. Please try again.",
+      });
     }
   };
   return (

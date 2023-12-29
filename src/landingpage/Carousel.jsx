@@ -8,19 +8,19 @@ const Carousel = () => {
   const images = [
     {
       src: "https://images.unsplash.com/photo-1510906594845-bc082582c8cc?q=80&w=1444&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
-      text: "Discover the essence of technological brilliance with Intallysh Wisdom. As a premier software company, we offer a comprehensive suite of services designed to elevate your business to new heights. From innovative software development to seamless integration solutions, intuitive user interfaces to robust cybersecurity measures, we are your one-stop destination for all things tech",
+      text: "Discover the essence of technological brilliance with Intallysh Wisdom. As a premier software company, we offer a comprehensive suite of services designed to elevate your business to new heights.",
     },
     {
       src: "https://images.unsplash.com/photo-1511447333015-45b65e60f6d5?q=80&w=1555&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
-      text: "Continuing our dedication to innovation, Intallysh Wisdom remains your steadfast partner in navigating the dynamic realms of technology. Our mission extends beyond mere software; it encompasses a commitment to understanding your unique needs, collaborating seamlessly, and delivering solutions that surpass expectations",
+      text: "The commitment to innovation at Intallysh Wisdom goes beyond software. We navigate dynamic technology realms, understanding unique needs, collaborating seamlessly, and delivering solutions that exceed expectations.",
     },
     {
       src: "https://images.unsplash.com/photo-1446776653964-20c1d3a81b06?q=80&w=1471&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
-      text: "Expanding beyond borders, Intallysh Wisdom is poised to scale your network internationally, amplifying your global footprint. Our adept team specializes in crafting scalable software solutions that transcend geographical boundaries, ensuring seamless connectivity and performance across diverse locations",
+      text: "Intallysh Wisdom expands globally, scaling networks, crafting scalable software solutions, and ensuring seamless connectivity across diverse locations, transcending geographical boundaries for enhanced performance.",
     },
     {
       src: "https://images.unsplash.com/photo-1548092372-0d1bd40894a3?q=80&w=1470&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
-      text: "Security is the cornerstone of our ethos at Intallysh Wisdom. We meticulously craft comprehensive security solutions, employing cutting-edge technologies and stringent protocols to safeguard your digital assets. Our commitment to security extends across borders, ensuring robust protection for your network on a global scale",
+      text: "Intallysh Wisdom prioritizes security, crafting comprehensive solutions with cutting-edge tech. Our commitment extends globally, ensuring robust network protection across diverse borders and digital landscapes.",
     },
   ];
 

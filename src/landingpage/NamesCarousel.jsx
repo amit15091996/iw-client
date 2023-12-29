@@ -21,11 +21,11 @@ const NameSlider = () => {
   };
 
   const name1 = [
+    "Aagam Telecom",
     "Alok Traders",
-    "Aviral Enterprises",
     "Bafna Jewellers",
     "Dhanansh Engineering",
-    "Hira Agro",
+    "Hari Om Agency",
     "K.M Industries",
     "Mahaveer Jewellers",
     "Shubham Motor",
@@ -34,12 +34,12 @@ const NameSlider = () => {
   const name2 = [
     "Prience Infotech",
     "BR Enterprises",
-    "JP Tyre",
+    "Jain Watch",
     "Mahajan Jewellers",
     "Pankaj Tiles",
     "Reet Hosiery",
     "Kajal Industries",
-    "Warshi AirConditioner",
+    "Rajat Agency",
   ];
 
   const name3 = [
@@ -47,8 +47,8 @@ const NameSlider = () => {
     "Shourya Traders",
     "Kahna Telecom",
     "Dewangan Enterprises",
-    "Balaji Light House",
-    "Car Care",
+    "Parakh Fuels",
+    "Kabir Warehouse",
     "D.K. Enterprises",
     "KK MacineDry",
   ];

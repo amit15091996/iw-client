@@ -1,7 +1,7 @@
 import axios from "axios";
 import { getToken } from "../user/services/UserService";
 
-const BASE_URL = "http://10.0.0.53:9190/api/v1";
+const BASE_URL = "http://192.168.10.233:9190/api/v1";
 
 export const postReqAxios = axios.create({
     baseURL: `${BASE_URL}`

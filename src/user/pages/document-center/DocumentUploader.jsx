@@ -13,7 +13,13 @@ import {
   TextField,
   MenuItem,
   styled,
+  Grid,
+  Box,
 } from "@mui/material";
+import { uploadFileAdmin } from "../../services/FileService";
+import { DatePicker, LocalizationProvider } from "@mui/x-date-pickers";
+import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
+import dayjs from "dayjs";
 
 const DocumentUploader = () => {
   const [uploadedDocuments, setUploadedDocuments] = useState([]);
@@ -21,6 +27,14 @@ const DocumentUploader = () => {
   const [uploading, setUploading] = useState(false);
   const [textData, setTextData] = useState("");
   const [fileType, setFileType] = useState("");
+  const [selectedDate, setSelectedDate] = useState(null); // New state for date
+
+  const handleDateChange = (date) => {
+    const formattedDate = date ? dayjs(date).format("YYYY-MM-DD") : null;
+    console.log(formattedDate); // Output the formatted date for debugging
+
+    setSelectedDate(formattedDate);
+  };
 
   const CustomInput = styled("input")({
     display: "none",
@@ -49,26 +63,49 @@ const DocumentUploader = () => {
     setSelectedFile(event.target.files[0]);
   };
 
-  const handleFileUpload = () => {
-    if (selectedFile) {
+  const handleFileUpload = async (e) => {
+    e.preventDefault();
+
+    if (selectedFile && fileType && selectedDate && textData) {
       setUploading(true);
-      // Simulating upload delay for 2 seconds (Remove this in actual implementation)
-      setTimeout(() => {
-        const currentDate = new Date().toLocaleString(); // Get current date and time
-        setUploadedDocuments([
-          ...uploadedDocuments,
-          {
-            file: selectedFile,
-            text: textData,
-            fileType,
-            uploadDateTime: currentDate,
-          },
-        ]);
-        setSelectedFile(null);
-        setTextData("");
-        setFileType("");
+
+      try {
+        console.log("--- ", selectedDate);
+        // const currentDate = selectedDate.toISOString().slice(0, 10); // Get current date
+        const uploadedFileData = {
+          file: selectedFile,
+          text: textData,
+          fileType: fileType,
+          uploadDateTime: selectedDate,
+        };
+
+        // Adding a 2-second delay using setTimeout
+        setTimeout(async () => {
+          try {
+            await uploadFileAdmin(uploadedFileData);
+
+            setUploadedDocuments([
+              ...uploadedDocuments,
+              {
+                ...uploadedFileData,
+              },
+            ]);
+            setSelectedFile(null);
+            setTextData("");
+            setFileType("");
+            setSelectedDate(null);
+            setUploading(false);
+          } catch (error) {
+            console.error("Error occurred during file upload:", error);
+            setUploading(false);
+            // Handle error state or display error message to the user
+          }
+        }, 2000); // 2 seconds delay (2000 milliseconds)
+      } catch (error) {
+        console.error("Error occurred:", error);
         setUploading(false);
-      }, 2000);
+        // Handle error state or display error message to the user
+      }
     }
   };
 
@@ -90,7 +127,7 @@ const DocumentUploader = () => {
         variant="outlined"
         value={fileType}
         onChange={handleFileTypeSelect}
-        style={{ marginTop: "10px", width: "50%" }}
+        style={{ marginTop: "10px", width: "100%" }} // Adjusted width for mobile view
       >
         <MenuItem value="Audit Report">Audit Report</MenuItem>
         <MenuItem value="Bank Statement">Bank Statement</MenuItem>
@@ -110,17 +147,21 @@ const DocumentUploader = () => {
         variant="outlined"
         value={textData}
         onChange={(e) => setTextData(e.target.value)}
-        style={{ marginTop: "10px", width: "50%" }}
+        style={{ marginTop: "10px", width: "100%" }} // Adjusted width for mobile view
       />
-
-      {/* Initial report date and time - need to be implemented */}
-      {/* <TextField
-      label="Report Date"
-      variant='outlined'
-      type='datetime-local'
-      >
-
-      </TextField> */}
+      <LocalizationProvider dateAdapter={AdapterDayjs}>
+        <div style={{ marginTop: "10px", width: "100%" }}>
+          <DatePicker
+            //  format="DD-MM-YYYY"
+            label="Select Report Date"
+            value={selectedDate}
+            onChange={handleDateChange}
+            textField={(params) => (
+              <TextField {...params} variant="outlined" fullWidth />
+            )}
+          />
+        </div>
+      </LocalizationProvider>
       <br />
       <Button
         variant="contained"
@@ -137,35 +178,54 @@ const DocumentUploader = () => {
         </Typography>
       )}
       {uploadedDocuments.length > 0 && (
-        <TableContainer component={Paper} style={{ marginTop: "20px" }}>
-          <Table>
-            <TableHead>
-              <TableRow>
-                <TableCell>File Name</TableCell>
-                <TableCell>File Type</TableCell>
-                <TableCell>File Size</TableCell>
-                <TableCell>Text Data</TableCell>
-                <TableCell>Date</TableCell>
-                <TableCell>Time</TableCell>
-              </TableRow>
-            </TableHead>
-            <TableBody>
-              {uploadedDocuments.map((item, index) => (
-                <TableRow key={index}>
-                  <TableCell>{item.file.name}</TableCell>
-                  <TableCell>{item.fileType}</TableCell>
-                  <TableCell>{(item.file.size / 1024).toFixed(2)} KB</TableCell>
-                  <TableCell>{item.text}</TableCell>
-                  <TableCell>{item.uploadDateTime.split(",")[0]}</TableCell>
-                  <TableCell>{item.uploadDateTime.split(",")[1]}</TableCell>
-                </TableRow>
-              ))}
-            </TableBody>
-          </Table>
-        </TableContainer>
+        <Grid container spacing={2}>
+          {/* First Column */}
+          {/* <Grid item xs={12} sm={12}> */}
+            <Paper
+              sx={{
+                width: { xs: "400px", sm: "600px", md: "800px", lg: "100%" },
+              }}
+            >
+              <Box sx={{ margin: "15px 10px", padding: "10px" }}>
+                <Typography variant="h5">Recent Files Uploaded</Typography>
+              </Box>
+              <Box sx={{ padding: "0px 10px", overflowX: "auto" }}>
+                <TableContainer component={Paper} style={{ marginTop: "20px" }}>
+                  <Table>
+                    <TableHead>
+                      <TableRow>
+                        <TableCell style={{ minWidth: 100 }}>File Name</TableCell>
+                        <TableCell style={{ minWidth: 100 }}>File Type</TableCell>
+                        <TableCell style={{ minWidth: 100 }}>Text Data</TableCell>
+                        <TableCell style={{ minWidth: 100 }}>Upload Date</TableCell>
+                        <TableCell style={{ minWidth: 100 }}>Upload Time</TableCell>
+                        <TableCell style={{ minWidth: 100 }}>Report Date</TableCell>
+                      </TableRow>
+                    </TableHead>
+                    <TableBody>
+                      {uploadedDocuments.map((item, index) => (
+                        <TableRow key={index}>
+                          <TableCell>{item.file.name}</TableCell>
+                          <TableCell>{item.fileType}</TableCell>
+                          <TableCell>{item.text}</TableCell>
+                          <TableCell>
+                            {item.uploadDateTime.split(",")[0]}
+                          </TableCell>
+                          <TableCell>
+                            {item.uploadDateTime.split(",")[1]}
+                          </TableCell>
+                          <TableCell>{item.uploadDateTime}</TableCell>
+                        </TableRow>
+                      ))}
+                    </TableBody>
+                  </Table>
+                </TableContainer>
+              </Box>
+            </Paper>
+          {/* </Grid> */}
+        </Grid>
       )}
     </Paper>
   );
 };
-
 export default DocumentUploader;

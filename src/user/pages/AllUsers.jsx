@@ -25,6 +25,7 @@ import {
   DialogActions,
   useMediaQuery,
   Switch,
+  Grid,
 } from "@mui/material";
 import DeleteIcon from "@mui/icons-material/Delete";
 import EditNoteIcon from "@mui/icons-material/EditNote";
@@ -34,7 +35,6 @@ import Swal from "sweetalert2";
 import {
   getLoggedInUserName,
   getUserByUsername,
-  updateProfile,
 } from "../services/UserService";
 
 const AllUsers = () => {
@@ -248,74 +248,77 @@ const AllUsers = () => {
         value={searchTerm}
         margin="normal"
       />
-      <TableContainer component={Paper}>
-        <Table aria-label="simple table">
-          <TableHead style={{ backgroundColor: "#003E70" }}>
-            <TableRow>
-              <TableCell style={{ color: "white" }}>Sr.No</TableCell>
-              <TableCell align="center" style={{ color: "white" }}>
-                Name
-              </TableCell>
-              <TableCell align="center" style={{ color: "white" }}>
-                Email
-              </TableCell>
-              <TableCell align="center" style={{ color: "white" }}>
-                Phone
-              </TableCell>
-              <TableCell align="center" style={{ color: "white" }}>
-                Address
-              </TableCell>
-              <TableCell align="center" style={{ color: "white" }}>
-                GST Number
-              </TableCell>
-              <TableCell align="center" style={{ color: "white" }}>
-                Status
-              </TableCell>
-              <TableCell align="center" style={{ color: "white" }}>
-                Actions
-              </TableCell>
-            </TableRow>
-          </TableHead>
-          <TableBody>
-            {filteredUsers.map((user) => (
-              <TableRow key={user.userId}>
-                <TableCell component="th" scope="row">
-                  {user.userId}
-                </TableCell>
-                <TableCell align="center">{user.name}</TableCell>
-                <TableCell align="center">{user.email}</TableCell>
-                <TableCell align="center">{user.phone}</TableCell>
-                <TableCell align="center">{user.address}</TableCell>
-                <TableCell align="center">{user.gstNo}</TableCell>
-                {/* <TableCell align="center">{user.enabled?'ACTIVE':"NOT_ACTIVE"}</TableCell> */}
-                <TableCell align="center">
-                  {/* Switch button to toggle user status */}
-                  <Switch
-                    checked={userStatus[user.userId] || false}
-                    onChange={() => toggleUserStatus(user.userId)}
-                    color="primary"
-                  />
-                </TableCell>
-                <TableCell align="center">
-                  <IconButton
-                    aria-label="edit"
-                    onClick={() => handleEditUser(user)}
-                  >
-                    <EditNoteIcon style={{ color: "#003E70" }} />
-                  </IconButton>
-                  <IconButton
-                    aria-label="delete"
-                    onClick={() => handleDeleteUser(user.userId)}
-                  >
-                    {/* Use an icon for delete button */}
-                    <DeleteIcon style={{ color: "#ef233c" }} />
-                  </IconButton>
-                </TableCell>
-              </TableRow>
-            ))}
-          </TableBody>
-        </Table>
-      </TableContainer>
+      <Grid item xs={12} sm={12}>
+        <Paper
+          sx={{ width: { xs: "400px", sm: "600px", md: "800px", lg: "100%" } , height :{xs:'700px'} }}
+        >
+          <Box sx={{ padding: "0px 10px", overflowX: "auto" }}>
+            <TableContainer sx={{ maxHeight: "auto" }}>
+              <Table aria-label="simple table">
+                <TableHead style={{ backgroundColor: "#003E70" }}>
+                  <TableRow>
+                    <TableCell style={{ color: "white" }}>Sr.No</TableCell>
+                    <TableCell align="center" style={{ color: "white" }}>
+                      Name
+                    </TableCell>
+                    <TableCell align="center" style={{ color: "white" }}>
+                      Email
+                    </TableCell>
+                    <TableCell align="center" style={{ color: "white" }}>
+                      Phone
+                    </TableCell>
+                    <TableCell align="center" style={{ color: "white" }}>
+                      Address
+                    </TableCell>
+                    <TableCell align="center" style={{ color: "white" }}>
+                      GST Number
+                    </TableCell>
+                    <TableCell align="center" style={{ color: "white" }}>
+                      Status
+                    </TableCell>
+                    <TableCell align="center" style={{ color: "white" }}>
+                      Actions
+                    </TableCell>
+                  </TableRow>
+                </TableHead>
+                <TableBody>
+                  {filteredUsers.map((user, index) => (
+                    <TableRow key={user.userId}>
+                      <TableCell>{index + 1}</TableCell>
+                      <TableCell align="center">{user.name}</TableCell>
+                      <TableCell align="center">{user.email}</TableCell>
+                      <TableCell align="center">{user.phone}</TableCell>
+                      <TableCell align="center">{user.address}</TableCell>
+                      <TableCell align="center">{user.gstNo}</TableCell>
+                      <TableCell align="center">
+                        <Switch
+                          checked={userStatus[user.userId] || false}
+                          onChange={() => toggleUserStatus(user.userId)}
+                          color="primary"
+                        />
+                      </TableCell>
+                      <TableCell align="center">
+                        <IconButton
+                          aria-label="edit"
+                          onClick={() => handleEditUser(user)}
+                        >
+                          <EditNoteIcon style={{ color: "#003E70" }} />
+                        </IconButton>
+                        <IconButton
+                          aria-label="delete"
+                          onClick={() => handleDeleteUser(user.userId)}
+                        >
+                          <DeleteIcon style={{ color: "#ef233c" }} />
+                        </IconButton>
+                      </TableCell>
+                    </TableRow>
+                  ))}
+                </TableBody>
+              </Table>
+            </TableContainer>
+          </Box>
+        </Paper>
+      </Grid>
       <Dialog
         open={confirmationDialogOpen}
         onClose={closeConfirmationDialog}
@@ -401,8 +404,16 @@ const AllUsers = () => {
           {/* Other form fields for editing user details */}
         </DialogContent>
         <DialogActions>
-          <Button onClick={() => setShowEditModal(false)} style={{color:'white', backgroundColor:'#ef233c'}}>Cancel</Button>
-          <Button onClick={() => handleProfileUpdate(formData)} style={{color:'white', backgroundColor:'#003E70'}}>
+          <Button
+            onClick={() => setShowEditModal(false)}
+            style={{ color: "white", backgroundColor: "#ef233c" }}
+          >
+            Cancel
+          </Button>
+          <Button
+            onClick={() => handleProfileUpdate(formData)}
+            style={{ color: "white", backgroundColor: "#003E70" }}
+          >
             Save
           </Button>
         </DialogActions>

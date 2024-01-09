@@ -87,90 +87,73 @@ const NewsPage = () => {
 
   return (
     <Container>
-      <Button
-        variant="contained"
-        color="primary"
-        onClick={handleOpen}
-        style={{ marginRight: 10, float: "right" }}
-      >
-        Add Post
-      </Button>
-      <Grid container spacing={3}>
-        {newsList.map((item, index) => (
-          <Grid item xs={12} sm={6} md={4} key={index}>
-            <Card style={cardStyle}>
-              <CardMedia
-                component="img"
-                height="250"
-                image={item.image}
-                alt={item.title}
-              />
-              <CardContent style={cardContentStyle}>
-                <Typography
-                  variant="h5"
-                  component="div"
-                  style={{
-                    position: "sticky",
-                    top: 0,
-                    backgroundColor: "white",
-                    zIndex: 1,
-                  }}
-                >
-                  {item.title}
-                </Typography>
-                <div style={scrollableContentStyle}>
-                  <Typography
-                    variant="body2"
-                    style={{
-                      textTransform: "capitalize",
-                      backgroundColor: "#faf9f9",
-                    }}
-                  >
-                    {item.content}
-                  </Typography>
-                </div>
-              </CardContent>
-            </Card>
-          </Grid>
-        ))}
-      </Grid>
-      <Dialog open={open} onClose={handleClose}>
-        <DialogTitle>Add Post</DialogTitle>
-        <DialogContent>
-          <DialogContentText>Enter post details:</DialogContentText>
-          <TextField
-            autoFocus
-            margin="dense"
-            label="Card Image URL"
-            fullWidth
-            value={cardImage}
-            onChange={(e) => setCardImage(e.target.value)}
-          />
-          <TextField
-            margin="dense"
-            label="Card Title"
-            fullWidth
-            value={cardTitle}
-            onChange={(e) => setCardTitle(e.target.value)}
-          />
-          <TextField
-            margin="dense"
-            label="Card Content"
-            fullWidth
-            multiline
-            rows={4}
-            value={cardContent}
-            onChange={(e) => setCardContent(e.target.value)}
-          />
-        </DialogContent>
-        <DialogActions>
-          <Button onClick={handleClose}>Cancel</Button>
-          <Button onClick={handlePostNews} color="primary">
-            Post
-          </Button>
-        </DialogActions>
-      </Dialog>
-    </Container>
+    <Button
+      variant="contained"
+      color="primary"
+      onClick={handleOpen}
+      style={{ marginRight: 10, float: "right" }}
+    >
+      Add Post
+    </Button>
+    <Grid container spacing={3}>
+      {newsList.map((item, index) => (
+        <Grid item xs={12} sm={6} md={4} key={index}>
+          <Card style={cardStyle}>
+            <CardMedia
+              component="img"
+              height="250"
+              image={item.image}
+              alt={item.title}
+            />
+            <CardContent style={cardContentStyle}>
+              <Typography variant="h5" component="div">
+                {item.title}
+              </Typography>
+              <div style={scrollableContentStyle}>
+                <Typography variant="body2">{item.content}</Typography>
+              </div>
+            </CardContent>
+          </Card>
+        </Grid>
+      ))}
+    </Grid>
+    <Dialog open={open} onClose={handleClose}>
+      <DialogTitle>Add Post</DialogTitle>
+      <DialogContent>
+        <DialogContentText>Enter post details:</DialogContentText>
+        <TextField
+          autoFocus
+          margin="dense"
+          label="Card Image URL"
+          fullWidth
+          value={cardImage}
+          onChange={(e) => setCardImage(e.target.value)}
+        />
+        <TextField
+          margin="dense"
+          label="Card Title"
+          fullWidth
+          value={cardTitle}
+          onChange={(e) => setCardTitle(e.target.value)}
+        />
+        <TextField
+          margin="dense"
+          label="Card Content"
+          fullWidth
+          multiline
+          rows={4}
+          value={cardContent}
+          onChange={(e) => setCardContent(e.target.value)}
+        />
+      </DialogContent>
+      <DialogActions>
+        <Button onClick={handleClose}>Cancel</Button>
+        <Button onClick={handlePostNews} color="primary">
+          Post
+        </Button>
+      </DialogActions>
+    </Dialog>
+  </Container>
   );
 };
 

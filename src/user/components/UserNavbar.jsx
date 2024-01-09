@@ -14,6 +14,8 @@ import ListItemButton from "@mui/material/ListItemButton";
 import ListItemIcon from "@mui/material/ListItemIcon";
 import ListItemText from "@mui/material/ListItemText";
 import { Outlet, useNavigate } from "react-router-dom";
+import PowerSettingsNewIcon from "@mui/icons-material/PowerSettingsNew";
+
 // import { theme } from "../../Theme";
 import {
   Avatar,
@@ -50,15 +52,15 @@ const openedMixin = (theme) => ({
   overflowX: "hidden",
 });
 
-const closedMixin = (theme) => ({
+const closedMixin = (theme, isMobile) => ({
   transition: theme.transitions.create("width", {
     easing: theme.transitions.easing.sharp,
     duration: theme.transitions.duration.leavingScreen,
   }),
   overflowX: "hidden",
-  width: `calc(${theme.spacing(7)} + 1px)`,
+  width: `calc(${theme.spacing(isMobile ? 0 : 7)} + 1px)`,
   [theme.breakpoints.up("sm")]: {
-    width: `calc(${theme.spacing(8)} + 1px)`,
+    width: `calc(${theme.spacing(isMobile ? 0 : 9)} + 1px)`,
   },
 });
 
@@ -91,7 +93,7 @@ const AppBar = styled(MuiAppBar, {
 
 const Drawer = styled(MuiDrawer, {
   shouldForwardProp: (prop) => prop !== "open",
-})(({ theme, open }) => ({
+})(({ theme, open, isMobile }) => ({
   width: drawerWidth,
   flexShrink: 0,
   whiteSpace: "nowrap",
@@ -101,8 +103,8 @@ const Drawer = styled(MuiDrawer, {
     "& .MuiDrawer-paper": openedMixin(theme),
   }),
   ...(!open && {
-    ...closedMixin(theme),
-    "& .MuiDrawer-paper": closedMixin(theme),
+    ...closedMixin(theme, isMobile),
+    "& .MuiDrawer-paper": closedMixin(theme, isMobile),
   }),
 }));
 
@@ -119,8 +121,9 @@ export default function UserNavbar() {
   const navigate = useNavigate();
 
   React.useEffect(() => {
-    localStorage.setItem("activeItem", activeItem);
-  }, [activeItem]);
+    localStorage.setItem("activeItem", location.pathname); // Update active item based on location
+    setActiveItem(location.pathname);
+  }, [location.pathname]);
 
   const handleNavClick = (url) => {
     console.log(url);
@@ -279,6 +282,7 @@ export default function UserNavbar() {
         <Drawer
           variant="permanent"
           open={open}
+          isMobile={isMobile}
           PaperProps={{
             sx: {
               backgroundColor: "#faf9f9",
@@ -394,13 +398,22 @@ export default function UserNavbar() {
               transform: "translateX(-50%)",
             }}
           >
-            <Button
-              variant="contained"
-              style={{ backgroundColor: "#ef233c" }}
-              onClick={handleLogoutConfirm}
-            >
-              Logout
-            </Button>
+            {open || isMobile ? (
+              <Button
+                variant="contained"
+                style={{ backgroundColor: "#ef233c" }}
+                onClick={handleLogoutConfirm}
+              >
+                Logout
+              </Button>
+            ) : (
+              <IconButton
+                onClick={handleLogoutConfirm}
+                style={{ color: "#ef233c" }}
+              >
+                <PowerSettingsNewIcon />
+              </IconButton>
+            )}
           </Box>
         </Drawer>
       </Box>
@@ -409,9 +422,10 @@ export default function UserNavbar() {
         component="main"
         sx={{
           flexGrow: 1,
-          p: 3,
-          pl: { xs: 8, md: 10, xl: 32, lg: 32 },
-          marginLeft: !open ? -20 : 0,
+          padding: !isMobile ? (!open ? "12px 65px" : "12px") : 1,
+          //   pl: { xs: 8, md: 10, xl: 32, lg: 32 },
+          marginLeft: !isMobile ? (!open ? 2 : 30) : 0,
+          backgroundColor: "#F8F1FF",
         }}
       >
         <DrawerHeader />

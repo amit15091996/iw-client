@@ -14,6 +14,7 @@ import TimelineSeparator from "@mui/lab/TimelineSeparator";
 import TimelineConnector from "@mui/lab/TimelineConnector";
 import TimelineContent from "@mui/lab/TimelineContent";
 import TimelineDot from "@mui/lab/TimelineDot";
+import { useNavigate } from "react-router-dom";
 
 const cardStyle = {
   boxShadow: "0 4px 8px 0 rgba(0,0,0,0.2)",
@@ -67,6 +68,10 @@ const listData = [
 ];
 
 const NewsTimeline = () => {
+  const navigate = useNavigate();
+  const handleRoute = () => {
+    navigate("/user/blog");
+  };
   return (
     <>
       <Grid container spacing={2} justifyContent="flex-start">
@@ -116,6 +121,7 @@ const NewsTimeline = () => {
                   width: "120px",
                 }}
                 endIcon={<NavigateNextIcon />}
+                onClick={handleRoute}
               >
                 View all
               </Button>
@@ -140,9 +146,14 @@ const NewsTimeline = () => {
                     {index < timelineData.length - 1 && <TimelineConnector />}
                   </TimelineSeparator>
                   <TimelineContent>
-                    <label style={{ fontSize: "18px", fontWeight:400 }}>{item.title}</label>
+                    <label style={{ fontSize: "18px", fontWeight: 400 }}>
+                      {item.title}
+                    </label>
                     <br />
-                    <label style={{ fontSize: "14px", color:'gray' }}> {item.time}</label>
+                    <label style={{ fontSize: "14px", color: "gray" }}>
+                      {" "}
+                      {item.time}
+                    </label>
                   </TimelineContent>
                 </TimelineItem>
               ))}

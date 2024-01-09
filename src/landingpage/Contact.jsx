@@ -102,7 +102,7 @@ const Contact = () => {
               </Typography>
               <div className="social-icons">
                 <a
-                  href="https://www.facebook.com/"
+                  href="https://www.facebook.com/profile.php?id=100093330489879&mibextid=ZbWKwL"
                   target="_blank"
                   rel="noopener noreferrer"
                   className="facebook-icon"
@@ -117,7 +117,7 @@ const Contact = () => {
                   />
                 </a>
                 <a
-                  href="https://www.linkedin.com/"
+                  href="https://www.linkedin.com/company/intallysh-wisdom"
                   target="_blank"
                   rel="noopener noreferrer"
                   className="linkedin-icon"
@@ -127,7 +127,7 @@ const Contact = () => {
                   />
                 </a>
                 <a
-                  href="https://www.instagram.com/"
+                  href="https://www.instagram.com/intallyshwisdom/?utm_source=qr&igshid=YzU1NGVlODEzOA%3D%3D"
                   target="_blank"
                   rel="noopener noreferrer"
                   className="instagram-icon"
@@ -137,7 +137,7 @@ const Contact = () => {
                   />
                 </a>
                 <a
-                  href="https://wa.me/1234567890"
+                  href="https://wa.me/+7000186765"
                   target="_blank"
                   rel="noopener noreferrer"
                   className="whatsapp-icon"

@@ -250,7 +250,7 @@ const AllUsers = () => {
       />
       <Grid item xs={12} sm={12}>
         <Paper
-          sx={{ width: { xs: "400px", sm: "600px", md: "800px", lg: "100%" } , height :{xs:'700px'} }}
+          sx={{ width: { xs: "400px", sm: "600px", md: "800px", lg: "100%" }}}
         >
           <Box sx={{ padding: "0px 10px", overflowX: "auto" }}>
             <TableContainer sx={{ maxHeight: "auto" }}>

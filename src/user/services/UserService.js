@@ -75,6 +75,8 @@ export const getItemReceived = async (count) => {
     return resposne.data;
 }
 
+
+// ------ File handles -------
 export const updateProfile = async (updateData) => {
     try {
         const response = await postReqAxios.put(`/user/update-profile`, updateData);
@@ -88,3 +90,20 @@ export const updateProfile = async (updateData) => {
         throw error;
     }
 };
+
+export const getFileDetailByUserIdAndYear = async (year, pageNo, pageSize, sortBy) => {
+    try {
+        const response = await postReqAxios.get(`/user/get-filetransdetail-by-year-and-userid`, {
+            params: {
+                year: year,
+                pageNo: pageNo,
+                pageSize: pageSize,
+                sortBy: sortBy
+            }
+        });
+        return response.data;
+    } catch (error) {
+        console.log(error);
+        throw error;
+    }
+}

@@ -101,7 +101,7 @@ const NewsPage = () => {
           <Card style={cardStyle}>
             <CardMedia
               component="img"
-              height="250"
+              height="200"
               image={item.image}
               alt={item.title}
             />

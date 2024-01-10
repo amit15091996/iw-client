@@ -153,7 +153,7 @@ const DocumentUploader = () => {
         <div style={{ marginTop: "10px", width: "100%" }}>
           <DatePicker
             //  format="DD-MM-YYYY"
-            label="Select Report Date"
+            label="Select Date"
             value={selectedDate}
             onChange={handleDateChange}
             textField={(params) => (
@@ -187,7 +187,7 @@ const DocumentUploader = () => {
               }}
             >
               <Box sx={{ margin: "15px 10px", padding: "10px" }}>
-                <Typography variant="h5">Recent Files Uploaded</Typography>
+                <Typography variant="h5">Intervies Attended</Typography>
               </Box>
               <Box sx={{ padding: "0px 10px", overflowX: "auto" }}>
                 <TableContainer component={Paper} style={{ marginTop: "20px" }}>
@@ -195,11 +195,11 @@ const DocumentUploader = () => {
                     <TableHead>
                       <TableRow>
                         <TableCell style={{ minWidth: 100 }}>File Name</TableCell>
-                        <TableCell style={{ minWidth: 100 }}>File Type</TableCell>
-                        <TableCell style={{ minWidth: 100 }}>Text Data</TableCell>
-                        <TableCell style={{ minWidth: 100 }}>Upload Date</TableCell>
-                        <TableCell style={{ minWidth: 100 }}>Upload Time</TableCell>
-                        <TableCell style={{ minWidth: 100 }}>Report Date</TableCell>
+                        <TableCell>File Type</TableCell>
+                        <TableCell>Text Data</TableCell>
+                        <TableCell>Date</TableCell>
+                        <TableCell>Time</TableCell>
+                        <TableCell>Report Date</TableCell>
                       </TableRow>
                     </TableHead>
                     <TableBody>

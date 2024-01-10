@@ -1,13 +1,13 @@
 import axios from "axios";
 
 
-const BASE_URL = "https://jsonplaceholder.typicode.com/posts";
+const BASE_URL = "http://10.0.0.85:9190/api/v1";
 
-export const getReqAxios = axios.create({
+export const postReqAxios = axios.create({
     baseURL: `${BASE_URL}`
 })
 
-getReqAxios.interceptors.request.use(
+postReqAxios.interceptors.request.use(
     function (config) {
         // Do something before request is sent
         const token = localStorage.getItem("token")
@@ -23,7 +23,7 @@ getReqAxios.interceptors.request.use(
     }
 );
 
-getReqAxios.interceptors.response.use(
+postReqAxios.interceptors.response.use(
     function (response) {
         return response;
     },

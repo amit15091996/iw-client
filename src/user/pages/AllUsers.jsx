@@ -26,6 +26,8 @@ import {
   useMediaQuery,
   Switch,
   Grid,
+  Select,
+  MenuItem,
 } from "@mui/material";
 import DeleteIcon from "@mui/icons-material/Delete";
 import EditNoteIcon from "@mui/icons-material/EditNote";
@@ -56,6 +58,7 @@ const AllUsers = () => {
   const [editUserId, setEditUserId] = useState(null);
   const [formData, setFormData] = useState({});
   const [showEditModal, setShowEditModal] = useState(false);
+  const [sortBy, setSortBy] = useState("registerDate");
 
   const fetchUserData = async () => {
     const loggedInUserName = getLoggedInUserName();
@@ -163,7 +166,7 @@ const AllUsers = () => {
 
   const fetchUsersByPage = async (page) => {
     try {
-      const res = await getAllUsers("NOT_DELETED", page, pageSize);
+      const res = await getAllUsers("NOT_DELETED", page, pageSize,sortBy);
       console.log(res);
       if (res.status === "Success") {
         setUsersList(res.usersList || []);
@@ -190,10 +193,12 @@ const AllUsers = () => {
       alert("Error while loading profiles");
     }
   };
-
+  const handleSortChange = (event) => {
+    setSortBy(event.target.value);
+  };
   useEffect(() => {
     fetchUsersByPage(currentPage);
-  }, [currentPage]); // Re-fetch users when the currentPage changes
+  }, [currentPage, sortBy]); // Re-fetch users when the currentPage changes
 
   const handleDeleteUser = (userId) => {
     setUserToDelete(userId);
@@ -241,16 +246,28 @@ const AllUsers = () => {
       <Typography variant="h6" className="component-header" color="primary">
         All Users
       </Typography>
-      <TextField
-        label="Search"
-        variant="outlined"
-        onChange={handleSearch}
-        value={searchTerm}
-        margin="normal"
-      />
+      <Box display="flex" alignItems="center">
+        <TextField
+          label="Search"
+          variant="outlined"
+          onChange={handleSearch}
+          value={searchTerm}
+          margin="normal"
+        />
+        <Box ml="auto">
+          <Select
+            value={sortBy}
+            onChange={handleSortChange}
+            variant="outlined"
+          >
+            <MenuItem value="name">Name</MenuItem>
+            <MenuItem value="registerDate">Registration Date</MenuItem>
+          </Select>
+        </Box>
+      </Box>
       <Grid item xs={12} sm={12}>
         <Paper
-          sx={{ width: { xs: "400px", sm: "600px", md: "800px", lg: "100%" }}}
+          sx={{ width: { xs: "400px", sm: "600px", md: "800px", lg: "100%" } }}
         >
           <Box sx={{ padding: "0px 10px", overflowX: "auto" }}>
             <TableContainer sx={{ maxHeight: "auto" }}>

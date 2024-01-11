@@ -143,7 +143,7 @@ const DocumentUploader = () => {
         {/* Add more file type options here as needed */}
       </TextField>
       <TextField
-        label="Text Data"
+        label="File Name"
         variant="outlined"
         value={textData}
         onChange={(e) => setTextData(e.target.value)}

@@ -1,14 +1,10 @@
-import React from "react";
+import { IconButton } from "@mui/material";
 import { getFile } from "../../services/AdminService";
+import FileDownloadIcon from "@mui/icons-material/FileDownload";
 
-const FileDownloadButton = ({ fileUrl }) => {
-  const extractFilenameFromUrl = (url) => {
-    const parts = url.split("=");
-    return parts[parts.length - 1];
-  };
-
+const FileDownloadButton = ({ fileId ,fileName}) => {
   const handleDownload = () => {
-    getFile(fileUrl)
+    getFile(fileId,fileName)
       .then((downloadResponse) => {
         if (downloadResponse.success) {
           console.log("File downloaded successfully");
@@ -22,10 +18,9 @@ const FileDownloadButton = ({ fileUrl }) => {
   };
 
   return (
-    <button onClick={handleDownload}>
-      Download File
-    </button>
+    <IconButton onClick={handleDownload} aria-label="Download">
+      <FileDownloadIcon />
+    </IconButton>
   );
 };
-
 export default FileDownloadButton;

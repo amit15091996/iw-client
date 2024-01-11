@@ -1,8 +1,8 @@
 import { postReqAxios } from "../../axiosConfig/PostReq";
 
-export const getAllUsers = async (type, pageNo, pageSize) => {
+export const getAllUsers = async (type, pageNo, pageSize, sortBy) => {
   console.log(`/admin/users?type=${type}&pageNo=${pageNo}&pageSize=${pageSize}`);
-  return await postReqAxios.get(`/admin/users?type=${type}&pageNo=${pageNo}&pageSize=${pageSize}`)
+  return await postReqAxios.get(`/admin/users?type=${type}&pageNo=${pageNo}&pageSize=${pageSize}&sortBy=${sortBy}`)
     .then(res => res.data);
 }
 
@@ -36,7 +36,7 @@ export const updateUserProfile = async (updateUserReqDto) => {
 
 export const getFileDetailByUserIdAndYear = async (userId, year, pageNo, pageSize, sortBy) => {
   try {
-    const response = await postReqAxios.get(`/admin/get-filetransdetail-by-year-and-userid`, {
+    const response = await postReqAxios.get(`/user/get-filetransdetail-by-year-and-userid`, {
       params: {
         userId: userId,
         year: year,
@@ -54,34 +54,41 @@ export const getFileDetailByUserIdAndYear = async (userId, year, pageNo, pageSiz
 
 export const getFileDetailByTransId = async (transId) => {
   try {
-    const response = await postReqAxios.get(`/admin/get-filedetail-by-transid/${transId}`);
+    const response = await postReqAxios.get(`/user/get-filedetail-by-transid/${transId}`);
     return response.data;
   } catch (error) {
     console.error('Error fetching file details:', error);
     throw new Error('An error occurred while fetching file details.');
   }
 };
-
-export const getFile = async (fileId) => {
+export const getFile = async (fileId, suggestedFileName) => {
   try {
-    const response = await postReqAxios.get(`/get-file/${fileId}`, {
-      responseType: 'blob', // Set response type to 'blob' to handle binary data
+    const response = await postReqAxios.get(`/user/get-file/${fileId}`, {
+      responseType: 'blob',
     });
 
-    // Extract filename from the response headers
-    const contentDisposition = response.headers['content-disposition'];
-    const fileName = contentDisposition.split('filename=')[1];
+    // Generate a filename or use the suggestedFileName if provided
+    const fileName = suggestedFileName || 'downloadedFile';
 
     // Create a download link and trigger the download
     const downloadLink = document.createElement('a');
     downloadLink.href = window.URL.createObjectURL(new Blob([response.data]));
-    downloadLink.setAttribute('download', fileName.trim());
+    downloadLink.setAttribute('download', fileName);
     downloadLink.click();
 
     return { success: true };
   } catch (error) {
-    // Handle any errors that may occur during the request
     console.error('Error fetching file:', error);
     return { success: false, error: error.message };
   }
 };
+
+export const getUploadedFileYears = async () => {
+  try {
+    const response = await postReqAxios.get(`/user/get-uploaded-file-years`);
+    return response.data;
+  } catch (error) {
+    console.error('Error fetching file details:', error);
+    throw new Error('An error occurred while fetching file details.');
+  }
+}

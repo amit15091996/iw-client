@@ -8,9 +8,9 @@ const UserDashboard = () => {
   return (
     <>
       <WelcomeUserName />
+      <ThreeCards />
+      <CompanyChart />
       <MainHead />
-      {/* <ThreeCards />
-      <CompanyChart /> */}
       <NewsTimeline />
     </>
   )

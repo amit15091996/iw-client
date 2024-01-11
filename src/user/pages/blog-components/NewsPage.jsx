@@ -11,9 +11,12 @@ import {
   DialogContentText,
   DialogTitle,
   Grid,
+  IconButton,
   TextField,
   Typography,
 } from "@mui/material";
+import EditNoteIcon from '@mui/icons-material/EditNote';
+import DeleteIcon from '@mui/icons-material/Delete';
 
 const cardStyle = {
   height: "100%",
@@ -30,6 +33,8 @@ const scrollableContentStyle = {
   overflowY: "auto",
   padding: "10px", // Adjust padding as needed
 };
+
+
 
 const NewsPage = () => {
   const [open, setOpen] = useState(false);
@@ -85,6 +90,27 @@ const NewsPage = () => {
     }
   };
 
+  const handleEdit = (index) => {
+    const editedNewsList = [...newsList];
+    const editedPost = editedNewsList[index];
+
+    // Open the dialog with the existing data
+    setCardTitle(editedPost.title);
+    setCardContent(editedPost.content);
+    setCardImage(editedPost.image);
+    setOpen(true);
+
+    // Remove the existing post from the list
+    editedNewsList.splice(index, 1);
+    setNewsList(editedNewsList);
+  };
+
+  const handleDelete = (index) => {
+    const editedNewsList = [...newsList];
+    editedNewsList.splice(index, 1);
+    setNewsList(editedNewsList);
+  };
+
   return (
     <Container>
     <Button
@@ -111,6 +137,16 @@ const NewsPage = () => {
               </Typography>
               <div style={scrollableContentStyle}>
                 <Typography variant="body2">{item.content}</Typography>
+              </div>
+              <div style={{ display: "flex", justifyContent: "space-between", marginTop: "10px" }}>
+                {/* Edit button */}
+                <IconButton onClick={() => handleEdit(index)} color="primary">
+                  <EditNoteIcon />
+                </IconButton>
+                {/* Delete button */}
+                <IconButton onClick={() => handleDelete(index)} color="secondary">
+                  <DeleteIcon />
+                </IconButton>
               </div>
             </CardContent>
           </Card>

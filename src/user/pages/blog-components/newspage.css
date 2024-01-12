@@ -1,0 +1,32 @@
+
+.card {
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+  }
+  
+  .card:hover {
+    transform: scale(1.1);
+    transition: transform 0.3s;
+  }
+  
+  .cardImage {
+    object-fit: cover;
+    height: 200px;
+  }
+  
+  .cardImage:hover {
+    transform: scale(1.1);
+    transition: transform 0.3s;
+  }
+  
+  .cardContent {
+    flex-grow: 1;
+  }
+  
+  .scrollableContent {
+    max-height: 200px;
+    overflow-y: auto;
+    padding: 10px;
+  }
+  

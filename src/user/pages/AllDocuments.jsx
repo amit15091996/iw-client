@@ -6,11 +6,12 @@ const AllDocuments = () => {
   const [userId, setUserId] = useState("");
   const [searchYear, setSearchYear] = useState("");
 
-  const handleSearch = () => {};
+  const handleSearch = (e) => {
+    e.preventDefault();
+  };
 
   return (
     <Container maxWidth="lg">
-      
       <Grid container spacing={2}>
         <Grid item xs={12} sm={6}>
           <TextField

@@ -41,6 +41,7 @@ import FeedIcon from "@mui/icons-material/Feed";
 import { useTheme } from "@emotion/react";
 import FolderIcon from "@mui/icons-material/Folder";
 import Swal from "sweetalert2";
+import { isAdmin } from "../services/Util";
 const drawerWidth = 240;
 
 const openedMixin = (theme) => ({
@@ -321,7 +322,6 @@ export default function UserNavbar() {
                 icon: <FolderIcon />,
                 link: "/user/my-documents",
               },
-
               {
                 id: "5",
                 name: "Send Documents",
@@ -334,61 +334,67 @@ export default function UserNavbar() {
                 icon: <FolderCopyIcon />,
                 link: "/user/all-users-documents",
               },
-
               {
                 id: "7",
                 name: "News",
                 icon: <FeedIcon />,
                 link: "/user/blog",
               },
-            ].map((text, index) => (
-              <ListItem
-                key={text.id}
-                disablePadding
-                sx={{ display: "block" }}
-                onClick={() => handleNavClick(text.link)}
-                selected={activeItem === text.link}
-                button
-              >
-                <ListItemButton
-                  sx={{
-                    minHeight: 48,
-                    justifyContent: open ? "initial" : "center",
-                    px: 2.5,
-                    backgroundColor:
-                      activeItem === text.link ? "#003E70" : "transparent",
-                    "&:hover": {
-                      backgroundColor:
-                        activeItem === text.link
-                          ? "#003E70"
-                          : hoveredItem === text.link
-                          ? "#e0e0e0"
-                          : "transparent",
-                    },
-                  }}
-                  onMouseEnter={() => setHoveredItem(text.link)}
-                  onMouseLeave={() => setHoveredItem(null)}
-                >
-                  <ListItemIcon
-                    sx={{
-                      minWidth: 0,
-                      mr: open ? 3 : "auto",
-                      justifyContent: "center",
-                      color: activeItem === text.link ? "#faf9f9" : "#003E70",
-                    }}
+            ].map(
+              (text, index) =>
+                ((text.link !== "/user/all-users" &&
+                  text.link !== "/user/all-users-documents") ||
+                  isAdmin()) && (
+                  <ListItem
+                    key={text.id}
+                    disablePadding
+                    sx={{ display: "block" }}
+                    onClick={() => handleNavClick(text.link)}
+                    selected={activeItem === text.link}
+                    button
                   >
-                    {text.icon}
-                  </ListItemIcon>
-                  <ListItemText
-                    primary={text.name}
-                    sx={{
-                      opacity: open ? 1 : 0,
-                      color: activeItem === text.link ? "#faf9f9" : "#003E70",
-                    }}
-                  />
-                </ListItemButton>
-              </ListItem>
-            ))}
+                    <ListItemButton
+                      sx={{
+                        minHeight: 48,
+                        justifyContent: open ? "initial" : "center",
+                        px: 2.5,
+                        backgroundColor:
+                          activeItem === text.link ? "#003E70" : "transparent",
+                        "&:hover": {
+                          backgroundColor:
+                            activeItem === text.link
+                              ? "#003E70"
+                              : hoveredItem === text.link
+                              ? "#e0e0e0"
+                              : "transparent",
+                        },
+                      }}
+                      onMouseEnter={() => setHoveredItem(text.link)}
+                      onMouseLeave={() => setHoveredItem(null)}
+                    >
+                      <ListItemIcon
+                        sx={{
+                          minWidth: 0,
+                          mr: open ? 3 : "auto",
+                          justifyContent: "center",
+                          color:
+                            activeItem === text.link ? "#faf9f9" : "#003E70",
+                        }}
+                      >
+                        {text.icon}
+                      </ListItemIcon>
+                      <ListItemText
+                        primary={text.name}
+                        sx={{
+                          opacity: open ? 1 : 0,
+                          color:
+                            activeItem === text.link ? "#faf9f9" : "#003E70",
+                        }}
+                      />
+                    </ListItemButton>
+                  </ListItem>
+                )
+            )}
           </List>
           <Box
             sx={{

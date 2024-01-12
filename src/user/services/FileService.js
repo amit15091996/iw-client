@@ -19,7 +19,7 @@ export const uploadFileAdmin = async (fileData) => {
         const token = getToken();
         const response = axios({
             method: "post",
-            url: "http://localhost:9190/api/v1/admin/upload-file",
+            url: "http://localhost:9190/api/v1/user/upload-file",
             data: formData,
             headers: { "Content-Type": 'multipart/form-data', 'Authorization': 'Bearer ' + token },
         })

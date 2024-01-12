@@ -166,7 +166,7 @@ const AllUsers = () => {
 
   const fetchUsersByPage = async (page) => {
     try {
-      const res = await getAllUsers("NOT_DELETED", page, pageSize,sortBy);
+      const res = await getAllUsers("NOT_DELETED", page, pageSize, sortBy);
       console.log(res);
       if (res.status === "Success") {
         setUsersList(res.usersList || []);
@@ -255,11 +255,7 @@ const AllUsers = () => {
           margin="normal"
         />
         <Box ml="auto">
-          <Select
-            value={sortBy}
-            onChange={handleSortChange}
-            variant="outlined"
-          >
+          <Select value={sortBy} onChange={handleSortChange} variant="outlined">
             <MenuItem value="name">Name</MenuItem>
             <MenuItem value="registerDate">Registration Date</MenuItem>
           </Select>

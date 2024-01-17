@@ -36,7 +36,7 @@ export const updateUserProfile = async (updateUserReqDto) => {
 
 export const getFileDetailByUserIdAndYear = async (userId, year, pageNo, pageSize, sortBy) => {
   try {
-    const response = await postReqAxios.get(`/user/get-filetransdetail-by-year-and-userid`, {
+    const response = await postReqAxios.get(`/admin/get-filetransdetail-by-year-and-userid`, {
       params: {
         userId: userId,
         year: year,
@@ -54,7 +54,7 @@ export const getFileDetailByUserIdAndYear = async (userId, year, pageNo, pageSiz
 
 export const getFileDetailByTransId = async (transId) => {
   try {
-    const response = await postReqAxios.get(`/user/get-filedetail-by-transid/${transId}`);
+    const response = await postReqAxios.get(`/admin/get-filedetail-by-transid/${transId}`);
     return response.data;
   } catch (error) {
     console.error('Error fetching file details:', error);
@@ -63,7 +63,7 @@ export const getFileDetailByTransId = async (transId) => {
 };
 export const getFile = async (fileId, suggestedFileName) => {
   try {
-    const response = await postReqAxios.get(`/user/get-file/${fileId}`, {
+    const response = await postReqAxios.get(`/admin/get-file/${fileId}`, {
       responseType: 'blob',
     });
 
@@ -85,7 +85,7 @@ export const getFile = async (fileId, suggestedFileName) => {
 
 export const getUploadedFileYears = async () => {
   try {
-    const response = await postReqAxios.get(`/user/get-uploaded-file-years`);
+    const response = await postReqAxios.get(`/admin/get-uploaded-file-years`);
     return response.data;
   } catch (error) {
     console.error('Error fetching file details:', error);

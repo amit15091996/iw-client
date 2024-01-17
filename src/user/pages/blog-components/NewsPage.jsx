@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import {
   Button,
   Card,
@@ -15,9 +15,19 @@ import {
   TextField,
   Typography,
 } from "@mui/material";
-import EditNoteIcon from "@mui/icons-material/EditNote";
-import DeleteIcon from "@mui/icons-material/Delete";
+import Swal from "sweetalert2";
 import { isAdmin } from "../../services/Util";
+import {
+  createBlog,
+  deleteBlog,
+  getBlogs,
+  updateBlog,
+} from "../../services/BlogService";
+import CustomPagination from "../user-components/CustomPagination";
+
+import EditIcon from "@mui/icons-material/Edit";
+import DeleteIcon from "@mui/icons-material/Delete";
+import Loader from "../Loader";
 
 const cardStyle = {
   height: "100%",
@@ -37,55 +47,23 @@ const scrollableContentStyle = {
 
 const NewsPage = () => {
   const [open, setOpen] = useState(false);
-  const [newsList, setNewsList] = useState([
-    {
-      title: "Cricket, Sports",
-      content:
-        "India have had two-Test series in South Africa before: in November 2001 and December 2013. But their attack in those rubbers did not shimmer with the bowlers Jasprit Bumrah and Mohammed Siraj have become. Mohammed Shami took six wickets at 43.83 in the 2013 series. Considering Shami's development since then, it's a shame an ankle injury has precluded him from measuring that progress in this rubber.",
-      image:
-        "https://www.cricbuzz.com/a/img/v1/595x396/i1/c367219/of-the-23-tests-india-have-pla.jpg",
-    },
-    {
-      title: "Intallysh Wisdom, IT News",
-      content:
-        "Expanding beyond borders, Intallysh Wisdom is poised to scale your network internationally, amplifying your global footprint. Our adept team specializes in crafting scalable software solutions that transcend geographical boundaries, ensuring seamless connectivity and performance across diverse locations.",
-      image:
-        "https://images.unsplash.com/photo-1446776653964-20c1d3a81b06?q=80&w=1471&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
-    },
-    {
-      title: "Cricket, Sports",
-      content:
-        "South Africa then struck immediately at the other end to end Mohammad Siraj's resolve as Coetzee managed to find a faint edge. Rahul's hopes of fetching a century faded pretty quick with that dismissal as debutant Prasidh Krishna took strike against Coetzee with five balls left in the over. Luck was on the wicketkeeper-batter's side as he managed to sneak in a bye to get to the striker's end and smash the bowler for his fourth six to get to his century. Nandre Burger then ensured there was no further damage done as he sneaked past Rahul's defence to bring an end to India's innings.",
-      image:
-        "https://www.cricbuzz.com/a/img/v1/595x396/i1/c367807/rahul-hit-his-8th-test-hundred.jpg",
-    },
-    {
-      title: "Cricket, Sports",
-      content:
-        "India have had two-Test series in South Africa before: in November 2001 and December 2013. But their attack in those rubbers did not shimmer with the bowlers Jasprit Bumrah and Mohammed Siraj have become. Mohammed Shami took six wickets at 43.83 in the 2013 series. Considering Shami's development since then, it's a shame an ankle injury has precluded him from measuring that progress in this rubber.",
-      image:
-        "https://www.cricbuzz.com/a/img/v1/595x396/i1/c367219/of-the-23-tests-india-have-pla.jpg",
-    },
-    {
-      title: "Intallysh Wisdom, IT News",
-      content:
-        "Expanding beyond borders, Intallysh Wisdom is poised to scale your network internationally, amplifying your global footprint. Our adept team specializes in crafting scalable software solutions that transcend geographical boundaries, ensuring seamless connectivity and performance across diverse locations.",
-      image:
-        "https://images.unsplash.com/photo-1446776653964-20c1d3a81b06?q=80&w=1471&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
-    },
-    {
-      title: "Cricket, Sports",
-      content:
-        "South Africa then struck immediately at the other end to end Mohammad Siraj's resolve as Coetzee managed to find a faint edge. Rahul's hopes of fetching a century faded pretty quick with that dismissal as debutant Prasidh Krishna took strike against Coetzee with five balls left in the over. Luck was on the wicketkeeper-batter's side as he managed to sneak in a bye to get to the striker's end and smash the bowler for his fourth six to get to his century. Nandre Burger then ensured there was no further damage done as he sneaked past Rahul's defence to bring an end to India's innings.",
-      image:
-        "https://www.cricbuzz.com/a/img/v1/595x396/i1/c367807/rahul-hit-his-8th-test-hundred.jpg",
-    },
-    // Add more sample data as needed...
-  ]);
-
+  const [newsList, setNewsList] = useState([]);
+  const [currentPage, setCurrentPage] = useState(0);
+  const [totalPages, setTotalPages] = useState(0);
   const [cardTitle, setCardTitle] = useState("");
   const [cardContent, setCardContent] = useState("");
-  const [cardImage, setCardImage] = useState("");
+  const [cardImage, setCardImage] = useState(null);
+  const [selectedBlogId, setSelectedBlogId] = useState(null);
+  const [loading, setLoading] = useState(false);
+  const [forceUpdate, setForceUpdate] = useState(0);
+
+  useEffect(() => {
+    const timeoutId = setTimeout(() => {
+      console.log("Loading state:", loading);
+    }, 1000);
+
+    return () => clearTimeout(timeoutId);
+  }, [loading]);
 
   const handleOpen = () => {
     setOpen(true);
@@ -95,41 +73,217 @@ const NewsPage = () => {
     setOpen(false);
   };
 
-  const handlePostNews = () => {
-    if (cardTitle && cardContent && cardImage) {
-      const newPost = {
-        title: cardTitle,
-        content: cardContent,
-        image: cardImage,
-      };
-      setNewsList([...newsList, newPost]);
-      setCardTitle("");
-      setCardContent("");
-      setCardImage("");
-      setOpen(false);
+  const handleImageChange = (e) => {
+    const file = e.target.files[0];
+
+    if (file && file.type.includes("image/") && file.size <= 5000000) {
+      setCardImage(file);
+    } else {
+      console.error("Invalid file format or size");
     }
   };
 
-  const handleEdit = (index) => {
-    const editedNewsList = [...newsList];
-    const editedPost = editedNewsList[index];
+  const handlePostNews = async (e) => {
+    e.preventDefault();
 
-    // Open the dialog with the existing data
-    setCardTitle(editedPost.title);
-    setCardContent(editedPost.content);
-    setCardImage(editedPost.image);
-    setOpen(true);
+    if (cardTitle && cardContent && cardImage) {
+      const val = {
+        blogTitle: cardTitle,
+        blogDesc1: cardContent,
+        blogImage: cardImage,
+      };
 
-    // Remove the existing post from the list
-    editedNewsList.splice(index, 1);
-    setNewsList(editedNewsList);
+      try {
+        setLoading(true);
+
+        const newPost = await createBlog(val);
+
+        if (newPost && newPost.result) {
+          setNewsList([...newsList, newPost.result]);
+          setCardTitle("");
+          setCardContent("");
+          setCardImage(null);
+          setOpen(false);
+          setForceUpdate((prev) => prev + 1); // Increment forceUpdate to trigger re-render
+          Swal.fire({
+            icon: "success",
+            title: "Post Successful",
+            text: "Your post has been created successfully!",
+          });
+        } else {
+          console.error("Error: Invalid response structure from createBlog");
+        }
+      } catch (error) {
+        console.error("Error posting news:", error);
+        Swal.fire({
+          icon: "error",
+          title: "Post Failed",
+          text: "There was an error while creating your post. Please try again.",
+        });
+      } finally {
+        setTimeout(() => {
+          setLoading(false);
+        }, 1000);
+      }
+    }
   };
 
-  const handleDelete = (index) => {
-    const editedNewsList = [...newsList];
-    editedNewsList.splice(index, 1);
-    setNewsList(editedNewsList);
+  useEffect(() => {
+    console.log("News List after API call:", newsList);
+  }, [newsList]);
+
+  const handleEdit = (blogId) => {
+    // Find the selected blog from the newsList
+    const selectedBlog = newsList.find((blog) => blog.blogId === blogId);
+    if (selectedBlog) {
+      setCardTitle(selectedBlog.blogTitle);
+      setCardContent(selectedBlog.blogDesc1);
+
+      // Check if the selectedBlog has image data
+      if (selectedBlog.fileDetails && selectedBlog.fileDetails.fileData) {
+        setCardImage({
+          name: "Existing Image", // Set a default name or use any relevant information
+          fileData: selectedBlog.fileDetails.fileData,
+          fileType: selectedBlog.fileDetails.fileType,
+        });
+      } else {
+        setCardImage(null);
+      }
+
+      setSelectedBlogId(blogId);
+      handleOpen();
+    }
   };
+  const [deleteConfirmationOpen, setDeleteConfirmationOpen] = useState(false);
+  const [deleteConfirmationBlogId, setDeleteConfirmationBlogId] =
+    useState(null);
+
+  const handleOpenDeleteConfirmation = (blogId) => {
+    setDeleteConfirmationBlogId(blogId);
+    setDeleteConfirmationOpen(true);
+  };
+
+  const handleCloseDeleteConfirmation = () => {
+    setDeleteConfirmationBlogId(null);
+    setDeleteConfirmationOpen(false);
+  };
+  const handleDelete = async (blogId) => {
+    // Show a confirmation dialog before deleting
+    handleOpenDeleteConfirmation(blogId);
+  };
+  const handleConfirmDelete = async () => {
+    if (deleteConfirmationBlogId) {
+      try {
+        await deleteBlog(deleteConfirmationBlogId);
+        const updatedNewsList = newsList.filter(
+          (blog) => blog.blogId !== deleteConfirmationBlogId
+        );
+        setNewsList(updatedNewsList);
+        handleCloseDeleteConfirmation();
+        Swal.fire({
+          icon: "success",
+          title: "Delete Successful",
+          text: "Your post has been deleted successfully!",
+        });
+  
+        // Fetch the first page of blogs again to update the list
+        handlePageChange(0);
+      } catch (error) {
+        console.error("Error deleting blog:", error);
+        Swal.fire({
+          icon: "error",
+          title: "Delete Failed",
+          text: "There was an error while deleting your post. Please try again.",
+        });
+      }
+    }
+  };
+  
+
+  const handleUpdate = async () => {
+    if (selectedBlogId && cardTitle && cardContent) {
+      const updatedBlogData = {
+        blogId: selectedBlogId,
+        blogTitle: cardTitle,
+        blogDesc1: cardContent,
+        blogImage: cardImage, // Ensure cardImage is a File object
+      };
+
+      try {
+        setLoading(true);
+
+        // Call the updateBlog function
+        const updatedBlog = await updateBlog(updatedBlogData);
+
+        // Update the newsList with the edited blog
+        const updatedNewsList = newsList.map((blog) =>
+          blog.blogId === updatedBlog.blogId ? updatedBlog : blog
+        );
+
+        setNewsList(updatedNewsList);
+        setCardTitle("");
+        setCardContent("");
+        setCardImage(null);
+        setSelectedBlogId(null);
+        handleClose();
+        Swal.fire({
+          icon: "success",
+          title: "Update Successful",
+          text: "Your post has been updated successfully!",
+        });
+      } catch (error) {
+        console.error("Error updating blog:", error);
+        Swal.fire({
+          icon: "error",
+          title: "Update Failed",
+          text: "There was an error while updating your post. Please try again.",
+        });
+      } finally {
+        setTimeout(() => {
+          setLoading(false);
+        }, 1000);
+      }
+    }
+  };
+
+  const handlePageChange = async (newPage) => {
+    console.log("newPage:", newPage);
+
+    try {
+      setLoading(true); // Set loading to true
+      const result = await getBlogs("NOT_DELETED", newPage, 9);
+      console.log("Result from backend:", result);
+
+      setNewsList(result.blogList);
+      setCurrentPage(newPage);
+      setTotalPages(result.totalPages);
+    } catch (error) {
+      console.error("Error fetching blogs:", error);
+    } finally {
+      setTimeout(() => {
+        setLoading(false);
+      }, 1000);
+    }
+  };
+  useEffect(() => {
+    const fetchBlogs = async (newPage) => {
+      try {
+        const result = await getBlogs("NOT_DELETED", newPage, 9);
+        setNewsList(result.blogList);
+        setCurrentPage(result.currentPage);
+        setTotalPages(result.totalPages);
+      } catch (error) {
+        console.error("Error fetching blogs:", error);
+      } finally {
+        // Introduce a 1-second delay before setting loading to false
+        setTimeout(() => {
+          setLoading(false);
+        }, 1000);
+      }
+    };
+
+    fetchBlogs(currentPage);
+  }, [currentPage, forceUpdate]); // Include forceUpdate in the dependency array
 
   return (
     <Container>
@@ -143,59 +297,88 @@ const NewsPage = () => {
           Add Post
         </Button>
       )}
+      <Typography variant="h4" style={{ color: "#003E70" }}>
+        News
+      </Typography>
+      {loading && <Loader open={loading} />}
       <Grid container spacing={3}>
-        {newsList.map((item, index) => (
-          <Grid item xs={12} sm={6} md={4} key={index}>
-            <Card style={cardStyle}>
-              <CardMedia
-                component="img"
-                height="200"
-                image={item.image}
-                alt={item.title}
-              />
-              <CardContent style={cardContentStyle}>
-                <Typography variant="h5" component="div">
-                  {item.title}
-                </Typography>
-                <div style={scrollableContentStyle}>
-                  <Typography variant="body2">{item.content}</Typography>
-                </div>
-                <div
-                  style={{
-                    display: "flex",
-                    justifyContent: "space-between",
-                    marginTop: "10px",
-                  }}
-                >
-                  {/* Edit button */}
-                  <IconButton onClick={() => handleEdit(index)} color="primary">
-                    <EditNoteIcon />
-                  </IconButton>
-                  {/* Delete button */}
-                  <IconButton
-                    onClick={() => handleDelete(index)}
-                    color="secondary"
+        {newsList &&
+          newsList.length > 0 &&
+          newsList.map((item) => (
+            <Grid item xs={12} sm={6} md={4} key={item?.blogId}>
+              <Card key={item?.blogId} style={cardStyle}>
+                {item && item.fileDetails && item.fileDetails.fileData && (
+                  <CardMedia
+                    component="img"
+                    height="200"
+                    image={`data:image/${item?.fileDetails?.fileType};base64,${item?.fileDetails?.fileData}`}
+                    alt={item.blogTitle}
+                    onError={(e) => {
+                      e.target.src =
+                        "https://www.pexels.com/photo/close-up-shot-of-keyboard-buttons-2882552/"; // Replace this URL with the correct fallback image URL
+                    }}
+                  />
+                )}
+                <CardContent style={cardContentStyle}>
+                  <Typography variant="h5" component="div">
+                    {item?.blogTitle}
+                  </Typography>
+                  <div style={scrollableContentStyle}>
+                    <Typography variant="body2">{item?.blogDesc1}</Typography>
+                  </div>
+                </CardContent>
+                {isAdmin() && (
+                  <div
+                    style={{
+                      display: "flex",
+                      justifyContent: "flex-end",
+                      marginTop: "auto",
+                    }}
                   >
-                    <DeleteIcon />
-                  </IconButton>
-                </div>
-              </CardContent>
-            </Card>
-          </Grid>
-        ))}
+                    {/* Edit Icon */}
+                    <IconButton
+                      onClick={() => handleEdit(item?.blogId)}
+                      color="primary"
+                    >
+                      <EditIcon />
+                    </IconButton>
+                    {/* Delete Icon */}
+                    <IconButton
+                      onClick={() => handleDelete(item?.blogId)}
+                      color="secondary"
+                    >
+                      <DeleteIcon />
+                    </IconButton>
+                  </div>
+                )}
+              </Card>
+            </Grid>
+          ))}
       </Grid>
       <Dialog open={open} onClose={handleClose}>
         <DialogTitle>Add Post</DialogTitle>
         <DialogContent>
           <DialogContentText>Enter post details:</DialogContentText>
-          <TextField
-            autoFocus
-            margin="dense"
-            label="Card Image URL"
-            fullWidth
-            value={cardImage}
-            onChange={(e) => setCardImage(e.target.value)}
+          <label
+            htmlFor="fileInput"
+            style={{
+              cursor: "pointer",
+              padding: "10px",
+              border: "1px solid #ccc",
+              borderRadius: "5px",
+              marginBottom: "10px",
+              display: "block",
+            }}
+          >
+            {cardImage ? `Selected: ${cardImage.name}` : "Choose an Image"}
+          </label>
+          <input
+            type="file"
+            id="fileInput"
+            style={{ display: "none" }}
+            onChange={handleImageChange}
           />
+
           <TextField
             margin="dense"
             label="Card Title"
@@ -214,12 +397,53 @@ const NewsPage = () => {
           />
         </DialogContent>
         <DialogActions>
-          <Button onClick={handleClose}>Cancel</Button>
-          <Button onClick={handlePostNews} color="primary">
-            Post
+          <Button
+            onClick={handleClose}
+            style={{ backgroundColor: "#ef233c", color: "white" }}
+          >
+            Cancel
+          </Button>
+          <Button
+            onClick={selectedBlogId ? handleUpdate : handlePostNews}
+            style={{
+              backgroundColor: selectedBlogId ? "#003E70" : "#003E70",
+              color: "white",
+            }}
+          >
+            {selectedBlogId ? "Update" : "Post"}
           </Button>
         </DialogActions>
       </Dialog>
+      <Dialog
+        open={deleteConfirmationOpen}
+        onClose={handleCloseDeleteConfirmation}
+      >
+        <DialogTitle>Delete Post</DialogTitle>
+        <DialogContent>
+          <DialogContentText>
+            Are you sure you want to delete this post?
+          </DialogContentText>
+        </DialogContent>
+        <DialogActions>
+          <Button
+            onClick={handleCloseDeleteConfirmation}
+            style={{ backgroundColor: "#003E70", color: "white" }}
+          >
+            No
+          </Button>
+          <Button onClick={handleConfirmDelete} color="secondary"
+            style={{ backgroundColor: "#ef233c", color: "white" }}
+          >
+            Yes
+          </Button>
+        </DialogActions>
+      </Dialog>
+      <br />
+      <CustomPagination
+        currentPage={currentPage}
+        totalPages={totalPages}
+        handlePageChange={handlePageChange}
+      />
     </Container>
   );
 };

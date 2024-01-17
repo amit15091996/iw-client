@@ -42,6 +42,7 @@ import { useTheme } from "@emotion/react";
 import FolderIcon from "@mui/icons-material/Folder";
 import Swal from "sweetalert2";
 import { isAdmin } from "../services/Util";
+import Loader from "../pages/Loader";
 const drawerWidth = 240;
 
 const openedMixin = (theme) => ({
@@ -127,13 +128,17 @@ export default function UserNavbar() {
   }, [location.pathname]);
 
   const handleNavClick = (url) => {
-    console.log(url);
-    navigate(url);
-    setActiveItem(url);
-    if (isMobile) {
-      setOpen(isMobile ? false : true);
-    }
+    setLoadingDelay(true); // Set loading delay to true
+    setTimeout(() => {
+      setLoadingDelay(false); // Set loading delay to false after the delay
+      navigate(url); // Navigate to the specified URL
+      setActiveItem(url); // Set activeItem to the clicked URL
+      if (isMobile) {
+        setOpen(isMobile ? false : true);
+      }
+    }, 500); // Set the delay time to 500 milliseconds
   };
+  
 
   const [anchorEl, setAnchorEl] = React.useState(null);
 
@@ -174,7 +179,18 @@ export default function UserNavbar() {
   const handleLogoutCancel = () => {
     setLogoutDialogOpen(false);
   };
+  const [loadingDelay, setLoadingDelay] = React.useState(true);
 
+  React.useEffect(() => {
+    // Mimicking a .5 second delay for demonstration purposes
+    const delayTimeout = setTimeout(() => {
+      setLoadingDelay(false);
+    }, 500);
+
+    return () => {
+      clearTimeout(delayTimeout);
+    };
+  }, []);
   return (
     <Box sx={{ display: "flex" }}>
       <CssBaseline />
@@ -435,7 +451,12 @@ export default function UserNavbar() {
         }}
       >
         <DrawerHeader />
-        <Outlet />
+        {loadingDelay ? (
+          // Show the Loader component with a .5 sec delay
+          <Loader open={true} />
+        ) : (
+          <Outlet />
+        )}
       </Box>
     </Box>
   );

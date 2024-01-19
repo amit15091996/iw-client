@@ -1,5 +1,5 @@
 import { useState } from "react";
-import Swal from 'sweetalert2'; 
+import Swal from "sweetalert2";
 import {
   Button,
   Dialog,
@@ -10,9 +10,11 @@ import {
   TextField,
   Typography,
 } from "@mui/material";
+import { forgotPassword } from "../services/UserService";
 
 const ChangePassword = () => {
   const [open, setOpen] = useState(false);
+  const [username, setUsername] = useState(""); // Add state for the username
   const [oldPassword, setOldPassword] = useState("");
   const [newPassword, setNewPassword] = useState("");
   const [confirmNewPassword, setConfirmNewPassword] = useState("");
@@ -25,78 +27,106 @@ const ChangePassword = () => {
     setOpen(false);
   };
 
-  const handlePasswordChange = () => {
-    // Logic to handle password change - You can add your implementation here
-    console.log("Old Password:", oldPassword);
-    console.log("New Password:", newPassword);
-    console.log("Confirm New Password:", confirmNewPassword);
+  const handlePasswordChange = async () => {
+    try {
+      // Call forgotPassword to initiate the password change process
+      const forgotPasswordResponse = await forgotPassword(username);
 
-    Swal.fire({
-        icon: 'success',
-        title: 'Password Updated!',
-        text: 'Your password has been updated successfully.',
+      if (!forgotPasswordResponse.success) {
+        // Handle the case where the forgot password request fails
+        Swal.fire({
+          icon: "error",
+          title: "Forgot Password Failed",
+          text: forgotPasswordResponse.message,
+        });
+        return;
+      }
+
+      // Assuming the forgot password request was successful,
+      // proceed with the password change using your existing logic
+
+      // Validate if new password matches the confirmation
+      if (newPassword !== confirmNewPassword) {
+        Swal.fire({
+          icon: "error",
+          title: "Passwords do not match",
+          text: "Please make sure the new passwords match.",
+        });
+        return;
+      }
+    } catch (error) {
+      // Handle error response
+      console.error("Error in handlePasswordChange:", error);
+
+      Swal.fire({
+        icon: "error",
+        title: "Password Change Failed",
+        text: "There was an error changing your password. Please try again.",
       });
-
-    // Reset fields and close modal after password change
-    setOldPassword("");
-    setNewPassword("");
-    setOpen(false);
+    }
   };
 
   return (
     <div style={{ display: "flex", alignItems: "center" }}>
-    <Typography variant="h6" style={{ marginRight: "10px" }}>
-      To Update Your password
-    </Typography>
-    <Button component="button" variant="contained" onClick={handleClickOpen}>
-      Click here
-    </Button>
-    <Dialog open={open} onClose={handleClose}>
-      <DialogTitle>Update Your Password</DialogTitle>
-      <DialogContent>
-        <DialogContentText>
-          Please enter your old and new password below.
-        </DialogContentText>
-        <TextField
-          autoFocus
-          margin="dense"
-          label="Old Password"
-          type="password"
-          fullWidth
-          value={oldPassword}
-          onChange={(e) => setOldPassword(e.target.value)}
-        />
-        <TextField
-        
-          margin="dense"
-          label="New Password"
-          type="password"
-          fullWidth
-          value={newPassword}
-          onChange={(e) => setNewPassword(e.target.value)}
-        />
-        <TextField
-          margin="dense"
-          label="Confirm New Password"
-          type="password"
-          fullWidth
-          value={confirmNewPassword}
-          onChange={(e) => setConfirmNewPassword(e.target.value)}
-        />
-      </DialogContent>
-      <DialogActions>
-        <Button
-          onClick={handleClose}
-          style={{ backgroundColor: "#ef233c", color: "white" }}
-        >
-          Cancel
-        </Button>
-        <Button onClick={handlePasswordChange} variant="contained">
-          Update
-        </Button>
-      </DialogActions>
-    </Dialog>
-  </div>
+      <Typography variant="h6" style={{ marginRight: "10px" }}>
+        To Update Your password
+      </Typography>
+      <Button component="button" variant="contained" onClick={handleClickOpen}>
+        Click here
+      </Button>
+      <Dialog open={open} onClose={handleClose}>
+        <DialogTitle>Update Your Password</DialogTitle>
+        <DialogContent>
+          <DialogContentText>
+            Please enter your old and new password below.
+          </DialogContentText>
+          <TextField
+            autoFocus
+            margin="dense"
+            label="Username" // Add a field for the username
+            type="text"
+            fullWidth
+            value={username}
+            onChange={(e) => setUsername(e.target.value)}
+          />
+          <TextField
+            margin="dense"
+            label="Old Password"
+            type="password"
+            fullWidth
+            value={oldPassword}
+            onChange={(e) => setOldPassword(e.target.value)}
+          />
+          <TextField
+            margin="dense"
+            label="New Password"
+            type="password"
+            fullWidth
+            value={newPassword}
+            onChange={(e) => setNewPassword(e.target.value)}
+          />
+          <TextField
+            margin="dense"
+            label="Confirm New Password"
+            type="password"
+            fullWidth
+            value={confirmNewPassword}
+            onChange={(e) => setConfirmNewPassword(e.target.value)}
+          />
+        </DialogContent>
+        <DialogActions>
+          <Button
+            onClick={handleClose}
+            style={{ backgroundColor: "#ef233c", color: "white" }}
+          >
+            Cancel
+          </Button>
+          <Button onClick={handlePasswordChange} variant="contained">
+            Update
+          </Button>
+        </DialogActions>
+      </Dialog>
+    </div>
   );
 };
 

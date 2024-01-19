@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import {
   Button,
   Paper,
@@ -13,10 +13,11 @@ import {
   TextField,
   MenuItem,
   styled,
-  Grid,
   Box,
 } from "@mui/material";
-import { uploadFileAdmin } from "../../services/FileService";
+import getFileDetailByUserId, {
+  uploadFileAdmin,
+} from "../../services/FileService";
 import { DatePicker, LocalizationProvider } from "@mui/x-date-pickers";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import dayjs from "dayjs";
@@ -25,14 +26,36 @@ const DocumentUploader = () => {
   const [uploadedDocuments, setUploadedDocuments] = useState([]);
   const [selectedFile, setSelectedFile] = useState(null);
   const [uploading, setUploading] = useState(false);
+  const [loadingTable, setLoadingTable] = useState(false);
   const [textData, setTextData] = useState("");
   const [fileType, setFileType] = useState("");
-  const [selectedDate, setSelectedDate] = useState(null); // New state for date
+  const [selectedDate, setSelectedDate] = useState(null);
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        setLoadingTable(true);
+        const apiResponse = await getFileDetailByUserId();
+        console.log("API Response:", apiResponse);
+
+        // Accessing the content array from fileTransDetails
+        const contentArray = apiResponse?.fileTransDetails?.content || [];
+
+        // Setting the last five elements from contentArray
+        setUploadedDocuments(contentArray.slice(-5));
+        setLoadingTable(false);
+        console.log("Updated uploadedDocuments:", contentArray.slice(-5));
+      } catch (error) {
+        console.error("Error fetching data:", error);
+        setLoadingTable(false);
+      }
+    };
+
+    fetchData();
+  }, []);
 
   const handleDateChange = (date) => {
     const formattedDate = date ? dayjs(date).format("YYYY-MM-DD") : null;
-    console.log(formattedDate); // Output the formatted date for debugging
-
     setSelectedDate(formattedDate);
   };
 
@@ -70,8 +93,6 @@ const DocumentUploader = () => {
       setUploading(true);
 
       try {
-        console.log("--- ", selectedDate);
-        // const currentDate = selectedDate.toISOString().slice(0, 10); // Get current date
         const uploadedFileData = {
           file: selectedFile,
           text: textData,
@@ -79,17 +100,17 @@ const DocumentUploader = () => {
           uploadDateTime: selectedDate,
         };
 
-        // Adding a 2-second delay using setTimeout
+        // Simulating the API call using setTimeout
         setTimeout(async () => {
           try {
             await uploadFileAdmin(uploadedFileData);
 
-            setUploadedDocuments([
-              ...uploadedDocuments,
-              {
-                ...uploadedFileData,
-              },
-            ]);
+            // Fetch the updated data after file upload
+            setLoadingTable(true);
+            const apiResponse = await getFileDetailByUserId();
+            setUploadedDocuments(apiResponse?.fileTransDetails?.content || []);
+            setLoadingTable(false);
+
             setSelectedFile(null);
             setTextData("");
             setFileType("");
@@ -98,17 +119,18 @@ const DocumentUploader = () => {
           } catch (error) {
             console.error("Error occurred during file upload:", error);
             setUploading(false);
-            // Handle error state or display error message to the user
+            setLoadingTable(false);
           }
         }, 2000); // 2 seconds delay (2000 milliseconds)
       } catch (error) {
         console.error("Error occurred:", error);
         setUploading(false);
-        // Handle error state or display error message to the user
+        setLoadingTable(false);
       }
     }
   };
 
+  console.log("len : ", uploadedDocuments?.length);
   return (
     <Paper
       elevation={3}
@@ -127,7 +149,7 @@ const DocumentUploader = () => {
         variant="outlined"
         value={fileType}
         onChange={handleFileTypeSelect}
-        style={{ marginTop: "10px", width: "100%" }} // Adjusted width for mobile view
+        style={{ marginTop: "10px", width: "100%" }}
       >
         <MenuItem value="Audit Report">Audit Report</MenuItem>
         <MenuItem value="Bank Statement">Bank Statement</MenuItem>
@@ -140,19 +162,17 @@ const DocumentUploader = () => {
         <MenuItem value="Sale Register">Sale Register</MenuItem>
         <MenuItem value="Purchase Register">Purchase Register</MenuItem>
         <MenuItem value="Others">Others</MenuItem>
-        {/* Add more file type options here as needed */}
       </TextField>
       <TextField
         label="File Name"
         variant="outlined"
         value={textData}
         onChange={(e) => setTextData(e.target.value)}
-        style={{ marginTop: "10px", width: "100%" }} // Adjusted width for mobile view
+        style={{ marginTop: "10px", width: "100%" }}
       />
       <LocalizationProvider dateAdapter={AdapterDayjs}>
         <div style={{ marginTop: "10px", width: "100%" }}>
           <DatePicker
-            //  format="DD-MM-YYYY"
             label="Select Date"
             value={selectedDate}
             onChange={handleDateChange}
@@ -177,55 +197,55 @@ const DocumentUploader = () => {
           Uploading...
         </Typography>
       )}
-      {uploadedDocuments.length > 0 && (
-        <Grid container spacing={2}>
-          {/* First Column */}
-          {/* <Grid item xs={12} sm={12}> */}
-            <Paper
-              sx={{
-                width: { xs: "400px", sm: "600px", md: "800px", lg: "100%" },
-              }}
-            >
-              <Box sx={{ margin: "15px 10px", padding: "10px" }}>
-                <Typography variant="h5">Intervies Attended</Typography>
-              </Box>
-              <Box sx={{ padding: "0px 10px", overflowX: "auto" }}>
-                <TableContainer component={Paper} style={{ marginTop: "20px" }}>
-                  <Table>
-                    <TableHead>
-                      <TableRow>
-                        <TableCell style={{ minWidth: 100 }}>File Name</TableCell>
-                        <TableCell>File Type</TableCell>
-                        <TableCell>Text Data</TableCell>
-                        <TableCell>Date</TableCell>
-                        <TableCell>Time</TableCell>
-                        <TableCell>Report Date</TableCell>
+      {loadingTable ? (
+        <Typography variant="body2" style={{ marginTop: "10px" }}>
+          Loading table data...
+        </Typography>
+      ) : (
+        uploadedDocuments?.length > 0 && (
+          <Paper>
+            <Box sx={{ margin: "15px 10px", padding: "10px" }}>
+              <Typography variant="h5">Recent Documents</Typography>
+            </Box>
+            <Box sx={{ padding: "0px 10px", overflowX: "auto" }}>
+              <TableContainer component={Paper}>
+                <Table style={{ marginBottom: "0", border: "none" }}>
+                  <TableHead style={{ backgroundColor: "#003E70" }}>
+                    <TableRow>
+                      <TableCell style={{ color: "white" }}>Sr.No</TableCell>
+                      <TableCell style={{ color: "white" }}>
+                        File Type
+                      </TableCell>
+                      <TableCell style={{ color: "white" }}>
+                        File Name
+                      </TableCell>
+                      <TableCell style={{ color: "white" }}>File ID</TableCell>
+                      <TableCell style={{ color: "white" }}>Year</TableCell>
+                      <TableCell style={{ color: "white" }}>
+                        Report Date
+                      </TableCell>
+                    </TableRow>
+                  </TableHead>
+                  <TableBody>
+                    {uploadedDocuments.map((item, index) => (
+                      <TableRow key={index}>
+                        <TableCell>{index + 1}</TableCell>
+                        <TableCell>{item.fileType}</TableCell>
+                        <TableCell>{item.fileDescription}</TableCell>
+                        <TableCell>{item.fileTransDetailsId}</TableCell>
+                        <TableCell>{item.year}</TableCell>
+                        <TableCell>{item.reportDate}</TableCell>
                       </TableRow>
-                    </TableHead>
-                    <TableBody>
-                      {uploadedDocuments.map((item, index) => (
-                        <TableRow key={index}>
-                          <TableCell>{item.file.name}</TableCell>
-                          <TableCell>{item.fileType}</TableCell>
-                          <TableCell>{item.text}</TableCell>
-                          <TableCell>
-                            {item.uploadDateTime.split(",")[0]}
-                          </TableCell>
-                          <TableCell>
-                            {item.uploadDateTime.split(",")[1]}
-                          </TableCell>
-                          <TableCell>{item.uploadDateTime}</TableCell>
-                        </TableRow>
-                      ))}
-                    </TableBody>
-                  </Table>
-                </TableContainer>
-              </Box>
-            </Paper>
-          {/* </Grid> */}
-        </Grid>
+                    ))}
+                  </TableBody>
+                </Table>
+              </TableContainer>
+            </Box>
+          </Paper>
+        )
       )}
     </Paper>
   );
 };
+
 export default DocumentUploader;

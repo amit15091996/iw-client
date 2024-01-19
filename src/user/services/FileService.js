@@ -1,5 +1,5 @@
 import axios from "axios";
-import { postReqAxios } from "../../axiosConfig/PostReq";
+import { BASE_URL, postReqAxios } from "../../axiosConfig/PostReq";
 import { getToken } from "./UserService";
 
 
@@ -19,7 +19,7 @@ export const uploadFileAdmin = async (fileData) => {
         const token = getToken();
         const response = axios({
             method: "post",
-            url: "http://localhost:9190/api/v1/user/upload-file",
+            url: `${BASE_URL}/user/upload-file`,
             data: formData,
             headers: { "Content-Type": 'multipart/form-data', 'Authorization': 'Bearer ' + token },
         })
@@ -67,3 +67,101 @@ export const getUserFile = async (fileId) => {
         throw new Error(error.response?.data || error.message);
     }
 }
+
+
+export const getFileDetailByUserId = async () => {
+    try {
+        const response = await postReqAxios.get('/user/get-file-transdetail-by-userid', {
+            params: {
+                pageNo: 0,
+                pageSize: 5,
+                sortBy: 'fileTransDetailsId',
+                sortingOrder: 'DSC',
+            },
+        });
+        console.log("getFileDetailByUserId : ", response.data);
+        return response.data;
+    } catch (error) {
+        console.error('Error fetching data:', error);
+        throw error; // Propagate the error if needed
+    }
+};
+
+export default getFileDetailByUserId;
+
+
+// get all user-file-details * Admin
+
+export const getAllFileDetail = async () => {
+    try {
+        const response = await postReqAxios.get('/admin/get-all-filetransdetail', {
+            params: {
+                pageNo: 0,
+                pageSize: 5,
+                sortBy: 'fileTransDetailsId',
+                sortingOrder: 'DSC',
+            },
+        });
+        console.log("All Files Details -  ", response.data);
+        return response.data;
+    } catch (error) {
+        console.error('Error fetching data:', error);
+        throw error; // Propagate the error if needed
+    }
+}
+
+// get-Filetransdetail-By-Year-And-UserId 
+
+export const getFileDetailByUserIdAndYear = async (userId, year, pageNo = 0, pageSize = 10, sortBy = 'reportDate', sortingOrder = 'ASC') => {
+    try {
+        const response = await axios.get('/admin/get-filetransdetail-by-year-and-userid', {
+            params: {
+                userId,
+                year,
+                pageNo,
+                pageSize,
+                sortBy,
+                sortingOrder,
+            },
+        });
+
+        return response.data;
+    } catch (error) {
+        console.error('Error fetching file details:', error);
+        throw error; // Propagate the error if needed
+    }
+};
+
+
+export const getFileDetailByTransId = async (transId) => {
+    try {
+      const response = await postReqAxios.get(`/admin/get-filedetail-by-transid/${transId}`);
+      return response.data;
+    } catch (error) {
+      console.error('Error fetching file details:', error);
+      throw new Error('An error occurred while fetching file details.');
+    }
+  };
+
+
+  export const getFile = async (fileId, suggestedFileName) => {
+    try {
+      const response = await postReqAxios.get(`/admin/get-file/${fileId}`, {
+        responseType: 'blob',
+      });
+  
+      // Generate a filename or use the suggestedFileName if provided
+      const fileName = suggestedFileName || 'downloadedFile';
+  
+      // Create a download link and trigger the download
+      const downloadLink = document.createElement('a');
+      downloadLink.href = window.URL.createObjectURL(new Blob([response.data]));
+      downloadLink.setAttribute('download', fileName);
+      downloadLink.click();
+  
+      return { success: true };
+    } catch (error) {
+      console.error('Error fetching file:', error);
+      return { success: false, error: error.message };
+    }
+  };

@@ -107,3 +107,26 @@ export const getFileDetailByUserIdAndYear = async (year, pageNo, pageSize, sortB
         throw error;
     }
 }
+
+
+// ---------------------forgot password
+
+export const forgotPassword = async (username) => {
+    try {
+      // Make a request to the forgot password endpoint
+      const response = await postReqAxios.post(`/user/change-password`, { username });
+  
+      // Assuming the API returns a success message, you can customize this based on your API response
+      const successMessage = response.data.message || 'Password reset instructions sent successfully';
+  
+      return { success: true, message: successMessage };
+    } catch (error) {
+      // Handle error response
+      console.error('Error in forgotPassword:', error.response ? error.response.data : error.message);
+  
+      // Assuming the API returns an error message, you can customize this based on your API response
+      const errorMessage = error.response ? error.response.data.error : 'Failed to send password reset instructions';
+  
+      return { success: false, message: errorMessage };
+    }
+  };

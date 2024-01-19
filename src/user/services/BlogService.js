@@ -1,7 +1,7 @@
 import axios from "axios";
 // import { postReqAxios } from "../../axiosConfig/PostReq";
 import { getToken } from "./UserService";
-import { postReqAxios } from "../../axiosConfig/PostReq";
+import { BASE_URL, postReqAxios } from "../../axiosConfig/PostReq";
 
 export const createBlog = async (blogData) => {
     try {
@@ -35,7 +35,7 @@ export const createBlog = async (blogData) => {
 
 export const getBlogs = async (type, pageNo, pageSize) => {
     try {
-        const response = await postReqAxios.get(`/blog/blogs`, {
+        const response = await postReqAxios.get(`/blog/blogs?sortBy=blogUploadedOn&sortingOrder=DSC`, {
             params: {
                 type: type,
                 pageNo: pageNo,
@@ -65,7 +65,7 @@ export const updateBlog = async (blogData) => {
         const token = getToken();
         const response = await axios({
             method: 'put',
-            url: 'http://localhost:9190/api/v1/blog/update-blog',
+            url: `${BASE_URL}/blog/update-blog`,
             data: formData,
             headers: {
                 'Authorization': 'Bearer ' + token,

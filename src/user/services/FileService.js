@@ -92,12 +92,12 @@ export default getFileDetailByUserId;
 
 // get all user-file-details * Admin
 
-export const getAllFileDetail = async () => {
+export const getAllFileDetail = async (pageNo, pageSize) => {
     try {
-        const response = await postReqAxios.get('/admin/get-all-filetransdetail', {
+        const response = await postReqAxios.get(`/admin/get-all-filetransdetail`, {
             params: {
-                pageNo: 0,
-                pageSize: 5,
+                pageNo,
+                pageSize,
                 sortBy: 'fileTransDetailsId',
                 sortingOrder: 'DSC',
             },
@@ -112,16 +112,14 @@ export const getAllFileDetail = async () => {
 
 // get-Filetransdetail-By-Year-And-UserId 
 
-export const getFileDetailByUserIdAndYear = async (userId, year, pageNo = 0, pageSize = 10, sortBy = 'reportDate', sortingOrder = 'ASC') => {
+export const getFileDetailByUserIdAndYear = async (userId, year) => {
     try {
         const response = await axios.get('/admin/get-filetransdetail-by-year-and-userid', {
             params: {
                 userId,
                 year,
-                pageNo,
-                pageSize,
-                sortBy,
-                sortingOrder,
+                sortBy: 'reportDate',
+                sortingOrder: 'ASC',
             },
         });
 
@@ -135,33 +133,33 @@ export const getFileDetailByUserIdAndYear = async (userId, year, pageNo = 0, pag
 
 export const getFileDetailByTransId = async (transId) => {
     try {
-      const response = await postReqAxios.get(`/admin/get-filedetail-by-transid/${transId}`);
-      return response.data;
+        const response = await postReqAxios.get(`/admin/get-filedetail-by-transid/${transId}`);
+        return response.data;
     } catch (error) {
-      console.error('Error fetching file details:', error);
-      throw new Error('An error occurred while fetching file details.');
+        console.error('Error fetching file details:', error);
+        throw new Error('An error occurred while fetching file details.');
     }
-  };
+};
 
 
-  export const getFile = async (fileId, suggestedFileName) => {
+export const getFile = async (fileId, suggestedFileName) => {
     try {
-      const response = await postReqAxios.get(`/admin/get-file/${fileId}`, {
-        responseType: 'blob',
-      });
-  
-      // Generate a filename or use the suggestedFileName if provided
-      const fileName = suggestedFileName || 'downloadedFile';
-  
-      // Create a download link and trigger the download
-      const downloadLink = document.createElement('a');
-      downloadLink.href = window.URL.createObjectURL(new Blob([response.data]));
-      downloadLink.setAttribute('download', fileName);
-      downloadLink.click();
-  
-      return { success: true };
+        const response = await postReqAxios.get(`/admin/get-file/${fileId}`, {
+            responseType: 'blob',
+        });
+
+        // Generate a filename or use the suggestedFileName if provided
+        const fileName = suggestedFileName || 'downloadedFile';
+
+        // Create a download link and trigger the download
+        const downloadLink = document.createElement('a');
+        downloadLink.href = window.URL.createObjectURL(new Blob([response.data]));
+        downloadLink.setAttribute('download', fileName);
+        downloadLink.click();
+
+        return { success: true };
     } catch (error) {
-      console.error('Error fetching file:', error);
-      return { success: false, error: error.message };
+        console.error('Error fetching file:', error);
+        return { success: false, error: error.message };
     }
-  };
+};

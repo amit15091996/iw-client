@@ -1,6 +1,7 @@
 import { Stack, Pagination } from '@mui/material';
 
 const CustomPagination = ({ currentPage, totalPages, handlePageChange }) => {
+  console.log('current page : ',currentPage);
   return (
     <Stack spacing={2} direction="row" justifyContent="center">
       <Pagination

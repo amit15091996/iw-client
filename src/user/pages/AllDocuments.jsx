@@ -20,6 +20,7 @@ import {
 } from "../services/FileService";
 import FileDetailsTable from "./document-center/FileDetailsTable";
 import CustomPagination from "./user-components/CustomPagination";
+import Loader from "./Loader";
 
 const columns = [
   { id: "Serial Number", label: "No", minWidth: 100 },
@@ -39,24 +40,34 @@ const AllDocuments = () => {
   const [fileDetails, setFileDetails] = useState([]);
   const [openRowId, setOpenRowId] = useState(null);
   const [totalPages, setTotalPages] = useState(1);
+  const [loading, setLoading] = useState(false);
+
+  const fetchData = async () => {
+    try {
+      setLoading(true);
+
+      console.log("Current Page : ", currentPage);
+      console.log("Rows Per Page : ", rowsPerPage);
+      const response = await getAllFileDetail(currentPage, rowsPerPage);
+      console.log("fileTransDetails:", response.fileTransDetails);
+
+      setFileTransDetails(response.fileTransDetails);
+
+      // Update totalPages based on the totalElements received from the API
+      setTotalPages(
+        Math.ceil(response.fileTransDetails.totalElements / rowsPerPage)
+      );
+    } catch (error) {
+      console.error("Error fetching data:", error);
+    } finally {
+      //  delay of 0.5 seconds
+      setTimeout(() => {
+        setLoading(false);
+      }, 500);
+    }
+  };
 
   useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const response = await getAllFileDetail(currentPage, rowsPerPage);
-        console.log("fileTransDetails:", response.fileTransDetails);
-
-        setFileTransDetails(response.fileTransDetails);
-
-        // Update totalPages based on the totalElements received from the API
-        setTotalPages(
-          Math.ceil(response.fileTransDetails.totalElements / rowsPerPage)
-        );
-      } catch (error) {
-        console.error("Error fetching data:", error);
-      }
-    };
-
     fetchData();
   }, [currentPage, rowsPerPage]);
 
@@ -74,73 +85,73 @@ const AllDocuments = () => {
     console.log("handleRowClick triggered");
     setOpenRowId(openRowId === rowId ? null : rowId);
 
-    try {
-      const clickedRowData = fileTransDetails?.content[rowId];
-      const transId = clickedRowData?.transId;
-
-      const fileDetailsResponse = await getFileDetailByTransId(transId);
-      console.log("File details by transaction ID:", fileDetailsResponse);
-
-      if (
-        fileDetailsResponse &&
-        Array.isArray(fileDetailsResponse.fileDetails)
-      ) {
-        const fileDetails = fileDetailsResponse.fileDetails;
-        console.log("Received file details:", fileDetails);
-        setFileDetails(fileDetails);
-      } else {
-        console.error(
-          "getFileDetailByTransId response does not contain the expected 'fileDetails' array."
-        );
+    if (fileTransDetails && openRowId !== rowId) {
+      try {
+        const clickedRowData = fileTransDetails?.content[rowId];
+        const transId = clickedRowData?.transId;
+        const fileDetailsResponse = await getFileDetailByTransId(transId);
+        console.log("File details by transaction ID:", fileDetailsResponse);
+        if (
+          fileDetailsResponse &&
+          Array.isArray(fileDetailsResponse.fileDetails)
+        ) {
+          const fileDetails = fileDetailsResponse.fileDetails;
+          console.log("Received file details:", fileDetails);
+          setFileDetails(fileDetails);
+        } else {
+          console.error(
+            "getFileDetailByTransId response does not contain the expected 'fileDetails' array."
+          );
+        }
+      } catch (error) {
+        console.error("Error fetching file details by transaction ID:", error);
       }
-    } catch (error) {
-      console.error("Error fetching file details by transaction ID:", error);
     }
   };
 
   return (
-    <Grid container spacing={2}>
-      <Grid item xs={12} sm={12}>
-        <Paper
-          sx={{ width: { xs: "400px", sm: "600px", md: "800px", lg: "100%" } }}
-        >
-          <Box
+    <>
+      {loading && <Loader open={loading} />}
+
+      <Grid container spacing={2}>
+        <Grid item xs={12} sm={12}>
+          <Paper
             sx={{
-              margin: "10px",
-              padding: "10px",
-              display: "flex",
-              justifyContent: "space-between",
+              width: { xs: "400px", sm: "600px", md: "800px", lg: "100%" },
             }}
           >
-            <Typography variant="h5">All User Documents</Typography>
-          </Box>
-          <Box sx={{ padding: "0px 10px", overflowX: "auto" }}>
-            <TableContainer>
-              <Table>
-                <TableHead style={{ background: "#003E70" }}>
-                  <TableRow>
-                    {columns.map((column) => (
-                      <TableCell
-                        key={column.id}
-                        style={{
-                          minWidth: column.minWidth,
-                          color: "white",
-                          fontSize: "15px",
-                        }}
-                      >
-                        {column.label}
-                      </TableCell>
-                    ))}
-                  </TableRow>
-                </TableHead>
-                <TableBody>
-                  {fileTransDetails?.content &&
-                    fileTransDetails.content
-                      .slice(
-                        currentPage * rowsPerPage,
-                        (currentPage + 1) * rowsPerPage
-                      )
-                      .map((detail, index) => (
+            <Box
+              sx={{
+                margin: "10px",
+                padding: "10px",
+                display: "flex",
+                justifyContent: "space-between",
+              }}
+            >
+              <Typography variant="h5">All User Documents</Typography>
+            </Box>
+            <Box sx={{ padding: "0px 10px", overflowX: "auto" }}>
+              <TableContainer>
+                <Table>
+                  <TableHead style={{ background: "#003E70" }}>
+                    <TableRow>
+                      {columns.map((column) => (
+                        <TableCell
+                          key={column.id}
+                          style={{
+                            minWidth: column.minWidth,
+                            color: "white",
+                            fontSize: "15px",
+                          }}
+                        >
+                          {column.label}
+                        </TableCell>
+                      ))}
+                    </TableRow>
+                  </TableHead>
+                  <TableBody>
+                    {fileTransDetails?.content &&
+                      fileTransDetails.content.map((detail, index) => (
                         <React.Fragment key={detail.fileTransDetailsId}>
                           <TableRow>
                             <TableCell>
@@ -183,23 +194,24 @@ const AllDocuments = () => {
                           </TableRow>
                         </React.Fragment>
                       ))}
-                </TableBody>
-              </Table>
-            </TableContainer>
-            <br />
-            <CustomPagination
-              currentPage={currentPage}
-              totalPages={totalPages}
-              handlePageChange={handleChangePage}
-              handleChangeRowsPerPage={handleChangeRowsPerPage}
-              rowsPerPage={rowsPerPage}
-            />
+                  </TableBody>
+                </Table>
+              </TableContainer>
+              <br />
+              <CustomPagination
+                currentPage={currentPage}
+                totalPages={totalPages}
+                handlePageChange={handleChangePage}
+                handleChangeRowsPerPage={handleChangeRowsPerPage}
+                rowsPerPage={rowsPerPage}
+              />
 
-            <br />
-          </Box>
-        </Paper>
+              <br />
+            </Box>
+          </Paper>
+        </Grid>
       </Grid>
-    </Grid>
+    </>
   );
 };
 

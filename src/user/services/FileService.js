@@ -112,14 +112,16 @@ export const getAllFileDetail = async (pageNo, pageSize) => {
 
 // get-Filetransdetail-By-Year-And-UserId 
 
-export const getFileDetailByUserIdAndYear = async (userId, year) => {
+export const getFileDetailByUserIdAndYear = async (userId, year, pageNo, pageSize, sortBy = 'reportDate', sortingOrder = 'ASC') => {
     try {
-        const response = await axios.get('/admin/get-filetransdetail-by-year-and-userid', {
+        const response = await postReqAxios.get('/admin/get-filetransdetail-by-year-and-userid', {
             params: {
                 userId,
                 year,
-                sortBy: 'reportDate',
-                sortingOrder: 'ASC',
+                pageNo,     // Include the pageNo parameter
+                pageSize,   // Include the pageSize parameter
+                sortBy,
+                sortingOrder,
             },
         });
 
@@ -129,6 +131,7 @@ export const getFileDetailByUserIdAndYear = async (userId, year) => {
         throw error; // Propagate the error if needed
     }
 };
+
 
 
 export const getFileDetailByTransId = async (transId) => {

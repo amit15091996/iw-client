@@ -18,7 +18,7 @@ const FileDownloadButton = ({ fileId ,fileName}) => {
   };
 
   return (
-    <IconButton onClick={handleDownload} aria-label="Download">
+    <IconButton onClick={handleDownload} aria-label="Download" style={{color:'#003E70'}}>
       <FileDownloadIcon />
     </IconButton>
   );

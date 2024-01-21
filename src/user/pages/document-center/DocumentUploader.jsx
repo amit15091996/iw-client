@@ -100,35 +100,37 @@ const DocumentUploader = () => {
           uploadDateTime: selectedDate,
         };
 
-        // Simulating the API call using setTimeout
-        setTimeout(async () => {
-          try {
-            await uploadFileAdmin(uploadedFileData);
+        // Upload the file
+        await uploadFileAdmin(uploadedFileData);
+        console.log("File uploaded successfully");
 
-            // Fetch the updated data after file upload
-            setLoadingTable(true);
-            const apiResponse = await getFileDetailByUserId();
-            setUploadedDocuments(apiResponse?.fileTransDetails?.content || []);
-            setLoadingTable(false);
+        // Fetch the updated data after file upload
+        setLoadingTable(true);
+        try {
+          const apiResponse = await getFileDetailByUserId();
+          console.log("API Response after upload:", apiResponse);
+          setUploadedDocuments(apiResponse?.fileTransDetails?.content || []);
+        } catch (fetchError) {
+          console.error("Error fetching updated data after upload:", fetchError);
+        } finally {
+          setLoadingTable(false);
+        }
 
-            setSelectedFile(null);
-            setTextData("");
-            setFileType("");
-            setSelectedDate(null);
-            setUploading(false);
-          } catch (error) {
-            console.error("Error occurred during file upload:", error);
-            setUploading(false);
-            setLoadingTable(false);
-          }
-        }, 2000); // 2 seconds delay (2000 milliseconds)
+        // Reset form fields and loading state
+        setSelectedFile(null);
+        setTextData("");
+        setFileType("");
+        setSelectedDate(null);
+        setUploading(false);
+
       } catch (error) {
-        console.error("Error occurred:", error);
+        console.error("Error occurred during file upload:", error);
         setUploading(false);
         setLoadingTable(false);
       }
     }
   };
+
 
   console.log("len : ", uploadedDocuments?.length);
   return (

@@ -76,7 +76,7 @@ const MyDocuments = () => {
           selectedYear,
           currentPage,
           rowsPerPage,
-          "reportDate"
+          "fileTransDetailsId"
         );
 
         console.log("API Response:", initialApiData);

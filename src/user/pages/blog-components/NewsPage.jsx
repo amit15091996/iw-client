@@ -185,7 +185,7 @@ const NewsPage = () => {
           title: "Delete Successful",
           text: "Your post has been deleted successfully!",
         });
-  
+
         // Fetch the first page of blogs again to update the list
         handlePageChange(0);
       } catch (error) {
@@ -198,7 +198,7 @@ const NewsPage = () => {
       }
     }
   };
-  
+
 
   const handleUpdate = async () => {
     if (selectedBlogId && cardTitle && cardContent) {
@@ -338,14 +338,14 @@ const NewsPage = () => {
                     {/* Edit Icon */}
                     <IconButton
                       onClick={() => handleEdit(item?.blogId)}
-                      color="primary"
+                      style={{ color: '#003E70' }}
                     >
                       <EditIcon />
                     </IconButton>
                     {/* Delete Icon */}
                     <IconButton
                       onClick={() => handleDelete(item?.blogId)}
-                      color="secondary"
+                      style={{ color: '#e53935' }}
                     >
                       <DeleteIcon />
                     </IconButton>

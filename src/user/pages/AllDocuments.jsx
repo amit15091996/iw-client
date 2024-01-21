@@ -12,11 +12,14 @@ import {
   IconButton,
   Box,
   Grid,
+  TextField,
+  Button,
 } from "@mui/material";
 import { KeyboardArrowDown, KeyboardArrowUp } from "@mui/icons-material";
 import {
   getAllFileDetail,
   getFileDetailByTransId,
+  getFileDetailByUserIdAndYear,
 } from "../services/FileService";
 import FileDetailsTable from "./document-center/FileDetailsTable";
 import CustomPagination from "./user-components/CustomPagination";
@@ -41,6 +44,10 @@ const AllDocuments = () => {
   const [openRowId, setOpenRowId] = useState(null);
   const [totalPages, setTotalPages] = useState(1);
   const [loading, setLoading] = useState(false);
+  const [userId, setUserId] = useState('');
+  const [year, setYear] = useState('');
+
+
 
   const fetchData = async () => {
     try {
@@ -109,6 +116,54 @@ const AllDocuments = () => {
     }
   };
 
+
+
+  const handleSearch = async () => {
+    try {
+      setLoading(true);
+  
+      const response = await getFileDetailByUserIdAndYear(
+        userId,
+        year,
+        0,  // Reset currentPage to 0 after search
+        rowsPerPage
+      );
+  
+      console.log("getFileDetailByUserIdAndYear : ", response);
+  
+      if (response && response.fileTransDetails) {
+        setFileTransDetails((prevData) => ({
+          ...prevData,
+          content: response.fileTransDetails.content,
+        }));
+  
+        // Update totalPages based on the totalElements received from the API
+        setTotalPages(
+          Math.ceil(response.fileTransDetails.totalElements / rowsPerPage)
+        );
+      } else if (response && response.totalResults > 0) {
+        setFileTransDetails({
+          content: response.fileTransDetails.content,
+          totalElements: response.totalResults,
+        });
+  
+        // Update totalPages based on the totalResults received from the API
+        setTotalPages(Math.ceil(response.totalResults / rowsPerPage));
+      } else {
+        console.error("API response is missing expected 'fileTransDetails'.");
+      }
+    } catch (error) {
+      console.error("Error searching data:", error);
+    } finally {
+      // delay of 0.5 seconds
+      setTimeout(() => {
+        setLoading(false);
+      }, 500);
+    }
+  };
+  
+
+
   return (
     <>
       {loading && <Loader open={loading} />}
@@ -129,7 +184,29 @@ const AllDocuments = () => {
               }}
             >
               <Typography variant="h5">All User Documents</Typography>
+              <Box sx={{ display: "flex" }}>
+                <TextField
+                  label="User ID"
+                  variant="outlined"
+                  size="small"
+                  value={userId}
+                  onChange={(e) => setUserId(e.target.value)}
+                  style={{ marginRight: "10px" }}
+                />
+                <TextField
+                  label="Year"
+                  variant="outlined"
+                  size="small"
+                  value={year}
+                  onChange={(e) => setYear(e.target.value)}
+                  style={{ marginRight: "10px" }}
+                />
+                <Button variant="contained" onClick={handleSearch}>
+                  Search
+                </Button>
+              </Box>
             </Box>
+
             <Box sx={{ padding: "0px 10px", overflowX: "auto" }}>
               <TableContainer>
                 <Table>
@@ -150,7 +227,8 @@ const AllDocuments = () => {
                     </TableRow>
                   </TableHead>
                   <TableBody>
-                    {fileTransDetails?.content &&
+                    {fileTransDetails?.content && fileTransDetails.content.length > 0 ? (
+                      // Render table rows if data is available
                       fileTransDetails.content.map((detail, index) => (
                         <React.Fragment key={detail.fileTransDetailsId}>
                           <TableRow>
@@ -167,6 +245,7 @@ const AllDocuments = () => {
                                 aria-label="expand row"
                                 size="small"
                                 onClick={() => handleRowClick(index)}
+                                style={{ color: '#003E70' }}
                               >
                                 {openRowId === index ? (
                                   <KeyboardArrowUp />
@@ -193,19 +272,46 @@ const AllDocuments = () => {
                             </TableCell>
                           </TableRow>
                         </React.Fragment>
-                      ))}
+                      ))
+                    ) : (
+                      // Render a single row with a message if no data is available
+                      <TableRow>
+                        <TableCell colSpan={columns.length} align="center">
+                          {loading ? (
+                            'Loading...'
+                          ) : (
+                            <span style={{ color: 'red' }}>Data not available</span>
+                          )}
+                        </TableCell>
+                      </TableRow>
+
+
+                    )}
                   </TableBody>
+
                 </Table>
               </TableContainer>
               <br />
-              <CustomPagination
-                currentPage={currentPage}
-                totalPages={totalPages}
-                handlePageChange={handleChangePage}
-                handleChangeRowsPerPage={handleChangeRowsPerPage}
-                rowsPerPage={rowsPerPage}
-              />
-
+              {fileTransDetails?.content && fileTransDetails.content.length > 0 ? (
+                // Render CustomPagination if data is available
+                <CustomPagination
+                  currentPage={currentPage}
+                  totalPages={totalPages}
+                  handlePageChange={handleChangePage}
+                  handleChangeRowsPerPage={handleChangeRowsPerPage}
+                  rowsPerPage={rowsPerPage}
+                />
+              ) : (
+                // Render a disabled CustomPagination if no data is available
+                <CustomPagination
+                  currentPage={currentPage}
+                  totalPages={totalPages}
+                  handlePageChange={handleChangePage}
+                  handleChangeRowsPerPage={handleChangeRowsPerPage}
+                  rowsPerPage={rowsPerPage}
+                  disabled
+                />
+              )}
               <br />
             </Box>
           </Paper>

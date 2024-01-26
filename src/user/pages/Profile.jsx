@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { Avatar, Card, Divider, Grid, List, ListItem } from "@mui/material";
+import { Avatar, Card, Divider, Grid, List, ListItem, Typography } from "@mui/material";
 import ChangePassword from "./ChangePassword";
 import {
   getLoggedInUserName,
@@ -53,91 +53,96 @@ const Profile = () => {
     }
   };
   return (
-    <Grid container spacing={2} sx={cardContainerStyle}>
-      <Grid item xs={12} sm={6} md={4}>
-        <Card
-          sx={{
-            boxShadow: "0 4px 8px 0 rgba(0,0,0,0.2)",
-            borderRadius: "8px",
-            padding: "20px",
-            margin: "10px",
-            textAlign: "center",
-            minHeight: "150px",
-            display: "flex",
-            flexDirection: "column",
-            justifyContent: "center",
-            marginRight: 2,
-          }}
-        >
-          <Avatar
+    <>
+      <Typography align="center" gutterBottom style={{fontSize:'27px', color:'#003E70', fontFamily:'sans-serif'}}>
+        Profile Information
+      </Typography>
+      <Grid container spacing={2} sx={cardContainerStyle}>
+        <Grid item xs={12} sm={6} md={4}>
+          <Card
             sx={{
-              width: "64px",
-              height: "64px",
-              margin: "auto",
-              backgroundColor: "none",
+              boxShadow: "0 4px 8px 0 rgba(0,0,0,0.2)",
+              borderRadius: "8px",
+              padding: "20px",
+              margin: "10px",
+              textAlign: "center",
+              height: "425px",
+              display: "flex",
+              flexDirection: "column",
+              justifyContent: "center",
+              marginRight: 2,
             }}
           >
-            H
-          </Avatar>
-          <List
-            sx={{ width: "100%" }}
-            component="nav"
-            aria-label="mailbox folders"
-          >
-            <ListItem sx={{ margin: "10px 0" }}>
-              <h4 style={{ fontWeight: "bold", margin: 0, color: "#2c3e50" }}>
-                Name :
-              </h4>
-              <span style={{ marginLeft: "5px", color: "#34495e" }}>
-                {formData.name}
-              </span>
-            </ListItem>
-            <Divider />
-            <ListItem sx={{ margin: "10px 0" }}>
-              <h4 style={{ fontWeight: "bold", margin: 0, color: "#2c3e50" }}>
-                Email :
-              </h4>
-              <span style={{ marginLeft: "5px", color: "#34495e" }}>
-                {formData.email}
-              </span>
-            </ListItem>
-            <Divider />
-            <ListItem sx={{ margin: "10px 0" }}>
-              <h4 style={{ fontWeight: "bold", margin: 0, color: "#2c3e50" }}>
-                Phone :
-              </h4>
-              <span style={{ marginLeft: "5px", color: "#34495e" }}>
-                {formData.phone}
-              </span>
-            </ListItem>
-            <Divider />
-            <ListItem sx={{ margin: "10px 0" }}>
-              <h4 style={{ fontWeight: "bold", margin: 0, color: "#2c3e50" }}>
-                GST Number :
-              </h4>
-              <span style={{ marginLeft: "5px", color: "#34495e" }}>
-                {formData.gstNo}
-              </span>
-            </ListItem>
-            <Divider />
-            <ListItem sx={{ margin: "10px 0" }}>
-              <h4 style={{ fontWeight: "bold", margin: 0, color: "#2c3e50" }}>
-                Address:
-              </h4>
-              <span style={{ marginLeft: "5px", color: "#34495e" }}>
-                {formData.address}
-              </span>
-            </ListItem>
-          </List>
-        </Card>
+            <Avatar
+              sx={{
+                width: "64px",
+                height: "64px",
+                margin: "auto",
+                backgroundColor: "none",
+              }}
+            >
+              H
+            </Avatar>
+            <List
+              sx={{ width: "100%" }}
+              component="nav"
+              aria-label="mailbox folders"
+            >
+              <ListItem sx={{ margin: "10px 0" }}>
+                <h4 style={{ fontWeight: "bold", margin: 0, color: "#2c3e50" }}>
+                  Name :
+                </h4>
+                <span style={{ marginLeft: "5px", color: "#34495e" }}>
+                  {formData.name}
+                </span>
+              </ListItem>
+              <Divider />
+              <ListItem sx={{ margin: "10px 0" }}>
+                <h4 style={{ fontWeight: "bold", margin: 0, color: "#2c3e50" }}>
+                  Email :
+                </h4>
+                <span style={{ marginLeft: "5px", color: "#34495e" }}>
+                  {formData.email}
+                </span>
+              </ListItem>
+              <Divider />
+              <ListItem sx={{ margin: "10px 0" }}>
+                <h4 style={{ fontWeight: "bold", margin: 0, color: "#2c3e50" }}>
+                  Phone :
+                </h4>
+                <span style={{ marginLeft: "5px", color: "#34495e" }}>
+                  {formData.phone}
+                </span>
+              </ListItem>
+              <Divider />
+              <ListItem sx={{ margin: "10px 0" }}>
+                <h4 style={{ fontWeight: "bold", margin: 0, color: "#2c3e50" }}>
+                  GST Number :
+                </h4>
+                <span style={{ marginLeft: "5px", color: "#34495e" }}>
+                  {formData.gstNo}
+                </span>
+              </ListItem>
+              <Divider />
+              <ListItem sx={{ margin: "10px 0" }}>
+                <h4 style={{ fontWeight: "bold", margin: 0, color: "#2c3e50" }}>
+                  Address:
+                </h4>
+                <span style={{ marginLeft: "5px", color: "#34495e" }}>
+                  {formData.address}
+                </span>
+              </ListItem>
+            </List>
+          </Card>
+        </Grid>
+        <Grid item xs={12} sm={6} md={8}>
+          <UpdateProfile userData={formData} onUpdate={handleProfileUpdate} />
+        </Grid>
+        <Grid item xs={12}>
+          <ChangePassword />
+        </Grid>
       </Grid>
-      <Grid item xs={12} sm={6} md={8}>
-        <UpdateProfile userData={formData} onUpdate={handleProfileUpdate} />
-      </Grid>
-      <Grid item xs={12}>
-        <ChangePassword />
-      </Grid>
-    </Grid>
+    </>
   );
 };
 export default Profile;

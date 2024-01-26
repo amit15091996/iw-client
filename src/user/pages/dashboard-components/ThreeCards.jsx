@@ -1,24 +1,9 @@
+import { useEffect, useState } from "react";
 import { Card, Grid, IconButton } from "@mui/material";
-import { FaUser, FaBug } from "react-icons/fa";
-import ShoppingCartIcon from "@mui/icons-material/ShoppingCart";
-
-export const cardData = [
-  {
-    icon: <FaUser style={{ fontSize: "45px", color: "#003E70" }} />,
-    value: "10K",
-    label: "Users Registered",
-  },
-  {
-    icon: <ShoppingCartIcon style={{ fontSize: "50px", color: "#003E70" }} />,
-    value: "100",
-    label: "Items Received",
-  },
-  {
-    icon: <FaBug style={{ fontSize: "45px", color: "#003E70" }} />,
-    value: "200",
-    label: "Bug Reports",
-  },
-];
+import { FaUser } from "react-icons/fa";
+import FolderCopyIcon from "@mui/icons-material/FolderCopy";
+import QuestionAnswerIcon from "@mui/icons-material/QuestionAnswer";
+import { getDashboardCounts } from "../../services/AdminService";
 
 const cardStyle = {
   boxShadow: "0 4px 8px 0 rgba(0,0,0,0.2)",
@@ -26,13 +11,46 @@ const cardStyle = {
   padding: "20px",
   margin: "10px",
   textAlign: "center",
-  minHeight: "150px", // Set a minimum height for the cards
+  minHeight: "150px",
   display: "flex",
   flexDirection: "column",
   justifyContent: "center",
 };
 
 const ThreeCards = () => {
+  const [apiData, setApiData] = useState(null);
+  const fetchData = async () => {
+    try {
+      const data = await getDashboardCounts();
+      setApiData(data);
+    } catch (error) {
+      console.error("Error fetching count details:", error);
+    }
+  };
+  useEffect(() => {
+    fetchData();
+  }, []);
+
+  const cardData = [
+    {
+      icon: <FaUser style={{ fontSize: "45px", color: "#003E70" }} />,
+      value: apiData ? apiData.usersCount : "Loading...",
+      label: "Users Registered",
+    },
+    {
+      icon: <FolderCopyIcon style={{ fontSize: "50px", color: "#003E70" }} />,
+      value: apiData ? apiData.filesCount : "Loading...",
+      label: "Items Received",
+    },
+    {
+      icon: (
+        <QuestionAnswerIcon style={{ fontSize: "45px", color: "#003E70" }} />
+      ),
+      value: apiData ? apiData.blogsCount : "Loading...",
+      label: "News Posted",
+    },
+  ];
+
   return (
     <Grid container spacing={3}>
       {cardData.map((card, index) => (
@@ -45,18 +63,16 @@ const ThreeCards = () => {
                 justifyContent: "center",
               }}
             >
-              {/* Icon on the left */}
               <IconButton>{card.icon}</IconButton>
-
-              {/* Content on the right */}
               <div style={{ marginLeft: "10px" }}>
                 <h2>{card.value}</h2>
                 <p
                   style={{
                     color: "#6c757d",
                     fontSize: "15px",
-                    fontWeight: 600,
+                    fontWeight: 500,
                     fontStyle: "Arial",
+                    marginTop: "-25px",
                   }}
                 >
                   {card.label}

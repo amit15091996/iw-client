@@ -16,6 +16,7 @@ import MainBlog from "./user/pages/MainBlog";
 import MyDocuments from "./user/pages/MyDocuments";
 import AllDocuments from "./user/pages/AllDocuments";
 import ErrorPage from "./landingpage/ErrorPage";
+import LoginTest from "./test/LoginTest";
 
 function App() {
   return (
@@ -28,6 +29,7 @@ function App() {
           <Route path="/register" element={<RegistrationForm />} />
           <Route path="/forgot" element={<ForgotPassword />} />
           <Route path="/util" element={<Utils />} />
+          <Route path="/test" element={<LoginTest />} />
 
           {/* Add more routes here */}
           <Route path="/user" element={<UserRoute />}>

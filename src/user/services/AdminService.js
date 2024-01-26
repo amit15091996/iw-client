@@ -34,11 +34,11 @@ export const updateUserProfile = async (updateUserReqDto) => {
   }
 };
 
-export const getFileDetailByUserIdAndYear = async ( year, pageNo, pageSize, sortBy) => {
+export const getFileDetailByUserIdAndYear = async (year, pageNo, pageSize, sortBy) => {
   try {
     const response = await postReqAxios.get(`/user/get-filetransdetail-by-year-and-userid`, {
       params: {
-       
+
         year: year,
         pageNo: pageNo,
         pageSize: pageSize,
@@ -90,5 +90,27 @@ export const getUploadedFileYears = async () => {
   } catch (error) {
     console.error('Error fetching file details:', error);
     throw new Error('An error occurred while fetching file details.');
+  }
+}
+
+
+// dashboard api
+
+export const getDashboardCounts = async () => {
+  try {
+    const response = await postReqAxios.get(`/user/get-counts`);
+    console.log("getDashboardCounts : ", response.data);
+    return response.data;
+  } catch (error) {
+    console.error('Error fetching count details:', error);
+  }
+}
+
+export const getUserActivity = async () => {
+  try {
+    const response = await postReqAxios.get(`/user/get-user-activity`)
+    return response.data;
+  } catch (error) {
+    console.error('Error fetching count details:', error);
   }
 }

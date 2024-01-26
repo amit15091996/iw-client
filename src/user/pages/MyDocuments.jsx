@@ -182,7 +182,7 @@ const MyDocuments = () => {
               justifyContent: "space-between",
             }}
           >
-            <Typography variant="h5">My Documents</Typography>
+            <Typography variant="h5" style={{color:'#003E70'}}>My Documents</Typography>
             <FormControl sx={{ m: 1, minWidth: 120 }} size="small">
               <InputLabel id="select-year-label">Year</InputLabel>
               <Select
@@ -235,6 +235,7 @@ const MyDocuments = () => {
                           <IconButton
                             aria-label="expand row"
                             size="small"
+                            style={{backgroundColor:'#003E70', color: 'white'}}
                             onClick={() => handleRowClick(index)}
                           >
                             {openRowId === index ? (

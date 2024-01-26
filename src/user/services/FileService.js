@@ -24,11 +24,6 @@ export const uploadFileAdmin = async (fileData) => {
             headers: { "Content-Type": 'multipart/form-data', 'Authorization': 'Bearer ' + token },
         })
 
-        // const response = await postReqAxios.post(`/admin/upload-file`,fileData,{
-        //     headers: {
-        //         'Content-Type': 'multipart/form-data', // Ensure correct content type for file upload
-        //     },
-        // });
         console.log(response.data);
         return response.data;
     } catch (error) {

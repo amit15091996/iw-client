@@ -20,6 +20,7 @@ import getFileDetailByUserId, {
 } from "../../services/FileService";
 import { DatePicker, LocalizationProvider } from "@mui/x-date-pickers";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
+import CloudUploadIcon from "@mui/icons-material/CloudUpload";
 import dayjs from "dayjs";
 
 const DocumentUploader = () => {
@@ -63,21 +64,6 @@ const DocumentUploader = () => {
     display: "none",
   });
 
-  const FileInputLabel = styled("label")({
-    display: "flex",
-    alignItems: "center",
-    justifyContent: "center",
-    width: "200px",
-    height: "50px",
-    backgroundColor: "#1976d2",
-    color: "#fff",
-    borderRadius: "5px",
-    cursor: "pointer",
-    "&:hover": {
-      backgroundColor: "#1565c0",
-    },
-  });
-
   const handleFileTypeSelect = (event) => {
     setFileType(event.target.value);
   };
@@ -111,7 +97,10 @@ const DocumentUploader = () => {
           console.log("API Response after upload:", apiResponse);
           setUploadedDocuments(apiResponse?.fileTransDetails?.content || []);
         } catch (fetchError) {
-          console.error("Error fetching updated data after upload:", fetchError);
+          console.error(
+            "Error fetching updated data after upload:",
+            fetchError
+          );
         } finally {
           setLoadingTable(false);
         }
@@ -122,7 +111,6 @@ const DocumentUploader = () => {
         setFileType("");
         setSelectedDate(null);
         setUploading(false);
-
       } catch (error) {
         console.error("Error occurred during file upload:", error);
         setUploading(false);
@@ -130,7 +118,34 @@ const DocumentUploader = () => {
       }
     }
   };
+  const FileInputLabel = styled("label")({
+    display: "flex",
+    flexDirection: "column",
+    alignItems: "center",
+    justifyContent: "center",
+    width: "100%",
+    height: "80px",
+    border: "2px dashed #1976d2",
+    borderRadius: "5px",
+    cursor: "pointer",
+    transition: "border 0.3s ease",
+    "&:hover": {
+      border: "2px dashed #1565c0",
+    },
+    "&:active": {
+      border: "2px dashed #1565c0",
+    },
+  });
 
+  const UploadIcon = styled(CloudUploadIcon)({
+    fontSize: "48px",
+    marginBottom: "8px",
+    color: "#003E70",
+  });
+
+  const FileInputText = styled(Typography)({
+    color: "#003E70",
+  });
 
   console.log("len : ", uploadedDocuments?.length);
   return (
@@ -138,11 +153,14 @@ const DocumentUploader = () => {
       elevation={3}
       style={{ padding: "20px", maxWidth: "1000px", margin: "auto" }}
     >
-      <Typography variant="h5" gutterBottom>
-        Document Uploader
+      <Typography variant="h5" gutterBottom style={{ color: "#003E70" }}>
+        Send Your Documents
       </Typography>
       <FileInputLabel htmlFor="upload-file">
-        {selectedFile ? selectedFile.name : "Select File"}
+        <UploadIcon />
+        <FileInputText>
+          {selectedFile ? selectedFile.name : "Click to Upload File"}
+        </FileInputText>
         <CustomInput id="upload-file" type="file" onChange={handleFileSelect} />
       </FileInputLabel>
       <TextField
@@ -173,27 +191,58 @@ const DocumentUploader = () => {
         style={{ marginTop: "10px", width: "100%" }}
       />
       <LocalizationProvider dateAdapter={AdapterDayjs}>
-        <div style={{ marginTop: "10px", width: "100%" }}>
-          <DatePicker
-            label="Select Date"
-            value={selectedDate}
-            onChange={handleDateChange}
-            textField={(params) => (
-              <TextField {...params} variant="outlined" fullWidth />
-            )}
-          />
+        <div
+          style={{
+            marginTop: "10px",
+            width: "100%",
+            display: "flex",
+            alignItems: "center",
+          }}
+        >
+          <div style={{ flex: 1 }}>
+            <DatePicker
+              label="Select Date"
+              value={selectedDate}
+              onChange={handleDateChange}
+              textField={(params) => (
+                <TextField {...params} variant="outlined" fullWidth />
+              )}
+            />
+          </div>
+          <div
+            style={{
+              marginLeft: "10px",
+              color: "red",
+              fontWeight: "600",
+              fontFamily: "sans-serif",
+            }}
+          >
+            <span>Note : Please fill all the details before sending the file.</span>
+          </div>
         </div>
       </LocalizationProvider>
+
       <br />
       <Button
         variant="contained"
         color="primary"
         onClick={handleFileUpload}
         disabled={!selectedFile || uploading}
-        style={{ marginTop: "10px" }}
+        style={{
+          marginTop: "10px",
+          backgroundColor: !selectedFile
+            ? "gray" // Specify the background color when no file is selected
+            : uploading
+            ? "#003E70" // Specify the background color during uploading
+            : "#003E70", // Specify the background color for the normal state
+          color: "white", // Specify the text color
+          opacity: uploading || !selectedFile ? 0.7 : 1, // Adjust opacity for disabled state if needed
+          cursor: !selectedFile ? "not-allowed" : "pointer", // Set cursor to "not-allowed" when no file is selected
+        }}
       >
         {uploading ? <CircularProgress size={24} /> : "Send"}
       </Button>
+
       {uploading && (
         <Typography variant="body2" style={{ marginTop: "10px" }}>
           Uploading...

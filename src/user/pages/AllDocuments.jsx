@@ -44,10 +44,8 @@ const AllDocuments = () => {
   const [openRowId, setOpenRowId] = useState(null);
   const [totalPages, setTotalPages] = useState(1);
   const [loading, setLoading] = useState(false);
-  const [userId, setUserId] = useState('');
-  const [year, setYear] = useState('');
-
-
+  const [userId, setUserId] = useState("");
+  const [year, setYear] = useState("");
 
   const fetchData = async () => {
     try {
@@ -116,27 +114,25 @@ const AllDocuments = () => {
     }
   };
 
-
-
   const handleSearch = async () => {
     try {
       setLoading(true);
-  
+
       const response = await getFileDetailByUserIdAndYear(
         userId,
         year,
-        0,  // Reset currentPage to 0 after search
+        0, // Reset currentPage to 0 after search
         rowsPerPage
       );
-  
+
       console.log("getFileDetailByUserIdAndYear : ", response);
-  
+
       if (response && response.fileTransDetails) {
         setFileTransDetails((prevData) => ({
           ...prevData,
           content: response.fileTransDetails.content,
         }));
-  
+
         // Update totalPages based on the totalElements received from the API
         setTotalPages(
           Math.ceil(response.fileTransDetails.totalElements / rowsPerPage)
@@ -146,7 +142,7 @@ const AllDocuments = () => {
           content: response.fileTransDetails.content,
           totalElements: response.totalResults,
         });
-  
+
         // Update totalPages based on the totalResults received from the API
         setTotalPages(Math.ceil(response.totalResults / rowsPerPage));
       } else {
@@ -161,8 +157,6 @@ const AllDocuments = () => {
       }, 500);
     }
   };
-  
-
 
   return (
     <>
@@ -186,6 +180,7 @@ const AllDocuments = () => {
               <Typography variant="h5">All User Documents</Typography>
               <Box sx={{ display: "flex" }}>
                 <TextField
+                  required
                   label="User ID"
                   variant="outlined"
                   size="small"
@@ -194,6 +189,7 @@ const AllDocuments = () => {
                   style={{ marginRight: "10px" }}
                 />
                 <TextField
+                  required
                   label="Year"
                   variant="outlined"
                   size="small"
@@ -201,7 +197,10 @@ const AllDocuments = () => {
                   onChange={(e) => setYear(e.target.value)}
                   style={{ marginRight: "10px" }}
                 />
-                <Button variant="contained" onClick={handleSearch}>
+                <Button
+                  style={{ backgroundColor: "#003E70", color: "white" }}
+                  onClick={handleSearch}
+                >
                   Search
                 </Button>
               </Box>
@@ -227,7 +226,8 @@ const AllDocuments = () => {
                     </TableRow>
                   </TableHead>
                   <TableBody>
-                    {fileTransDetails?.content && fileTransDetails.content.length > 0 ? (
+                    {fileTransDetails?.content &&
+                    fileTransDetails.content.length > 0 ? (
                       // Render table rows if data is available
                       fileTransDetails.content.map((detail, index) => (
                         <React.Fragment key={detail.fileTransDetailsId}>
@@ -245,7 +245,10 @@ const AllDocuments = () => {
                                 aria-label="expand row"
                                 size="small"
                                 onClick={() => handleRowClick(index)}
-                                style={{ color: '#003E70' }}
+                                style={{
+                                  backgroundColor: "#003E70",
+                                  color: "white",
+                                }}
                               >
                                 {openRowId === index ? (
                                   <KeyboardArrowUp />
@@ -278,21 +281,21 @@ const AllDocuments = () => {
                       <TableRow>
                         <TableCell colSpan={columns.length} align="center">
                           {loading ? (
-                            'Loading...'
+                            "Loading..."
                           ) : (
-                            <span style={{ color: 'red' }}>Data not available</span>
+                            <span style={{ color: "red" }}>
+                              Data not available
+                            </span>
                           )}
                         </TableCell>
                       </TableRow>
-
-
                     )}
                   </TableBody>
-
                 </Table>
               </TableContainer>
               <br />
-              {fileTransDetails?.content && fileTransDetails.content.length > 0 ? (
+              {fileTransDetails?.content &&
+              fileTransDetails.content.length > 0 ? (
                 // Render CustomPagination if data is available
                 <CustomPagination
                   currentPage={currentPage}

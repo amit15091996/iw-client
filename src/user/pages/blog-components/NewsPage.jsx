@@ -199,7 +199,6 @@ const NewsPage = () => {
     }
   };
 
-
   const handleUpdate = async () => {
     if (selectedBlogId && cardTitle && cardContent) {
       const updatedBlogData = {
@@ -298,7 +297,7 @@ const NewsPage = () => {
         </Button>
       )}
       <Typography variant="h4" style={{ color: "#003E70" }}>
-        News
+        I W News
       </Typography>
       {loading && <Loader open={loading} />}
       <Grid container spacing={3}>
@@ -309,8 +308,12 @@ const NewsPage = () => {
               <Card key={item?.blogId} style={cardStyle}>
                 {item && item.fileDetails && item.fileDetails.fileData && (
                   <CardMedia
+                    style={{
+                      objectFit: "cover",
+                      objectPosition: "top",
+                      height: "200px",
+                    }}
                     component="img"
-                    height="200"
                     image={`data:image/${item?.fileDetails?.fileType};base64,${item?.fileDetails?.fileData}`}
                     alt={item.blogTitle}
                     onError={(e) => {
@@ -320,11 +323,23 @@ const NewsPage = () => {
                   />
                 )}
                 <CardContent style={cardContentStyle}>
-                  <Typography variant="h5" component="div">
+                  <Typography
+                    variant="h5"
+                    component="div"
+                    style={{ color: "#003E70", fontFamily: "sans-serif" }}
+                  >
                     {item?.blogTitle}
                   </Typography>
                   <div style={scrollableContentStyle}>
-                    <Typography variant="body2">{item?.blogDesc1}</Typography>
+                    <Typography
+                      style={{
+                        backgroundColor: "#f1faee",
+                        color: "#343a40",
+                        fontFamily: "sans-serif",
+                      }}
+                    >
+                      {item?.blogDesc1}
+                    </Typography>
                   </div>
                 </CardContent>
                 {isAdmin() && (
@@ -338,14 +353,14 @@ const NewsPage = () => {
                     {/* Edit Icon */}
                     <IconButton
                       onClick={() => handleEdit(item?.blogId)}
-                      style={{ color: '#003E70' }}
+                      style={{ color: "#003E70" }}
                     >
                       <EditIcon />
                     </IconButton>
                     {/* Delete Icon */}
                     <IconButton
                       onClick={() => handleDelete(item?.blogId)}
-                      style={{ color: '#e53935' }}
+                      style={{ color: "#e53935" }}
                     >
                       <DeleteIcon />
                     </IconButton>
@@ -431,7 +446,9 @@ const NewsPage = () => {
           >
             No
           </Button>
-          <Button onClick={handleConfirmDelete} color="secondary"
+          <Button
+            onClick={handleConfirmDelete}
+            color="secondary"
             style={{ backgroundColor: "#ef233c", color: "white" }}
           >
             Yes

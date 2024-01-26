@@ -71,7 +71,11 @@ const ChangePassword = () => {
       <Typography variant="h6" style={{ marginRight: "10px" }}>
         To Update Your password
       </Typography>
-      <Button component="button" variant="contained" onClick={handleClickOpen}>
+      <Button
+        component="button"
+        style={{ backgroundColor: "#003E70", color: "white" }}
+        onClick={handleClickOpen}
+      >
         Click here
       </Button>
       <Dialog open={open} onClose={handleClose}>
@@ -121,7 +125,10 @@ const ChangePassword = () => {
           >
             Cancel
           </Button>
-          <Button onClick={handlePasswordChange} variant="contained">
+          <Button
+            onClick={handlePasswordChange}
+            style={{ backgroundColor: "#003E70", color: "white" }}
+          >
             Update
           </Button>
         </DialogActions>

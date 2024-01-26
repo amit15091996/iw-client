@@ -12,15 +12,14 @@ const cardStyle = {
   flexDirection: "column",
   justifyContent: "center",
 };
-export const data = [
+const data = [
   ["Year", "Users", "Visits"],
-  ["2021", 400, 400],
-  ["2022", 500, 600],
-  ["2023", 660, 700],
-  ["2024", 700, 800],
+  ["2022", 400, 400],
+  ["2023", 500, 600],
+  ["2024", 660, 700],
 ];
 
-export const options = {
+const options = {
   title: "Website Visits",
   curveType: "function",
   legend: { position: "bottom" },
@@ -29,32 +28,23 @@ export const options = {
     fontName: "Arial", // Set the font family
     bold: true, // Set to true for bold text, false for normal weight
     italic: true,
-    color: "#6096ba",
+    color: "#003E70",
   },
 };
 
-export const data2 = [
-  ["Task", "Hours per Day"],
-  ["Work", 11],
-  ["Eat", 2],
-  ["Commute", 2],
-  ["Watch TV", 2],
-  ["Sleep", 7],
+const data2 = [
+  ["Years", "Users", "Items", "News"],
+  ["2021", 1000, 400, 200],
+  ["2022", 1170, 460, 250],
+  ["2023", 660, 1120, 300],
+  ["2024", 1030, 540, 350],
 ];
 
-export const options2 = {
-  title: "My Daily Activities",
-  pieHole: 0.4,
-  is3D: false,
-  chartArea: { width: "120%", height: "70%" },
-  titleTextStyle: {
-    fontSize: 18, // Set the font size for the title
-    fontName: "Arial", // Set the font family
-    bold: true, // Set to true for bold text, false for normal weight
-    italic: true,
-    color: "#6096ba",
+const options2 = {
+  chart: {
+    title: "Website Performance",
+    subtitle: "In-Details : 2024",
   },
-  titlePosition: "center",
 };
 
 export const CompanyChart = () => {
@@ -74,7 +64,7 @@ export const CompanyChart = () => {
       <Grid item xs={12} sm={6} md={4}>
         <Card style={cardStyle}>
           <Chart
-            chartType="PieChart"
+            chartType="Bar"
             data={data2}
             options={options2}
             width="100%"

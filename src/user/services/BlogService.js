@@ -11,7 +11,7 @@ export const createBlog = async (blogData) => {
         formData.append('blogImage', blogData.blogImage);
 
         const token = getToken();
-        const response = await axios.post('http://192.168.1.6:9190/api/v1/blog/create-blog', formData, {
+        const response = await axios.post('http://10.0.0.80:9190/api/v1/blog/create-blog', formData, {
             headers: {
                 'Content-Type': 'multipart/form-data',
                 'Authorization': 'Bearer ' + token,
@@ -97,7 +97,7 @@ export const deleteBlog = async (blogId) => {
         const token = getToken();
         const response = await axios({
             method: "delete",
-            url: `http://localhost:9190/api/v1/blog/delete-blog/${blogId}`,
+            url: `http://10.0.0.80:9190/api/v1/blog/delete-blog/${blogId}`,
             headers: { "Authorization": 'Bearer ' + token },
         });
 

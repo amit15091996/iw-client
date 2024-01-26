@@ -1,17 +1,24 @@
-
 import { createTheme } from "@mui/material";
 
 export const theme = createTheme({
-    palette: {
-        primary: {
-            main: "rgb(0,62,112)",
-            light: "rgba(9,9,112,.1)",
-            dull: "rgba(2,62,138,0.1)"
+  components: {
+    MuiPaper: {
+      styleOverrides: {
+        root: {
+          background: '#fff',
+          boxShadow: 'rgba(0, 0, 0, 0.04) 0px 3px 5px',
+          // boxShadow: 'none',
         },
-        secondary: {
-            main: "rgba(0,62,112,0.5)",
-            light: "rgba(9,9,112,.1)",
-            dull: "rgba(2,62,138,0.1)"
-        }
-    }
+      },
+    },
+    MuiCard: {
+      styleOverrides: {
+        root: {
+          background: '#fff', // Set the background color for the Card
+          boxShadow: 'rgba(0, 0, 0, 0.04) 0px 3px 5px', // Apply the box shadow
+          // boxShadow: 'none', // You can uncomment this line to remove the box shadow
+        },
+      },
+    },
+  },
 });

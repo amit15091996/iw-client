@@ -288,10 +288,8 @@ const NewsPage = () => {
     <Container>
       {isAdmin() && (
         <Button
-          variant="contained"
-          color="primary"
           onClick={handleOpen}
-          style={{ marginRight: 10, float: "right" }}
+          style={{ marginRight: 10, float: "right", color: 'white', backgroundColor: '#003E70' }}
         >
           Add Post
         </Button>

@@ -297,6 +297,7 @@ const NewsPage = () => {
       <Typography variant="h4" style={{ color: "#003E70" }}>
         I W News
       </Typography>
+      <br />
       {loading && <Loader open={loading} />}
       <Grid container spacing={3}>
         {newsList &&
@@ -334,6 +335,7 @@ const NewsPage = () => {
                         backgroundColor: "#f1faee",
                         color: "#343a40",
                         fontFamily: "sans-serif",
+                        textAlign: "justify",
                       }}
                     >
                       {item?.blogDesc1}

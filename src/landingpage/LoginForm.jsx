@@ -106,7 +106,7 @@ const LoginForm = () => {
         <Grid item xs={12} md={6}>
           <Paper elevation={3} style={paperStyle}>
             <Typography variant="h5" gutterBottom style={{ color: '#003E70' }}>
-              Welcome to Eidiko
+              Welcome to Intallysh Wisdom
             </Typography>
             <form style={formStyle} onSubmit={handleLoginSubmit}>
               <TextField

@@ -221,7 +221,7 @@ export default function UserNavbar() {
               >
                Intallysh Wisdom
               </Typography>
-              {/* <img
+              <img
                 src="/assets/main-logo.jpg"
                 alt=""
                 style={{
@@ -229,7 +229,7 @@ export default function UserNavbar() {
                   width: "270px",
                   mixBlendMode: "darken",
                 }}
-              /> */}
+              />
             </Box>
             <Box>
               <Tooltip title="click to open">

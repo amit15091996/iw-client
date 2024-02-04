@@ -109,43 +109,48 @@ const Navbar = () => {
   return (
     <div>
       <CssBaseline />
-      <AppBar position="fixed" style={{ backgroundColor: "#003E70" }}>
+      <AppBar position="fixed" style={{ backgroundColor: "#fff" }}>
         <Toolbar>
           <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
-            I W
+            {/* Intallysh Wisdom */}
+            <img
+              src="/assets/main-logo.jpg"
+              alt="Logo"
+              style={{ marginRight: "10px", height: "55px", marginTop: "10px" }}
+            />
           </Typography>
           <Hidden smDown>
-            <Box sx={{ display: "flex" }}>
-              {navTabNames.map((name, index) =>
-                name === "Login" ? (
-                  <Button
-                    key={`nav-${index}`}
-                    color="inherit"
-                    component={Link}
-                    to="/login"
-                  >
-                    {name}
-                  </Button>
-                ) : (
-                  <Button
-                    key={`nav-${index}`}
-                    color="inherit"
-                    onClick={() => scrollToSection(index)}
-                  >
-                    {name}
-                  </Button>
-                )
-              )}
+            <Box sx={{ display: "flex", justifyContent: "flex-end" }}>
+              {navTabNames.map((name, index) => (
+                <Typography
+                  style={{ color: "#003E70", fontSize: "20px" }}
+                  key={`nav-${index}`}
+                  variant="body1"
+                  sx={{ marginRight: 2, cursor: "pointer" }}
+                  onClick={(event) => {
+                    if (name === "Login") {
+                      event.preventDefault(); // Prevent default behavior
+                      // Handle login specific action, e.g., redirect to "/login"
+                      window.location.href = "/login";
+                    } else {
+                      scrollToSection(index);
+                    }
+                  }}
+                >
+                  {name}
+                </Typography>
+              ))}
             </Box>
           </Hidden>
           <Hidden mdUp>
             <IconButton
+              style={{ color: "#003E70", right:'10px'}}
               edge="end"
               color="inherit"
               aria-label="menu"
-              onClick={toggleDrawer(true)}
+              onClick={toggleDrawer(true)}  
             >
-              <Menu />
+              <Menu sx={{ fontSize: '30px' }} />
             </IconButton>
           </Hidden>
         </Toolbar>

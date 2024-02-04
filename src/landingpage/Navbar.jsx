@@ -53,13 +53,13 @@ const Navbar = () => {
   }, [checkScrollTop, showScroll]);
   // Custom names for navigation tabs
   const navTabNames = [
-    "Home",
-    "Services",
-    "Clients",
-    "About",
-    "Team",
-    "Contact",
-    "Login",
+    "HOME",
+    "SERVICES",
+    "CLIENTS",
+    "ABOUT",
+    "TEAM",
+    "CONTACT",
+    "LOGIN",
   ]; // Replace these names with your desired tab names
 
   const scrollToSection = (index) => {
@@ -123,12 +123,12 @@ const Navbar = () => {
             <Box sx={{ display: "flex", justifyContent: "flex-end" }}>
               {navTabNames.map((name, index) => (
                 <Typography
-                  style={{ color: "#003E70", fontSize: "20px" }}
+                  style={{ color: "#003E70", fontSize: "18px" }}
                   key={`nav-${index}`}
                   variant="body1"
                   sx={{ marginRight: 2, cursor: "pointer" }}
                   onClick={(event) => {
-                    if (name === "Login") {
+                    if (name === "LOGIN") {
                       event.preventDefault(); // Prevent default behavior
                       // Handle login specific action, e.g., redirect to "/login"
                       window.location.href = "/login";
@@ -170,7 +170,7 @@ const Navbar = () => {
         >
           <List>
             {navTabNames.map((name, index) =>
-              name === "Login" ? (
+              name === "LOGIN" ? (
                 <ListItem
                   button
                   key={`nav-${index}`}

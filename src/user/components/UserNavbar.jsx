@@ -219,7 +219,7 @@ export default function UserNavbar() {
                 component="div"
                 style={{ color: "#003E70" }}
               >
-                I W
+               Intallysh Wisdom
               </Typography>
               {/* <img
                 src="/assets/main-logo.jpg"

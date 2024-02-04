@@ -5,7 +5,7 @@
   "type": "module",
   "scripts": {
     "dev": "vite",
-    "build": "yarn build",
+    "build": "vite build",
     "lint": "eslint . --ext js,jsx --report-unused-disable-directives --max-warnings 0",
     "preview": "vite preview"
   },
@@ -25,7 +25,6 @@
     "@reduxjs/toolkit": "^2.0.1",
     "axios": "^1.6.2",
     "date-fns": "^2.30.0",
-    "pdfjs-dist": "^4.0.269",
     "react": "^17.0.2",
     "react-chrono": "^2.4.2",
     "react-doc-viewer": "^0.1.5",

@@ -73,7 +73,36 @@ const AllDocuments = () => {
   };
 
   useEffect(() => {
-    fetchData();
+    if (userId?.length > 0 && year?.length > 0) {
+      getFileDetailByUserIdAndYear(
+        userId,
+        year,
+        currentPage, // Reset currentPage to 0 after search
+        rowsPerPage
+      )
+        .then((res) => {
+          setFileTransDetails((prevData) => ({
+            ...prevData,
+            content: res.fileTransDetails.content,
+          }));
+
+          // Update totalPages based on the totalElements received from the API
+          setTotalPages(
+            Math.ceil(res.fileTransDetails.totalElements / rowsPerPage)
+          );
+
+          setFileTransDetails({
+            content: res.fileTransDetails.content,
+            totalElements: res.totalResults,
+          });
+
+          // Update totalPages based on the totalResults received from the API
+          setTotalPages(Math.ceil(res.totalResults / rowsPerPage));
+        })
+        .catch((e) => {});
+    } else {
+      fetchData();
+    }
   }, [currentPage, rowsPerPage]);
 
   const handleChangePage = (newPage) => {
@@ -158,6 +187,15 @@ const AllDocuments = () => {
     }
   };
 
+  const handleReset = (e) => {
+    e.target.value;
+    setUserId("");
+    setYear("");
+    if(userId && year){
+      fetchData();
+    }
+  };
+
   return (
     <>
       {loading && <Loader open={loading} />}
@@ -198,10 +236,22 @@ const AllDocuments = () => {
                   style={{ marginRight: "10px" }}
                 />
                 <Button
-                  style={{ backgroundColor: "#003E70", color: "white" }}
+                  style={{
+                    backgroundColor: "#003E70",
+                    color: "white",
+                    marginRight: "10px",
+                  }}
                   onClick={handleSearch}
                 >
                   Search
+                </Button>
+                <Button
+                  variant="contained"
+                  color="error"
+                  style={{ marginRight: "10px" }}
+                  onClick={handleReset}
+                >
+                  Reset
                 </Button>
               </Box>
             </Box>

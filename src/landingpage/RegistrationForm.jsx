@@ -119,7 +119,7 @@ const RegistrationForm = () => {
             }}
           >
             <Typography variant="h5" gutterBottom style={{ color: "#003E70" }}>
-              Register with Eidiko
+              Register with Intallysh Wisdom
             </Typography>
             <form
               style={{

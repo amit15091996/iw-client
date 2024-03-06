@@ -295,7 +295,7 @@ const NewsPage = () => {
         </Button>
       )}
       <Typography variant="h4" style={{ color: "#003E70" }}>
-        I W News
+      Intallysh Wisdom News
       </Typography>
       <br />
       {loading && <Loader open={loading} />}

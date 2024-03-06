@@ -219,9 +219,9 @@ export default function UserNavbar() {
                 component="div"
                 style={{ color: "#003E70" }}
               >
-                I W
+               Intallysh Wisdom
               </Typography>
-              {/* <img
+              <img
                 src="/assets/main-logo.jpg"
                 alt=""
                 style={{
@@ -229,7 +229,7 @@ export default function UserNavbar() {
                   width: "270px",
                   mixBlendMode: "darken",
                 }}
-              /> */}
+              />
             </Box>
             <Box>
               <Tooltip title="click to open">

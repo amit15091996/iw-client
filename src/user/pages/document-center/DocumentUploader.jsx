@@ -17,11 +17,14 @@ import {
 } from "@mui/material";
 import getFileDetailByUserId, {
   uploadFileAdmin,
+  uploadFileFromAdminToUser,
 } from "../../services/FileService";
 import { DatePicker, LocalizationProvider } from "@mui/x-date-pickers";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import CloudUploadIcon from "@mui/icons-material/CloudUpload";
 import dayjs from "dayjs";
+import { getAllUsers, getAllUsersForDoc } from "../../services/AdminService";
+import { isAdmin } from "../../services/Util";
 
 const DocumentUploader = () => {
   const [uploadedDocuments, setUploadedDocuments] = useState([]);
@@ -30,28 +33,52 @@ const DocumentUploader = () => {
   const [loadingTable, setLoadingTable] = useState(false);
   const [textData, setTextData] = useState("");
   const [fileType, setFileType] = useState("");
+  const [fileTypeUserId, setFileTypeUserId] = useState("");
   const [selectedDate, setSelectedDate] = useState(null);
+  const [userIds, setUserIds] = useState([]);
+
+  console.log(userIds);
+
+  const fetchData = async () => {
+    try {
+      const allUsers = await getAllUsersForDoc();
+      if (allUsers) {
+        setUserIds(allUsers?.usersList ? allUsers?.usersList : []);
+      }
+
+      console.log("obj ", allUsers);
+      if (Array.isArray(allUsers?.usersList)) {
+        const userIdRes = await allUsers?.usersList.map((user) => user.userId);
+        console.log("userIdRes: ", userIdRes);
+
+        // Assuming setUserIds is an asynchronous function (e.g., a state update in React)
+        // setUserIds(() => userIdRes || []);
+
+        // Note: setUserIds might not have updated the state immediately
+        console.log("ALL USERS: ", userIds);
+      } else {
+        console.error("Error fetching data: Invalid data format");
+      }
+      // console.log("ALL USERS : ", userIds);
+
+      setLoadingTable(true);
+      const apiResponse = await getFileDetailByUserId();
+      console.log("API Response:", apiResponse);
+
+      // Accessing the content array from fileTransDetails
+      const contentArray = apiResponse?.fileTransDetails?.content || [];
+
+      // Setting the last five elements from contentArray
+      setUploadedDocuments(contentArray.slice(-5));
+      setLoadingTable(false);
+      console.log("Updated uploadedDocuments:", contentArray.slice(-5));
+    } catch (error) {
+      console.error("Error fetching data:", error);
+      setLoadingTable(false);
+    }
+  };
 
   useEffect(() => {
-    const fetchData = async () => {
-      try {
-        setLoadingTable(true);
-        const apiResponse = await getFileDetailByUserId();
-        console.log("API Response:", apiResponse);
-
-        // Accessing the content array from fileTransDetails
-        const contentArray = apiResponse?.fileTransDetails?.content || [];
-
-        // Setting the last five elements from contentArray
-        setUploadedDocuments(contentArray.slice(-5));
-        setLoadingTable(false);
-        console.log("Updated uploadedDocuments:", contentArray.slice(-5));
-      } catch (error) {
-        console.error("Error fetching data:", error);
-        setLoadingTable(false);
-      }
-    };
-
     fetchData();
   }, []);
 
@@ -72,49 +99,95 @@ const DocumentUploader = () => {
     setSelectedFile(event.target.files[0]);
   };
 
-  const handleFileUpload = async (e) => {
+  const handleFileUpload = async (e, admin) => {
     e.preventDefault();
 
-    if (selectedFile && fileType && selectedDate && textData) {
-      setUploading(true);
+    if (admin) {
+      console.log(admin);
+      if (selectedFile && fileType && selectedDate && textData) {
+        setUploading(true);
 
-      try {
-        const uploadedFileData = {
-          file: selectedFile,
-          text: textData,
-          fileType: fileType,
-          uploadDateTime: selectedDate,
-        };
-
-        // Upload the file
-        await uploadFileAdmin(uploadedFileData);
-        console.log("File uploaded successfully");
-
-        // Fetch the updated data after file upload
-        setLoadingTable(true);
         try {
-          const apiResponse = await getFileDetailByUserId();
-          console.log("API Response after upload:", apiResponse);
-          setUploadedDocuments(apiResponse?.fileTransDetails?.content || []);
-        } catch (fetchError) {
-          console.error(
-            "Error fetching updated data after upload:",
-            fetchError
-          );
-        } finally {
+          const uploadedFileData = {
+            file: selectedFile,
+            text: textData,
+            fileType: fileType,
+            uploadDateTime: selectedDate,
+          };
+
+          // Upload the file
+          await uploadFileFromAdminToUser(uploadedFileData, fileTypeUserId);
+          console.log("File uploaded successfully");
+
+          // Fetch the updated data after file upload
+          setLoadingTable(true);
+          try {
+            const apiResponse = await getFileDetailByUserId();
+            console.log("API Response after upload:", apiResponse);
+            setUploadedDocuments(apiResponse?.fileTransDetails?.content || []);
+          } catch (fetchError) {
+            console.error(
+              "Error fetching updated data after upload:",
+              fetchError
+            );
+          } finally {
+            setLoadingTable(false);
+          }
+
+          // Reset form fields and loading state
+          setSelectedFile(null);
+          setTextData("");
+          setFileType("");
+          setSelectedDate(null);
+          setUploading(false);
+        } catch (error) {
+          console.error("Error occurred during file upload:", error);
+          setUploading(false);
           setLoadingTable(false);
         }
+      }
+    } else {
+      if (selectedFile && fileType && selectedDate && textData) {
+        setUploading(true);
 
-        // Reset form fields and loading state
-        setSelectedFile(null);
-        setTextData("");
-        setFileType("");
-        setSelectedDate(null);
-        setUploading(false);
-      } catch (error) {
-        console.error("Error occurred during file upload:", error);
-        setUploading(false);
-        setLoadingTable(false);
+        try {
+          const uploadedFileData = {
+            file: selectedFile,
+            text: textData,
+            fileType: fileType,
+            uploadDateTime: selectedDate,
+          };
+
+          // Upload the file
+          await uploadFileAdmin(uploadedFileData);
+          console.log("File uploaded successfully");
+
+          // Fetch the updated data after file upload
+          setLoadingTable(true);
+          try {
+            const apiResponse = await getFileDetailByUserId();
+            console.log("API Response after upload:", apiResponse);
+            setUploadedDocuments(apiResponse?.fileTransDetails?.content || []);
+          } catch (fetchError) {
+            console.error(
+              "Error fetching updated data after upload:",
+              fetchError
+            );
+          } finally {
+            setLoadingTable(false);
+          }
+
+          // Reset form fields and loading state
+          setSelectedFile(null);
+          setTextData("");
+          setFileType("");
+          setSelectedDate(null);
+          setUploading(false);
+        } catch (error) {
+          console.error("Error occurred during file upload:", error);
+          setUploading(false);
+          setLoadingTable(false);
+        }
       }
     }
   };
@@ -209,6 +282,28 @@ const DocumentUploader = () => {
               )}
             />
           </div>
+          {isAdmin() && (
+            <div style={{ flex: 1 }}>
+              <TextField
+                select
+                label="User ID & User Name"
+                variant="outlined"
+                value={fileTypeUserId}
+                onChange={(e) => setFileTypeUserId(e.target.value)}
+                style={{ width: "100%" }}
+              >
+                {userIds?.map((item) => {
+                  return (
+                    <MenuItem
+                      id={item?.userId}
+                      key={item?.userId}
+                      value={item?.userId}
+                    >{`${item?.userId} [${item?.name}]`}</MenuItem>
+                  );
+                })}
+              </TextField>
+            </div>
+          )}
           <div
             style={{
               marginLeft: "10px",
@@ -217,7 +312,9 @@ const DocumentUploader = () => {
               fontFamily: "sans-serif",
             }}
           >
-            <span>Note : Please fill all the details before sending the file.</span>
+            <span>
+              Note : Please fill all the details before sending the file.
+            </span>
           </div>
         </div>
       </LocalizationProvider>
@@ -226,7 +323,9 @@ const DocumentUploader = () => {
       <Button
         variant="contained"
         color="primary"
-        onClick={handleFileUpload}
+        onClick={(e) => {
+          handleFileUpload(e);
+        }}
         disabled={!selectedFile || uploading}
         style={{
           marginTop: "10px",
@@ -242,7 +341,21 @@ const DocumentUploader = () => {
       >
         {uploading ? <CircularProgress size={24} /> : "Send"}
       </Button>
-
+      {isAdmin() && (
+        <Button
+          variant="contained"
+          color="primary"
+          onClick={(e) => {
+            handleFileUpload(e, "admin");
+          }}
+          style={{
+            marginTop: "10px",
+            marginLeft: "10px",
+          }}
+        >
+          {uploading ? <CircularProgress size={24} /> : "Send To User"}
+        </Button>
+      )}
       {uploading && (
         <Typography variant="body2" style={{ marginTop: "10px" }}>
           Uploading...

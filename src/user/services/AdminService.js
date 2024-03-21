@@ -6,6 +6,12 @@ export const getAllUsers = async (type, pageNo, pageSize, sortBy) => {
     .then(res => res.data);
 }
 
+export const getAllUsersForDoc = async () => {
+  console.log(`/admin/users`);
+  return await postReqAxios.get(`/admin/users`)
+    .then(res => res.data);
+}
+
 export const isNotActiveUser = async (userId) => {
   console.log(`/admin/block-user/${userId}`);
   return await postReqAxios.post(`/admin/block-user/${userId}`).then(res => res.data)

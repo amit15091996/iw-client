@@ -11,7 +11,7 @@ export const createBlog = async (blogData) => {
         formData.append('blogImage', blogData.blogImage);
 
         const token = getToken();
-        const response = await axios.post('http://10.0.0.110:9190/api/v1/blog/create-blog', formData, {
+        const response = await axios.post('http://10.0.0.83:9190/api/v1/blog/create-blog', formData, {
             headers: {
                 'Content-Type': 'multipart/form-data',
                 'Authorization': 'Bearer ' + token,

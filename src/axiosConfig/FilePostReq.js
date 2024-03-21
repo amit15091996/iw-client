@@ -1,7 +1,11 @@
 import axios from "axios";
 
 
+<<<<<<< HEAD
 const BASE_URL = "http://192.168.0.108:9190/api/v1";
+=======
+const BASE_URL = "http://10.0.0.83:9190/api/v1";
+>>>>>>> a32110b9f0982d4f1900323d90a986f61e76dba6
 
 export const postReqAxios = axios.create({
     baseURL: `${BASE_URL}`

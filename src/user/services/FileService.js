@@ -31,6 +31,32 @@ export const uploadFileAdmin = async (fileData) => {
     }
 }
 
+export const uploadFileFromAdminToUser = async (fileData,userId) =>{
+    try {
+        // Assuming fileData contains the file object
+        const formData = new FormData();
+        formData.append('files', fileData?.file);
+        formData.append('fileType', fileData?.fileType)
+        formData.append('fileDescription', fileData?.text)
+        formData.append('reportDate', fileData?.uploadDateTime)
+        //  // Assuming 'file' is the key expected by the backend for the file data
+
+
+        //  console.log(formData);
+        const token = getToken();
+        const response = axios({
+            method: "post",
+            url: `${BASE_URL}/admin/upload-file/${userId}`,
+            data: formData,
+            headers: { "Content-Type": 'multipart/form-data', 'Authorization': 'Bearer ' + token },
+        })
+
+        console.log(response.data);
+        return response.data;
+    } catch (error) {
+        throw new Error(error.response?.data || error.message);
+    }
+}
 
 export const getAdminFile = async (fileId) => {
     try {

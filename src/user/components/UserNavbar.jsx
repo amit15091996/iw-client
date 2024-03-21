@@ -213,14 +213,6 @@ export default function UserNavbar() {
               >
                 <MenuIcon />
               </IconButton>
-              <Typography
-                variant="h6"
-                noWrap
-                component="div"
-                style={{ color: "#003E70" }}
-              >
-               Intallysh Wisdom
-              </Typography>
               <img
                 src="/assets/main-logo.jpg"
                 alt=""

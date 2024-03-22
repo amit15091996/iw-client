@@ -10,11 +10,10 @@ import {
   TextField,
   Typography,
 } from "@mui/material";
-import { forgotPassword } from "../services/UserService";
+import { updatePassword } from "../services/UserService";
 
 const ChangePassword = () => {
   const [open, setOpen] = useState(false);
-  const [username, setUsername] = useState(""); // Add state for the username
   const [oldPassword, setOldPassword] = useState("");
   const [newPassword, setNewPassword] = useState("");
   const [confirmNewPassword, setConfirmNewPassword] = useState("");
@@ -29,31 +28,22 @@ const ChangePassword = () => {
 
   const handlePasswordChange = async () => {
     try {
-      // Call forgotPassword to initiate the password change process
-      const forgotPasswordResponse = await forgotPassword(username);
+      // Call changePassword to initiate the password change process
+      const changePasswordResponse = await updatePassword({
+        oldPassword,
+        newPassword,
+        confirmPassword: confirmNewPassword,
+      });
 
-      if (!forgotPasswordResponse.success) {
-        // Handle the case where the forgot password request fails
-        Swal.fire({
-          icon: "error",
-          title: "Forgot Password Failed",
-          text: forgotPasswordResponse.message,
-        });
-        return;
-      }
+      // Assuming the password change request was successful
+      Swal.fire({
+        icon: "success",
+        title: "Password Changed",
+        text: changePasswordResponse.message,
+      });
 
-      // Assuming the forgot password request was successful,
-      // proceed with the password change using your existing logic
-
-      // Validate if new password matches the confirmation
-      if (newPassword !== confirmNewPassword) {
-        Swal.fire({
-          icon: "error",
-          title: "Passwords do not match",
-          text: "Please make sure the new passwords match.",
-        });
-        return;
-      }
+      // Close the dialog
+      handleClose();
     } catch (error) {
       // Handle error response
       console.error("Error in handlePasswordChange:", error);
@@ -61,7 +51,9 @@ const ChangePassword = () => {
       Swal.fire({
         icon: "error",
         title: "Password Change Failed",
-        text: "There was an error changing your password. Please try again.",
+        text:
+          error.message ||
+          "There was an error changing your password. Please try again.",
       });
     }
   };
@@ -86,14 +78,6 @@ const ChangePassword = () => {
           </DialogContentText>
           <TextField
             autoFocus
-            margin="dense"
-            label="Username" // Add a field for the username
-            type="text"
-            fullWidth
-            value={username}
-            onChange={(e) => setUsername(e.target.value)}
-          />
-          <TextField
             margin="dense"
             label="Old Password"
             type="password"

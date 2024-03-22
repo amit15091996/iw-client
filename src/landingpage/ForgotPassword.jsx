@@ -1,13 +1,14 @@
 import React, { useState } from "react";
-import { Link, useNavigate } from "react-router-dom";
 import TextField from "@mui/material/TextField";
 import Button from "@mui/material/Button";
 import Container from "@mui/material/Container";
 import Paper from "@mui/material/Paper";
 import Grid from "@mui/material/Grid";
 import Typography from "@mui/material/Typography";
+import { Link, useNavigate } from "react-router-dom";
 import Swal from "sweetalert2";
 import Loader from "../user/pages/Loader";
+import { forgotPassword } from "../user/services/UserService";
 
 const containerStyle = {
   display: "flex",
@@ -42,43 +43,50 @@ const ForgotPassword = () => {
   const navigate = useNavigate();
   const [inputValue, setInputValue] = useState("");
   const [isLoading, setIsLoading] = useState(false);
-  const verificationValue = "dummy@gmail.com"; // Updated dummy verification value
+  const [error, setError] = useState("");
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-
+    setError("");
     setIsLoading(true);
 
-    // Simulating a delay for loading (you can replace this with an API call)
-    setTimeout(() => {
-      setIsLoading(false);
+    try {
+      // Basic input validation
+      if (!inputValue) {
+        setError("Please enter your phone number or email.");
+        setIsLoading(false);
+        return;
+      }
 
-      // Check if the input value matches the verification value
-      if (inputValue.trim() === verificationValue) {
-        // Show success toast
-        showSuccessToast();
-        // Navigate to Login component when the value is correct
+      const response = await forgotPassword(inputValue);
+
+      if (response.success) {
+        showSuccessToast(response.message);
         navigate("/login");
       } else {
-        // Show error toast
-        showErrorToast();
+        setError(response.message);
       }
-    }, 2000); // Change the delay time as needed
+    } catch (error) {
+      console.error("Error in forgotPassword:", error);
+      setError("Failed to reset password. Please try again later.");
+    } finally {
+      setIsLoading(false);
+    }
   };
 
-  const showSuccessToast = () => {
+  const showSuccessToast = (message) => {
     Swal.fire({
       icon: "success",
-      title: "Verification Successful",
-      text: "You will receive an email with further instructions.",
+      title: "Success",
+      text: message,
     });
   };
 
-  const showErrorToast = () => {
+  const showErrorToast = (message) => {
     Swal.fire({
       icon: "error",
-      title: "Verification Failed",
-      text: "Incorrect email. Please try again.",
+      title: "Error",
+      text: message,
     });
   };
 
@@ -98,19 +106,20 @@ const ForgotPassword = () => {
         )}
 
         <Grid item xs={12} md={6}>
-          {/* Right side (Forgot Password Form) */}
           <Paper elevation={3} style={paperStyle}>
             <Typography variant="h5" gutterBottom style={{ color: "#003E70" }}>
               Forgot Password
             </Typography>
             <form style={formStyle} onSubmit={handleSubmit}>
               <TextField
+                error={!!error}
+                helperText={error}
                 variant="outlined"
                 margin="normal"
                 required
                 fullWidth
                 id="inputValue"
-                label="Phone-Number / Email"
+                label="Phone Number or Email"
                 name="inputValue"
                 autoComplete="off"
                 value={inputValue}
@@ -122,20 +131,44 @@ const ForgotPassword = () => {
                 fullWidth
                 variant="contained"
                 color="primary"
-                style={{ marginTop: "1rem" }}
+                style={{ marginTop: "1rem", height: "3rem" }} // Set a fixed height for the button
               >
-                Reset
+                <div
+                  style={{
+                    display: "flex",
+                    alignItems: "center",
+                    justifyContent: "center",
+                  }}
+                >
+                  <span
+                    style={{ visibility: isLoading ? "hidden" : "visible" }}
+                  >
+                    Reset
+                  </span>
+                  {isLoading && (
+                    <Loader
+                      style={{
+                        width: "2rem",
+                        height: "2rem",
+                        marginLeft: "1rem",
+                      }}
+                    />
+                  )}{" "}
+                  {/* Use appropriate dimensions for the loader */}
+                </div>
               </Button>
+
               <div style={{ textAlign: "right", marginTop: "0.5rem" }}>
                 <Link to="/" style={linkStyle}>
                   HOME
                 </Link>
               </div>
-              {isLoading && <Loader open={isLoading} />}
             </form>
           </Paper>
         </Grid>
       </Grid>
+      {/* Loader component */}
+      <Loader open={isLoading} />
     </Container>
   );
 };

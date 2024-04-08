@@ -50,7 +50,7 @@ const Navbar = () => {
     return () => {
       window.removeEventListener("scroll", checkScrollTop);
     };
-  }, [checkScrollTop, showScroll]);
+  }, []);
   // Custom names for navigation tabs
   const navTabNames = [
     "HOME",

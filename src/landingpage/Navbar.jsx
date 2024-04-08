@@ -175,7 +175,7 @@ const Navbar = () => {
                   button
                   key={`nav-${index}`}
                   component={Link}
-                  href="http://fe.intallyshwisdom.com:3399/login"
+                  to="/login"
                 >
                   <ListItemText primary={name} />
                 </ListItem>

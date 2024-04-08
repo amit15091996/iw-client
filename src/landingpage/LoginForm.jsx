@@ -134,7 +134,7 @@ const LoginForm = () => {
                 onChange={(e) => setPassword(e.target.value)}
               />
               <div style={{ textAlign: "right", marginTop: "0.5rem" }}>
-                <Link to="http://fe.intallyshwisdom.com:3399/forgot" style={linkStyle}>
+                <Link to="/forgot" style={linkStyle}>
                   Forgot Password?
                 </Link>
               </div>
@@ -149,7 +149,7 @@ const LoginForm = () => {
               </Button>
               <div style={{ textAlign: "center", marginTop: "1rem" }}>
                 <span>Don't have an account? </span>
-                <Link href="http://fe.intallyshwisdom.com:3399/register" style={linkStyle}>
+                <Link to="/register" style={linkStyle}>
                   Register
                 </Link>
               </div>

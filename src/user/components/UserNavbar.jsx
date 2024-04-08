@@ -165,7 +165,7 @@ export default function UserNavbar() {
     setLoading(true); // Start loading when logout is confirmed
     setTimeout(() => {
       localStorage.clear();
-      navigate("/login");
+      link.href("http://fe.intallyshwisdom.com:3399/login");
       setLoading(false); // Set loading to false after redirecting
 
       // Show SweetAlert upon successful logout

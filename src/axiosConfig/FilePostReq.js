@@ -1,7 +1,7 @@
 import axios from "axios";
 
 
-const BASE_URL = "https://118.91.190.44:3399/api/v1";
+const BASE_URL = "http://be.intallyshwisdom.com:3399/api/v1";
 
 export const postReqAxios = axios.create({
     baseURL: `${BASE_URL}`

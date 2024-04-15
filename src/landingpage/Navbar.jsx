@@ -131,7 +131,7 @@ const Navbar = () => {
                     if (name === "LOGIN") {
                       event.preventDefault(); // Prevent default behavior
                       // Handle login specific action, e.g., redirect to "/login"
-                      window.location.href = "/login";
+                      window.location.href = "http://fe.intallyshwisdom.com:3399/login";
                     } else {
                       scrollToSection(index);
                     }
@@ -175,7 +175,10 @@ const Navbar = () => {
                   button
                   key={`nav-${index}`}
                   component={Link}
-                  to="/login"
+                  onClick={event=>{
+                    event.preventDefault();
+                    window.location.href = "http://fe.intallyshwisdom.com:3399/login"; 
+                  }}
                 >
                   <ListItemText primary={name} />
                 </ListItem>

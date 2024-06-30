@@ -8,7 +8,15 @@ export const uploadFileAdmin = async (fileData) => {
     try {
         // Assuming fileData contains the file object
         const formData = new FormData();
-        formData.append('files', fileData?.file);
+        let selectedFiles = fileData?.file;
+        console.log('====================================');
+        console.log("Selected Files", selectedFiles);
+        console.log('====================================');
+        for (let i = 0; i < selectedFiles.length; i++) {
+            formData.append(`files[${i}]`, selectedFiles[i]);
+          }
+
+        //formData.append('files', fileData?.file);
         formData.append('fileType', fileData?.fileType)
         formData.append('fileDescription', fileData?.text)
         formData.append('reportDate', fileData?.uploadDateTime)
@@ -17,6 +25,8 @@ export const uploadFileAdmin = async (fileData) => {
 
         //  console.log(formData);
         const token = getToken();
+
+        console.log("----- Form Data --------",formData);
         const response = axios({
             method: "post",
             url: `${BASE_URL}/user/upload-file`,
@@ -35,7 +45,15 @@ export const uploadFileFromAdminToUser = async (fileData,userId) =>{
     try {
         // Assuming fileData contains the file object
         const formData = new FormData();
-        formData.append('files', fileData?.file);
+        let selectedFiles = fileData?.file;
+        console.log('====================================');
+        console.log("Selected Files", selectedFiles);
+        console.log('====================================');
+        for (let i = 0; i < selectedFiles.length; i++) {
+            formData.append(`files[${i}]`, selectedFiles[i]);
+          }
+
+        //formData.append('files', fileData?.file);
         formData.append('fileType', fileData?.fileType)
         formData.append('fileDescription', fileData?.text)
         formData.append('reportDate', fileData?.uploadDateTime)
@@ -131,7 +149,7 @@ export const getAllFileDetail = async (pageNo, pageSize) => {
     }
 }
 
-// get-Filetransdetail-By-Year-And-UserId 
+// get-Filetransdetail-By-Year-And-UserId
 
 export const getFileDetailByUserIdAndYear = async (userId, year, pageNo, pageSize, sortBy = 'reportDate', sortingOrder = 'ASC') => {
     try {

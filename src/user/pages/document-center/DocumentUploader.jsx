@@ -96,7 +96,7 @@ const DocumentUploader = () => {
   };
 
   const handleFileSelect = (event) => {
-    setSelectedFile(event.target.files[0]);
+    setSelectedFile(event.target.files);
   };
 
   const handleFileUpload = async (e, admin) => {
@@ -234,7 +234,7 @@ const DocumentUploader = () => {
         <FileInputText>
           {selectedFile ? selectedFile.name : "Click to Upload File"}
         </FileInputText>
-        <CustomInput id="upload-file" type="file" onChange={handleFileSelect} />
+        <CustomInput id="upload-file" type="file" multiple onChange={handleFileSelect} />
       </FileInputLabel>
       <TextField
         select
@@ -383,7 +383,7 @@ const DocumentUploader = () => {
                       <TableCell style={{ color: "white" }}>
                         File Name
                       </TableCell>
-                      <TableCell style={{ color: "white" }}>File ID</TableCell>
+                      {/* <TableCell style={{ color: "white" }}>File ID</TableCell> */}
                       <TableCell style={{ color: "white" }}>Year</TableCell>
                       <TableCell style={{ color: "white" }}>
                         Report Date
@@ -396,7 +396,7 @@ const DocumentUploader = () => {
                         <TableCell>{index + 1}</TableCell>
                         <TableCell>{item.fileType}</TableCell>
                         <TableCell>{item.fileDescription}</TableCell>
-                        <TableCell>{item.fileTransDetailsId}</TableCell>
+                        {/* <TableCell>{item.fileTransDetailsId}</TableCell> */}
                         <TableCell>{item.year}</TableCell>
                         <TableCell>{item.reportDate}</TableCell>
                       </TableRow>

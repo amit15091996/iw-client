@@ -29,7 +29,7 @@ import {
 
 const columns = [
   { id: "Serial Number", label: "No", minWidth: 100 },
-  { id: "fileTransDetailsId", label: "File ID", minWidth: 100 },
+  // { id: "fileTransDetailsId", label: "File ID", minWidth: 100 },
   { id: "year", label: "Year", minWidth: 100 },
   { id: "reportDate", label: "Report Date", minWidth: 100 },
   { id: "fileType", label: "File Type", minWidth: 100 },

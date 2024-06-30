@@ -27,7 +27,7 @@ import Loader from "./Loader";
 
 const columns = [
   { id: "Serial Number", label: "No", minWidth: 100 },
-  { id: "fileTransDetailsId", label: "File ID", minWidth: 100 },
+  // { id: "fileTransDetailsId", label: "File ID", minWidth: 100 },
   { id: "userId", label: "User ID", minWidth: 100 },
   { id: "fileType", label: "File Type", minWidth: 100 },
   { id: "fileDescription", label: "File Name", minWidth: 100 },
@@ -46,7 +46,6 @@ const AllDocuments = () => {
   const [loading, setLoading] = useState(false);
   const [userId, setUserId] = useState("");
   const [year, setYear] = useState("");
-
   const fetchData = async () => {
     try {
       setLoading(true);
